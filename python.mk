@@ -1,6 +1,6 @@
 .PHONY: $(PY_PREFIX)lint $(PY_PREFIX)sa $(PY_PREFIX)test $(PY_PREFIX)view \
         $(PY_PREFIX)host-coverage $(PY_PREFIX)all $(PY_PREFIX)clean \
-        $(PY_PREFIX)dist
+        $(PY_PREFIX)dist $(PY_PREFIX)upload $(PY_PREFIX)editable
 
 PY_PREFIX := python-
 
@@ -24,6 +24,14 @@ $(PY_PREFIX)dist: $(VENV_CONC)
 		$(PYTHON_BIN)/python $($(PROJ)_DIR)/setup.py sdist
 	cd $($(PROJ)_DIR) && \
 		$(PYTHON_BIN)/python $($(PROJ)_DIR)/setup.py bdist_wheel
+
+TWINE_ARGS := --non-interactive --verbose
+$(PY_PREFIX)upload: $(VENV_CONC) $(PY_PREFIX)lint $(PY_PREFIX)sa $(PY_PREFIX)test $(PY_PREFIX)dist
+	cd $($(PROJ)_DIR) && \
+		$(PYTHON_BIN)/twine upload $(TWINE_ARGS) $($(PROJ)_DIR)/dist/*
+
+$(PY_PREFIX)editable: $(VENV_CONC)
+	$(PYTHON_BIN)/pip install -e $($(PROJ)_DIR)
 
 $(PY_PREFIX)view:
 	@$(BROWSER) $($(PROJ)_DIR)htmlcov/index.html
