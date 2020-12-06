@@ -32,8 +32,12 @@ $(PY_PREFIX)upload: $(VENV_CONC) $(PY_PREFIX)lint $(PY_PREFIX)sa $(PY_PREFIX)tes
 	cd $($(PROJ)_DIR) && \
 		$(PYTHON_BIN)/twine upload $(TWINE_ARGS) $($(PROJ)_DIR)/dist/*
 
-$(PY_PREFIX)editable: $(VENV_CONC)
+EDITABLE_CONC := $(call to_concrete, $(PY_PREFIX)editable)
+$(EDITABLE_CONC): $(VENV_CONC)
 	$(PYTHON_BIN)/pip install -e $($(PROJ)_DIR)
+	$(call generic_concrete,$@)
+
+$(PY_PREFIX)editable: $(EDITABLE_CONC)
 
 $(PY_PREFIX)view:
 	@$(BROWSER) $($(PROJ)_DIR)htmlcov/index.html
@@ -49,4 +53,5 @@ $(PY_PREFIX)clean:
 	@rm -rf $(BUILD_DIR) $($(PROJ)_DIR)/.mypy_cache
 	@rm -rf $($(PROJ)_DIR)/cover $($(PROJ)_DIR)/.coverage \
 		$($(PROJ)_DIR)/dist $($(PROJ)_DIR)/*.egg-info \
-		$($(PROJ)_DIR)/htmlcov $($(PROJ)_DIR)/.pytest_cache
+		$($(PROJ)_DIR)/htmlcov $($(PROJ)_DIR)/.pytest_cache \
+		$(EDITABLE_CONC)
