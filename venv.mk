@@ -35,4 +35,4 @@ $(VENV_CONC): $(REQ_CONC)
 venv: $(VENV_CONC)
 
 clean-venv:
-	rm -rf $($(PROJ)_DIR)/venv* $(BUILD_DIR)/venv*
+	@rm -rf $($(PROJ)_DIR)/venv* $(BUILD_DIR)/venv* $(VENV_CONC) $(REQ_CONC)

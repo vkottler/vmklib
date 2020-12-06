@@ -1,5 +1,6 @@
 .PHONY: $(PY_PREFIX)lint $(PY_PREFIX)sa $(PY_PREFIX)test $(PY_PREFIX)view \
-        $(PY_PREFIX)host-coverage $(PY_PREFIX)all $(PY_PREFIX)clean
+        $(PY_PREFIX)host-coverage $(PY_PREFIX)all $(PY_PREFIX)clean \
+        $(PY_PREFIX)dist
 
 PY_PREFIX := python-
 
@@ -17,6 +18,13 @@ PYTEST_ARGS := -x --log-cli-level=10 --cov=$(PROJ) --cov-report html
 $(PY_PREFIX)test: $(VENV_CONC)
 	$(PYTHON_BIN)/pytest $(PYTEST_ARGS)
 
+$(PY_PREFIX)dist: $(VENV_CONC)
+	@rm -rf $($(PROJ)_DIR)/dist
+	cd $($(PROJ)_DIR) && \
+		$(PYTHON_BIN)/python $($(PROJ)_DIR)/setup.py sdist
+	cd $($(PROJ)_DIR) && \
+		$(PYTHON_BIN)/python $($(PROJ)_DIR)/setup.py bdist_wheel
+
 $(PY_PREFIX)view:
 	@$(BROWSER) $($(PROJ)_DIR)htmlcov/index.html
 
@@ -29,6 +37,6 @@ $(PY_PREFIX)clean:
 	@find -iname '*.pyc' -delete
 	@find -iname '__pycache__' -delete
 	@rm -rf $(BUILD_DIR) $($(PROJ)_DIR)/.mypy_cache
-	@rm -rf $($(PROJ)_DIR)/cover $($(PROJ)_DIR)/.coverage dist \
-		$($(PROJ)_DIR)/*.egg-info $($(PROJ)_DIR)/htmlcov \
-		$($(PROJ)_DIR)/.pytest_cache
+	@rm -rf $($(PROJ)_DIR)/cover $($(PROJ)_DIR)/.coverage \
+		$($(PROJ)_DIR)/dist $($(PROJ)_DIR)/*.egg-info \
+		$($(PROJ)_DIR)/htmlcov $($(PROJ)_DIR)/.pytest_cache
