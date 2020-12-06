@@ -7,9 +7,9 @@ PY_PREFIX := python-
 $(PY_PREFIX)lint-%: $(VENV_CONC)
 	$(PYTHON_BIN)/$* $(PROJ) tests
 
-$(PY_PREFIX)lint: lint-flake8 lint-pylint
+$(PY_PREFIX)lint: $(PY_PREFIX)lint-flake8 $(PY_PREFIX)lint-pylint
 
-$(PY_PREFIX)sa: lint-mypy
+$(PY_PREFIX)sa: $(PY_PREFIX)lint-mypy
 
 PYTEST_ARGS := -x --log-cli-level=10 --cov=$(PROJ) --cov-report html
 $(PY_PREFIX)test: $(VENV_CONC)
