@@ -4,8 +4,10 @@
 PY_PREFIX := python-
 
 # don't turn this into a concrete target so we can spam it
+PY_EXTRA_LINT_ARGS ?=
 $(PY_PREFIX)lint-%: $(VENV_CONC)
-	$(PYTHON_BIN)/$* $(PROJ) tests
+	$(PYTHON_BIN)/$* $($(PROJ)_DIR)/$(PROJ) $($(PROJ)_DIR)/tests \
+		$(PY_EXTRA_LINT_ARGS)
 
 $(PY_PREFIX)lint: $(PY_PREFIX)lint-flake8 $(PY_PREFIX)lint-pylint
 
