@@ -3,9 +3,10 @@
         $(PY_PREFIX)dist $(PY_PREFIX)upload $(PY_PREFIX)editable
 
 PY_PREFIX := python-
+MK_DIR    ?= $($(PROJ)_DIR)/mk
 
 # don't turn this into a concrete target so we can spam it
-PY_EXTRA_LINT_ARGS ?=
+PY_EXTRA_LINT_ARGS += $(MK_DIR)/setup.py
 $(PY_PREFIX)lint-%: $(VENV_CONC)
 	$(PYTHON_BIN)/$* $($(PROJ)_DIR)/$(PROJ) $($(PROJ)_DIR)/tests \
 		$(PY_EXTRA_LINT_ARGS)
