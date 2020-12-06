@@ -47,6 +47,7 @@ def get_data_files(pkg_name: str, data_dir: str = "data") -> List[str]:
 
 def setup(pkg_info: Dict[str, str], author_info: Dict[str, str],
           url_override: str = None, entry_override: str = None,
+          console_overrides: List[str] = None,
           classifiers_override: List[str] = None) -> None:
     """
     Build a 'setuptools.setup' call with sane defaults and making assumptions
@@ -55,6 +56,10 @@ def setup(pkg_info: Dict[str, str], author_info: Dict[str, str],
 
     if entry_override is None:
         entry_override = pkg_info["name"]
+
+    if console_overrides is None:
+        entry_str = "{}={}.entry:main".format(entry_override, pkg_info["name"])
+        console_overrides = [entry_str]
 
     if url_override is None:
         url_fstring = "https://github.com/{}/{}"
@@ -68,7 +73,6 @@ def setup(pkg_info: Dict[str, str], author_info: Dict[str, str],
             "Operating System :: OS Independent",
         ]
 
-    entry_str = "{}={}.entry:main".format(entry_override, pkg_info["name"])
     setuptools.setup(
         name=pkg_info["name"],
         version=pkg_info["version"],
@@ -81,7 +85,7 @@ def setup(pkg_info: Dict[str, str], author_info: Dict[str, str],
         packages=setuptools.find_packages(),
         classifiers=classifiers_override,
         python_requires=">=3.6",
-        entry_points={"console_scripts": [entry_str]},
+        entry_points={"console_scripts": console_overrides},
         install_requires=get_requirements(),
         package_data={pkg_info["name"]: get_data_files(pkg_info["name"])},
     )

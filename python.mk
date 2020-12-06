@@ -1,8 +1,9 @@
+PY_PREFIX := python-
+
 .PHONY: $(PY_PREFIX)lint $(PY_PREFIX)sa $(PY_PREFIX)test $(PY_PREFIX)view \
         $(PY_PREFIX)host-coverage $(PY_PREFIX)all $(PY_PREFIX)clean \
         $(PY_PREFIX)dist $(PY_PREFIX)upload $(PY_PREFIX)editable
 
-PY_PREFIX := python-
 MK_DIR    ?= $($(PROJ)_DIR)/mk
 
 # don't turn this into a concrete target so we can spam it
