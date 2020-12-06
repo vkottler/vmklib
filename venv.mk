@@ -4,6 +4,7 @@
 PYTHON_VERSION   ?= 3.8
 REQUIREMENTS_DIR ?= $($(PROJ)_DIR)/requirements
 REQ_FILES        ?= requirements dev_requirements
+MK_DIR           ?= $($(PROJ)_DIR)/mk
 
 VENV_NAME        := venv$(PYTHON_VERSION)
 VENV_DIR         := $($(PROJ)_DIR)/$(VENV_NAME)
@@ -13,9 +14,10 @@ VENV_CONC        := $(call to_concrete, $(VENV_NAME))
 REQ_CONC         := $(REQ_FILES:%=$(call to_concrete,$(VENV_NAME)/req-%))
 
 # target for building a real Python virtual environment directory
-$(VENV_DIR):
+$(VENV_DIR): $(MK_DIR)/fresh_venv.txt
 	python$(PYTHON_VERSION) -m venv $(VENV_DIR)
 	$(PYTHON_BIN)/pip install --upgrade pip
+	$(PYTHON_BIN)/pip install --upgrade -r $<
 
 # add empty files for missing requirements files and let the caller know
 # an attempt to install from a missing one was made
