@@ -45,6 +45,7 @@ def get_data_files(pkg_name: str, data_dir: str = "data") -> List[str]:
     return data_files
 
 
+# pylint: disable=too-many-arguments
 def setup(pkg_info: Dict[str, str], author_info: Dict[str, str],
           url_override: str = None, entry_override: str = None,
           console_overrides: List[str] = None,
