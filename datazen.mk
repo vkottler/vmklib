@@ -14,8 +14,8 @@ endif
 $(DZ_PREFIX)sync: $(VENV_CONC)
 	$(PYTHON_BIN)/dz $(DZ_ARGS)
 
-$(DZ_PREFIX)clean:
+$(DZ_PREFIX)clean: $(VENV_CONC)
 	$(PYTHON_BIN)/dz $(DZ_ARGS) -c
 
-$(DZ_PREFIX)describe:
+$(DZ_PREFIX)describe: $(VENV_CONC)
 	$(PYTHON_BIN)/dz $(DZ_ARGS) -d

@@ -1,13 +1,4 @@
 #
-# Aggregate files with a specific extension from a given directory into
-# a variable.
-#
-# 1: directory
-# 2: file extension
-#
-get_files = $(wildcard $(1)/*.$(2))
-
-#
 # A single source of truth for how to build a generic, concrete target.
 #
 # 1: name of the concrete target-file
@@ -25,3 +16,12 @@ endef
 # 1: phony target name
 #
 to_concrete = $(patsubst %,$(BUILD_DIR)/%.txt,$(1))
+
+#
+# Aggregate files with a specific extension from a given directory into
+# a variable.
+#
+# 1: directory
+# 2: file extension
+#
+get_files = $(wildcard $(1)/*.$(2))

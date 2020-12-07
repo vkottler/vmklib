@@ -4,7 +4,6 @@
 PYTHON_VERSION   ?= 3.8
 REQUIREMENTS_DIR ?= $($(PROJ)_DIR)/requirements
 REQ_FILES        ?= requirements dev_requirements
-MK_DIR           ?= $($(PROJ)_DIR)/mk
 
 VENV_NAME        := venv$(PYTHON_VERSION)
 VENV_DIR         := $($(PROJ)_DIR)/$(VENV_NAME)
@@ -15,7 +14,8 @@ REQ_CONC         := $(REQ_FILES:%=$(call to_concrete,$(VENV_NAME)/req-%))
 
 # target for building a real Python virtual environment directory
 $(VENV_DIR): $(MK_DIR)/fresh_venv.txt
-	python$(PYTHON_VERSION) -m venv $(VENV_DIR)
+	python$(PYTHON_VERSION) -m venv $@
+	@touch $@
 	$(PYTHON_BIN)/pip install --upgrade pip
 	$(PYTHON_BIN)/pip install --upgrade -r $<
 

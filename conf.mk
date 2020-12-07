@@ -2,6 +2,7 @@ BUILD_DIR_NAME ?= build
 BUILD_DIR      ?= $($(PROJ)_DIR)/$(BUILD_DIR_NAME)
 $(BUILD_DIR):
 	@mkdir -p $@
+	@touch $@
 
 #
 # Get the last element in a space-delimited list.
@@ -31,16 +32,11 @@ makefile_to_dir = $(patsubst %/$(2),%,$(1))
 MK_CFG_NAME ?= conf.mk
 get_current_makefile_dir = $(call makefile_to_dir,$(call get_current_makefile),$(MK_CFG_NAME))
 
-#
-# Aggregate files with a specific extension from a given directory into
-# a variable.
-#
-# 1: directory
-# 2: file extension
-#
-get_files = $(wildcard $(1)/*.$(2))
-
-# include all of the other makefiles (and don't re-include this one)
-MK_INCLUDES := $(call get_files,$(call get_current_makefile_dir),mk)
-MK_INCLUDES := $(MK_INCLUDES:$(call get_current_makefile)=)
-include $(MK_INCLUDES)
+# include everything in a strict order
+MK_DIR := $(call get_current_makefile_dir)
+include $(MK_DIR)/functions.mk
+include $(MK_DIR)/venv.mk
+include $(MK_DIR)/python.mk
+include $(MK_DIR)/pypi.mk
+include $(MK_DIR)/datazen.mk
+include $(MK_DIR)/grip.mk
