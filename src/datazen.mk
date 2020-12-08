@@ -1,6 +1,7 @@
 DZ_PREFIX := dz-
 
-.PHONY: $(DZ_PREFIX)sync $(DZ_PREFIX)clean $(DZ_PREFIX)describe
+.PHONY: $(DZ_PREFIX)sync $(DZ_PREFIX)clean $(DZ_PREFIX)describe \
+        $(DZ_PREFIX)-upgrade
 
 DZ_DIR      ?= $($(PROJ)_DIR)
 DZ_ARGS     := -C $(DZ_DIR)
@@ -19,3 +20,6 @@ $(DZ_PREFIX)clean: $(VENV_CONC)
 
 $(DZ_PREFIX)describe: $(VENV_CONC)
 	$(PYTHON_BIN)/dz $(DZ_ARGS) -d
+
+$(DZ_PREFIX)upgrade: $(VENV_CONC)
+	$(PYTHON_BIN)/pip install --upgrade datazen
