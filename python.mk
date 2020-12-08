@@ -20,6 +20,9 @@ PYTEST_ARGS := -x --log-cli-level=10 --cov=$(PROJ) --cov-report html
 $(PY_PREFIX)test: $(VENV_CONC)
 	$(PYTHON_BIN)/pytest $(PYTEST_ARGS)
 
+$(PY_PREFIX)test-%: $(VENV_CONC)
+	$(PYTHON_BIN)/pytest $(PYTEST_ARGS) -k "$*"
+
 $(PY_PREFIX)dist: $(VENV_CONC)
 	@rm -rf $($(PROJ)_DIR)/dist
 	cd $($(PROJ)_DIR) && \
