@@ -1,0 +1,37 @@
+default_target: "groups-all"
+
+configs:
+- "config/configs"
+- "local/configs"
+
+schemas:
+- "config/schemas"
+
+templates:
+- "config/templates"
+
+variables:
+- "local/variables"
+
+compiles:
+- name: "local"
+
+renders:
+- name: "__init__.py"
+  output_dir: "mk"
+  dependencies:
+  - "compiles-local"
+- name: "README.md"
+  output_dir: "."
+  dependencies:
+  - "compiles-local"
+- name: "setup.py"
+  output_dir: "."
+  dependencies:
+  - "compiles-local"
+
+groups:
+- name: "all"
+  dependencies:
+  - "renders-__init__.py"
+  - "renders-setup.py"

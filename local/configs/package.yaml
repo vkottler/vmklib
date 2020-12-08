@@ -1,0 +1,3 @@
+name: mk
+version: {{major}}.{{minor}}.{{patch}}
+description: "Simplify project workflows by standardizing use of GNU Make."

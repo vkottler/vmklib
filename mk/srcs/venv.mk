@@ -13,7 +13,7 @@ VENV_CONC        := $(call to_concrete, $(VENV_NAME))
 REQ_CONC         := $(REQ_FILES:%=$(call to_concrete,$(VENV_NAME)/req-%))
 
 # target for building a real Python virtual environment directory
-$(VENV_DIR): $(MK_DIR)/fresh_venv.txt
+$(VENV_DIR): $(MK_DATA_DIR)/fresh_venv.txt
 	python$(PYTHON_VERSION) -m venv $@
 	@touch $@
 	$(PYTHON_BIN)/pip install --upgrade pip

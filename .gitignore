@@ -3,3 +3,5 @@ build
 venv2*
 venv3*
 __pycache__
+.*_cache
+datazen-out

@@ -32,6 +32,12 @@ makefile_to_dir = $(patsubst %/$(2),%,$(1))
 MK_CFG_NAME ?= conf.mk
 get_current_makefile_dir = $(call makefile_to_dir,$(call get_current_makefile),$(MK_CFG_NAME))
 
-# include everything in a strict order
-MK_DIR := $(call get_current_makefile_dir)
-include $(MK_DIR)/src/conf.mk
+MK_SRC_DIR  := $(call get_current_makefile_dir)
+MK_PY_DIR   := $(MK_SRC_DIR)/..
+MK_DATA_DIR := $(MK_SRC_DIR)/data
+include $(MK_SRC_DIR)/functions.mk
+include $(MK_SRC_DIR)/venv.mk
+include $(MK_SRC_DIR)/python.mk
+include $(MK_SRC_DIR)/pypi.mk
+include $(MK_SRC_DIR)/datazen.mk
+include $(MK_SRC_DIR)/grip.mk

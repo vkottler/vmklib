@@ -17,7 +17,7 @@ $(PROJ)_DIR    := $(patsubst %/,%,$(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 # include target-containing files, if you sub-module this repository the paths
 # may need to change, include 'functions.mk' first so other includes can use
 # common functions
-include $($(PROJ)_DIR)/conf.mk
+include $($(PROJ)_DIR)/mk/srcs/conf.mk
 
 all: venv
 
