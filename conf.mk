@@ -34,9 +34,4 @@ get_current_makefile_dir = $(call makefile_to_dir,$(call get_current_makefile),$
 
 # include everything in a strict order
 MK_DIR := $(call get_current_makefile_dir)
-include $(MK_DIR)/functions.mk
-include $(MK_DIR)/venv.mk
-include $(MK_DIR)/python.mk
-include $(MK_DIR)/pypi.mk
-include $(MK_DIR)/datazen.mk
-include $(MK_DIR)/grip.mk
+include $(MK_DIR)/src/conf.mk

@@ -14,17 +14,10 @@ PROJ           := sample
 # file is in (the Makefile targeted by make)
 $(PROJ)_DIR    := $(patsubst %/,%,$(dir $(abspath $(lastword $(MAKEFILE_LIST)))))
 
-# assign a build directory for use by other target definitions and recipes
-BUILD_DIR_NAME := build
-BUILD_DIR      := $($(PROJ)_DIR)/$(BUILD_DIR_NAME)
-$(BUILD_DIR):
-	@mkdir -p $@
-
 # include target-containing files, if you sub-module this repository the paths
 # may need to change, include 'functions.mk' first so other includes can use
 # common functions
-include $($(PROJ)_DIR)/functions.mk
-include $($(PROJ)_DIR)/venv.mk
+include $($(PROJ)_DIR)/conf.mk
 
 all: venv
 
