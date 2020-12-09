@@ -1,6 +1,6 @@
 
 """
-mk - A simpler setuptools-based package definition.
+vmklib - A simpler setuptools-based package definition.
 """
 
 # built-in

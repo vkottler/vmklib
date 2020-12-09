@@ -1,6 +1,6 @@
 
 """
-mk - This package's command-line entry-point application.
+vmklib - This package's command-line entry-point application.
 """
 
 # built-in
