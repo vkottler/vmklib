@@ -7,7 +7,7 @@
 
 # set this to the name of your project, so it can be substituted in wherever
 # necessary
-PROJ           := sample
+PROJ           := mk
 
 # root directory of your project, can use "." or $(shell pwd) but the below
 # assignment will guarantee that it's assigned to the directory that this
@@ -19,6 +19,9 @@ $(PROJ)_DIR    := $(patsubst %/,%,$(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 # common functions
 include $($(PROJ)_DIR)/mk/data/conf.mk
 
-all: venv
+PY_EXTRA_LINT_ARGS += $($(PROJ)_DIR)/run.py
+
+all: python-lint python-sa
 
 clean: python-clean
+	@rm -rf $(BUILD_DIR)

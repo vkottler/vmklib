@@ -2,3 +2,8 @@ wheel
 setuptools
 twine
 grip
+pylint
+flake8
+pytest
+pytest-cov
+mypy

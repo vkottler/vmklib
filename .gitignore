@@ -2,6 +2,9 @@ requirements
 build
 venv2*
 venv3*
+*.egg-info
+dist
 __pycache__
 .*_cache
 datazen-out
+*.pyc
