@@ -29,16 +29,16 @@ jobs:
         pip${{matrix.python-version}} install vmklib
     - name: venv
       run: |
-        make PYTHON_VERSION=${{matrix.python-version}} venv
+        mk PYTHON_VERSION=${{matrix.python-version}} venv
     - name: lint
       run: |
-        make PYTHON_VERSION=${{matrix.python-version}} python-lint
+        mk PYTHON_VERSION=${{matrix.python-version}} python-lint
     - name: sa
       run: |
-        make PYTHON_VERSION=${{matrix.python-version}} python-sa
+        mk PYTHON_VERSION=${{matrix.python-version}} python-sa
     - name: test
       run: |
-        make PYTHON_VERSION=${{matrix.python-version}} python-test
+        mk PYTHON_VERSION=${{matrix.python-version}} python-test
     - name: dist
       run: |
-        make PYTHON_VERSION=${{matrix.python-version}} python-dist
+        mk PYTHON_VERSION=${{matrix.python-version}} python-dist
