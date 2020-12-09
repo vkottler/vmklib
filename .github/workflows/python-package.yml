@@ -23,7 +23,10 @@ jobs:
     - name: python${{matrix.python-version}} setup
       uses: actions/setup-python@v2
       with:
-        python-version: ${{ matrix.python-version }}
+        python-version: ${{matrix.python-version}}
+    - name: install-mk
+      run: |
+        pip${{matrix.python-version}} install vmklib
     - name: venv
       run: |
         make PYTHON_VERSION=${{matrix.python-version}} venv
