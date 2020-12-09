@@ -23,7 +23,8 @@ def get_resource(resource_name: str) -> str:
     return pkg_resources.resource_filename(__name__, resource_path)
 
 
-def build_makefile(user_file: str, directory: str) -> str:
+def build_makefile(user_file: str, directory: str,
+                   project_name: str = None) -> str:
     """ Build a temporary makefile and return the path. """
 
     # create a temporary file
@@ -36,16 +37,16 @@ def build_makefile(user_file: str, directory: str) -> str:
     # get the path to this package's data to include our "conf.mk"
     include_str = "include {}".format(get_resource("conf.mk"))
 
-    project_name = os.path.dirname(os.path.abspath(user_file))
-
     # build the necessary file data
+    if project_name is None:
+        project_name = os.path.dirname(os.path.abspath(user_file))
     data = {"PROJ": os.path.basename(project_name),
             "$(PROJ)_DIR": directory,
             "MK_AUTO": "1"}
+
     write_data = ""
     for key, item in data.items():
         write_data += "{} := {}".format(key, item) + os.linesep
-
     write_data += include_str + os.linesep + os.linesep + user_data
 
     # write the file and return the path
@@ -62,7 +63,7 @@ def entry(args: argparse.Namespace) -> int:
 
     # build the beginning of the invocation args
     invocation_args = ["make", "-C", args.dir, "-f"]
-    makefile = build_makefile(args.file, args.dir)
+    makefile = build_makefile(args.file, args.dir, args.proj)
     invocation_args.append(makefile)
 
     # add each target to the list
@@ -93,3 +94,5 @@ def add_app_args(parser: argparse.ArgumentParser) -> None:
                         help="a prefix to apply to all targets")
     parser.add_argument("-f", "--file", default="Makefile",
                         help="file to source user-provided recipes from")
+    parser.add_argument("-P", "--proj",
+                        help="project name for internal variable use")

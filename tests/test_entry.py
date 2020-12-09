@@ -31,6 +31,7 @@ def test_entry():
     good_base_args = base_args + ["-f", get_resource("Makefile")]
 
     assert mk_main(good_base_args + ["test"]) == 0
+    assert mk_main(good_base_args + ["--proj", "test", "test"]) == 0
     assert mk_main(good_base_args + ["-p", "prefix", "test"]) == 0
     assert mk_main(good_base_args + ["test_bad"]) != 0
     assert mk_main(good_base_args + ["--weird-option", "yo"]) != 0
