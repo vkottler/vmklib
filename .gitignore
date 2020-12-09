@@ -8,3 +8,5 @@ __pycache__
 .*_cache
 datazen-out
 *.pyc
+.coverage
+htmlcov
