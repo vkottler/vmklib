@@ -10,7 +10,7 @@ ifndef MK_AUTO
 
 # set this to the name of your project, so it can be substituted in wherever
 # necessary
-PROJ           := mk
+PROJ           := vmklib
 
 # root directory of your project, can use "." or $(shell pwd) but the below
 # assignment will guarantee that it's assigned to the directory that this
@@ -20,13 +20,13 @@ $(PROJ)_DIR    := $(patsubst %/,%,$(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 # include target-containing files, if you sub-module this repository the paths
 # may need to change, include 'functions.mk' first so other includes can use
 # common functions
-include $($(PROJ)_DIR)/mk/data/conf.mk
+include $($(PROJ)_DIR)/vmklib/data/conf.mk
 
 endif
 
 PY_EXTRA_LINT_ARGS += $($(PROJ)_DIR)/run.py
 
-all: python-lint python-sa python-test
+all: $(PY_PREFIX)lint $(PY_PREFIX)sa $(PY_PREFIX)test
 
-clean: python-clean
+clean: $(PY_PREFIX)clean $(DZ_PREFIX)clean
 	@rm -rf $(BUILD_DIR)

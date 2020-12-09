@@ -1,7 +1,7 @@
 default_target: "groups-all"
 
 params:
-  project: "mk"
+  project: "vmklib"
 
 includes:
 - "config/includes/python.yaml"

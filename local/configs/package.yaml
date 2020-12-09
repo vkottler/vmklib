@@ -1,3 +1,5 @@
-name: mk
+name: vmklib
 version: {{major}}.{{minor}}.{{patch}}
 description: "Simplify project workflows by standardizing use of GNU Make."
+setup_args:
+- entry_override="mk"

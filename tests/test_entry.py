@@ -11,8 +11,8 @@ import tempfile
 import pkg_resources
 
 # module under test
-from mk import PKG_NAME
-from mk.entry import main as mk_main
+from vmklib import PKG_NAME
+from vmklib.entry import main as mk_main
 
 
 def get_resource(resource_name: str) -> str:

@@ -1,11 +1,11 @@
 # =====================================
 # generator=datazen
 # version=1.1.0
-# hash=d14bef0bdbd7d9485dcf20832aeb96e2
+# hash=eb50041bfb7522e315b377e48e69bbac
 # =====================================
 
 """
-mk - This package's command-line entry-point (boilerplate).
+vmklib - This package's command-line entry-point (boilerplate).
 """
 
 # built-in
@@ -16,8 +16,8 @@ import sys
 from typing import List
 
 # internal
-from mk import VERSION, DESCRIPTION
-from mk.app import entry, add_app_args
+from vmklib import VERSION, DESCRIPTION
+from vmklib.app import entry, add_app_args
 
 
 def main(argv: List[str] = None) -> int:

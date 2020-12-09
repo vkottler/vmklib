@@ -17,6 +17,7 @@ $(DZ_PREFIX)sync: $(VENV_CONC)
 
 $(DZ_PREFIX)clean: $(VENV_CONC)
 	$(PYTHON_BIN)/dz $(DZ_ARGS) -c
+	@rm -rf $($(PROJ)_DIR)/datazen-out
 
 $(DZ_PREFIX)describe: $(VENV_CONC)
 	$(PYTHON_BIN)/dz $(DZ_ARGS) -d

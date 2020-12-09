@@ -8,7 +8,7 @@ mk - A command-line entry stub.
 import sys
 
 # internal
-from mk.entry import main
+from vmklib.entry import main
 
 
 if __name__ == "__main__":
