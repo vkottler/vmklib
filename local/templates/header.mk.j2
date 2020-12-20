@@ -1,0 +1,9 @@
+###############################################################################
+MK_INFO := https://pypi.org/project/{{package["name"]}}
+ifeq (,$(shell which {{package["entry"]}}))
+$(warning "No '{{package["entry"]}}' in $(PATH), install '{{package["name"]}}' with 'pip' ($(MK_INFO))")
+endif
+ifndef MK_AUTO
+$(error target this Makefile with '{{package["entry"]}}', not '$(MAKE)' ($(MK_INFO)))
+endif
+###############################################################################

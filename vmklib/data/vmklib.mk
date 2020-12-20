@@ -1,6 +1,6 @@
 MK_PREFIX := mk-
 
-.PHONY: $(MK_PREFIX)upgrade $(MK_PREFIX)sys-upgrade
+.PHONY: $(MK_PREFIX)upgrade $(MK_PREFIX)sys-upgrade $(MK_PREFIX)header
 
 UPGRADE_CMD := install --upgrade vmklib
 
@@ -13,3 +13,6 @@ ifdef MK_SUDO
 else
 	pip$(PYTHON_VERSION) $(UPGRADE_CMD)
 endif
+
+$(MK_PREFIX)header:
+	+@cat $(MK_DATA_DIR)/header.mk
