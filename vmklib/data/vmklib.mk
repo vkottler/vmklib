@@ -1,6 +1,6 @@
 MK_PREFIX := mk-
 
-.PHONY: $(MK_PREFIX)upgrade $(MK_PREFIX)sys-upgrade $(MK_PREFIX)header
+.PHONY: $(MK_PREFIX)upgrade $(MK_PREFIX)sys-upgrade $(MK_PREFIX)header todo
 
 UPGRADE_CMD := install --upgrade vmklib
 
@@ -16,3 +16,6 @@ endif
 
 $(MK_PREFIX)header:
 	+@cat $(MK_DATA_DIR)/header.mk
+
+$(MK_PREFIX)todo:
+	-cd $($(PROJ)_DIR) && ack -i todo $(PROJ) tests
