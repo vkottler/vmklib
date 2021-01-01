@@ -1,6 +1,7 @@
 MK_PREFIX := mk-
 
-.PHONY: $(MK_PREFIX)upgrade $(MK_PREFIX)sys-upgrade $(MK_PREFIX)header todo
+.PHONY: $(MK_PREFIX)upgrade $(MK_PREFIX)sys-upgrade $(MK_PREFIX)header \
+        $(MK_PREFIX)todo
 
 UPGRADE_CMD := install --upgrade vmklib
 

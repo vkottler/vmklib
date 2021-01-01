@@ -80,6 +80,8 @@ def entry(args: argparse.Namespace) -> int:
         retcode = result.returncode
     except subprocess.CalledProcessError as exc:
         retcode = exc.returncode
+    except KeyboardInterrupt:
+        retcode = 1
     finally:
         os.remove(makefile)
 
