@@ -2,3 +2,51 @@
 
 A collection of universal includes for setting up project workflows around
 [GNU Make](https://www.gnu.org/software/make/).
+
+This tool integrates with existing `Makefile`'s with zero additional
+content or bootstrapping required.
+
+There are many choices in technology or products for performing static
+analysis on source code, building test infrastructure, or managing local
+development environments. These are only a small subset of common, developer
+tasks when building software. This package intends to aggregate recipes
+(and their dependency relationships) for these tasks so that they can be
+integrated into a project without re-building this infrastructure. Lessons
+learned and improvements in each project can be back-propagated everywhere
+else with simple package updates.
+
+# Command-line Options
+
+TODO: we need `datazen` support for capturing the `-h` / `--help` output to
+fill this in.
+
+# Targets
+
+Note that the full invocation for a target's command is:
+
+```
+mk [options] <prefix>-<command> [ARG1=val1 ARG2=val2]
+```
+
+{% for group, data in targets["groups"].items() %}
+## {{group}}
+
+*{{data["description"]}}.*
+
+Prefix: `{{data["prefix"]}}`
+
+### Optional Arguments
+
+{% for arg in data["args"] %}
+**{{arg["name"]}}** - {{arg["description"]}}.
+
+{% endfor %}
+
+### Commands
+
+{% for subtarget in data["targets"] %}
+**{{subtarget["name"]}}** - {{subtarget["description"]}}.
+
+{% endfor %}
+
+{% endfor %}

@@ -1,0 +1,13 @@
+groups:
+  type: dict
+  keysrules:
+    type: string
+  valuesrules:
+    type: dict
+    schema:
+      args: namedesc
+      targets: namedesc
+      prefix:
+        type: string
+      description:
+        type: string

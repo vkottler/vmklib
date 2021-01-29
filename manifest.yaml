@@ -15,6 +15,12 @@ variables:
 templates:
 - "local/templates"
 
+schemas:
+- "local/schemas"
+
+schema_types:
+- "local/schema_types"
+
 compiles:
 - name: "local"
 

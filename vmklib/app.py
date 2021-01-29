@@ -14,6 +14,7 @@ import tempfile
 import pkg_resources
 
 LOG = logging.getLogger(__name__)
+DEFAULT_FILE = "Makefile"
 
 
 def get_resource(resource_name: str) -> str:
@@ -58,8 +59,10 @@ def entry(args: argparse.Namespace) -> int:
     """ Execute the requested task. """
 
     if not os.path.isfile(args.file):
-        LOG.error("'%s' doesn't exist", args.file)
-        return 1
+        if os.path.basename(args.file) != DEFAULT_FILE:
+            LOG.error("'%s' not found", args.file)
+            return 1
+        args.file = get_resource(os.path.join("data", "header.mk"))
 
     # build the beginning of the invocation args
     invocation_args = ["make", "-C", args.dir, "-f"]
@@ -94,7 +97,7 @@ def add_app_args(parser: argparse.ArgumentParser) -> None:
     parser.add_argument("targets", nargs="*", help="targets to execute")
     parser.add_argument("-p", "--prefix", default="",
                         help="a prefix to apply to all targets")
-    parser.add_argument("-f", "--file", default="Makefile",
+    parser.add_argument("-f", "--file", default=DEFAULT_FILE,
                         help="file to source user-provided recipes from")
     parser.add_argument("-P", "--proj",
                         help="project name for internal variable use")

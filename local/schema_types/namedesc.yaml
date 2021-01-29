@@ -1,0 +1,8 @@
+type: list
+schema:
+  type: dict
+  schema:
+    name:
+      type: string
+    description:
+      type: string

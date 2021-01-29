@@ -39,3 +39,4 @@ def test_entry():
         assert mk_main(good_base_args + ["test_bad"]) != 0
         assert mk_main(good_base_args + ["--weird-option", "yo"]) != 0
         assert mk_main(base_args + ["-f", "nah"]) != 0
+        assert mk_main(base_args) == 0
