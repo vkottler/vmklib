@@ -1,0 +1,26 @@
+description: "TODO"
+prefix: python-
+args:
+- name: TODO
+  description: "TODO"
+targets:
+- name: lint
+  description: "TODO"
+- name: sa
+  description: "TODO"
+- name: test
+  description: "TODO"
+- name: view
+  description: "TODO"
+- name: host-coverage
+  description: "TODO"
+- name: all
+  description: "TODO"
+- name: clean
+  description: "TODO"
+- name: dist
+  description: "TODO"
+- name: upload
+  description: "TODO"
+- name: editable
+  description: "TODO"

@@ -2,9 +2,12 @@ default_target: "groups-all"
 
 params:
   project: "vmklib"
+  python_version: "3.8"
+  entry: "mk"
 
 includes:
 - "config/includes/python.yaml"
+- "config/includes/help.yaml"
 
 configs:
 - "local/configs"
@@ -29,6 +32,7 @@ renders:
   output_dir: "."
   dependencies:
   - "compiles-local"
+  - "commands-help"
 - name: "header.mk"
   output_dir: "{{project}}/data/data"
   dependencies:

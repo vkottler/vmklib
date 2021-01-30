@@ -17,8 +17,11 @@ else with simple package updates.
 
 # Command-line Options
 
-TODO: we need `datazen` support for capturing the `-h` / `--help` output to
-fill this in.
+```
+$ {{" ".join(help["args"])}}
+
+{{help["stdout"]}}
+```
 
 # Targets
 
@@ -31,21 +34,21 @@ mk [options] <prefix>-<command> [ARG1=val1 ARG2=val2]
 {% for group, data in targets["groups"].items() %}
 ## {{group}}
 
-*{{data["description"]}}.*
+{{data["description"]}}
 
 Prefix: `{{data["prefix"]}}`
 
 ### Optional Arguments
 
 {% for arg in data["args"] %}
-**{{arg["name"]}}** - {{arg["description"]}}.
+**{{arg["name"]}}** - {{arg["description"]}}
 
 {% endfor %}
 
 ### Commands
 
 {% for subtarget in data["targets"] %}
-**{{subtarget["name"]}}** - {{subtarget["description"]}}.
+**{{subtarget["name"]}}** - {{subtarget["description"]}}
 
 {% endfor %}
 

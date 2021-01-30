@@ -1,18 +1,18 @@
-description: "Targets for use with the [datazen](https://pypi.org/project/datazen/) package"
+description: "Targets for use with the [datazen](https://pypi.org/project/datazen/) package."
 prefix: dz-
 args:
-  - name: DZ_DIR
-    description: "Optionally override the `-C` argument"
-  - name: DZ_MANIFEST
-    description: "Optionally provide a non-default manifest file to `-m`"
-  - name: DZ_VERBOSE
-    description: "Setting this passes `-v`"
+- name: DZ_DIR
+  description: "Optionally override the `-C` argument."
+- name: DZ_MANIFEST
+  description: "Optionally provide a non-default manifest file to `-m`."
+- name: DZ_VERBOSE
+  description: "Setting this passes `-v`."
 targets:
-  - name: sync
-    description: "Run `dz`, executing the default target"
-  - name: clean
-    description: "Run `dz` with `-c` to clean the cache"
-  - name: describe
-    description: "Run `dz` with `-d` to describe cache contents"
-  - name: upgrade
-    description: "Upgrade `datazen` in the resolved virtual environment with `pip`"
+- name: sync
+  description: "Run `dz`, executing the default target."
+- name: clean
+  description: "Run `dz` with `-c` to clean the cache."
+- name: describe
+  description: "Run `dz` with `-d` to describe cache contents."
+- name: upgrade
+  description: "Upgrade `datazen` in the resolved virtual environment with `pip`."
