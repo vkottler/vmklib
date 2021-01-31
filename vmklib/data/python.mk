@@ -42,8 +42,9 @@ $(PY_PREFIX)editable: $(EDITABLE_CONC)
 $(PY_PREFIX)view:
 	@$(BROWSER) $($(PROJ)_DIR)htmlcov/index.html
 
+PYTHON_COV_PORT := 8080
 $(PY_PREFIX)host-coverage:
-	cd $($(PROJ)_DIR)/htmlcov && python$(PYTHON_VERSION) -m http.server 8080
+	cd $($(PROJ)_DIR)/htmlcov && python$(PYTHON_VERSION) -m http.server $(PYTHON_COV_PORT)
 
 $(PY_PREFIX)all: $(PY_PREFIX)lint $(PY_PREFIX)sa $(PY_PREFIX)test
 

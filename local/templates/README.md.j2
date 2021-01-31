@@ -1,4 +1,6 @@
-# {{package["name"]}}
+# {{package["name"]}} ([{{package["version"]}}](https://pypi.org/project/vmklib/))
+
+![Python package](https://github.com/{{python["author_info"]["username"]}}/{{package["name"]}}/workflows/Python%20package/badge.svg)
 
 A collection of universal includes for setting up project workflows around
 [GNU Make](https://www.gnu.org/software/make/).
@@ -14,6 +16,12 @@ tasks when building software. This package intends to aggregate recipes
 integrated into a project without re-building this infrastructure. Lessons
 learned and improvements in each project can be back-propagated everywhere
 else with simple package updates.
+
+## Quick Links
+
+{% for group, data in targets["groups"].items() %}
+* [{{group}}](#{{group}})
+{% endfor %}
 
 # Command-line Options
 
@@ -38,12 +46,14 @@ mk [options] <prefix>-<command> [ARG1=val1 ARG2=val2]
 
 Prefix: `{{data["prefix"]}}`
 
+{% if "args" in data and data["args"] %}
 ### Optional Arguments
 
 {% for arg in data["args"] %}
 **{{arg["name"]}}** - {{arg["description"]}}
 
 {% endfor %}
+{% endif %}
 
 ### Commands
 

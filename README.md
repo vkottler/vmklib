@@ -2,11 +2,13 @@
     =====================================
     generator=datazen
     version=1.3.0
-    hash=7a321558fcf9457d6b68be49273939b1
+    hash=a863628f6028cc1f16275ba2c0469871
     =====================================
 -->
 
-# vmklib
+# vmklib ([0.3.5](https://pypi.org/project/vmklib/))
+
+![Python package](https://github.com/vkottler/vmklib/workflows/Python%20package/badge.svg)
 
 A collection of universal includes for setting up project workflows around
 [GNU Make](https://www.gnu.org/software/make/).
@@ -22,6 +24,15 @@ tasks when building software. This package intends to aggregate recipes
 integrated into a project without re-building this infrastructure. Lessons
 learned and improvements in each project can be back-propagated everywhere
 else with simple package updates.
+
+## Quick Links
+
+* [grip](#grip)
+* [pypi](#pypi)
+* [datazen](#datazen)
+* [venv](#venv)
+* [vmklib](#vmklib)
+* [python](#python)
 
 # Command-line Options
 
@@ -115,7 +126,7 @@ Prefix: `dz-`
 
 **DZ_MANIFEST** - Optionally provide a non-default manifest file to `-m`.
 
-**DZ_VERBOSE** - Setting this passes `-v`.
+**DZ_VERBOSE** - Setting this passes `-v` as an additional argument.
 
 
 ### Commands
@@ -129,35 +140,80 @@ Prefix: `dz-`
 **upgrade** - Upgrade `datazen` in the resolved virtual environment with `pip`.
 
 
+## venv
+
+Targets for managing [Python virtual environments](https://docs.python.org/3/library/venv.html).
+
+Prefix: `(no prefix)`
+
+### Optional Arguments
+
+**PYTHON_VERSION** - The version of Python to create a virtual environment for. (default: `3.8`)
+
+**REQUIREMENTS_DIR** - The location of the directory containing requirements files. (default: `requirements` in the project root)
+
+**REQ_FILES** - Text files to install requirements from (using `-r`), in the requirements directory. (default: `requirements.txt` and `dev_requirements.txt`)
+
+
+### Commands
+
+**venv** - Create or update the resolved virtual environment, if necessary.
+
+**venv-clean** - Remove any virtual environments from the project root (or sub-directories).
+
+
+## vmklib
+
+Targets related to this package, itself.
+
+Prefix: `mk-`
+
+
+### Commands
+
+**upgrade** - Upgrade (or install) `vmklib` in the resolved virtual environment.
+
+**sys-upgrade** - Upgrade (or install) `vmklib` as a system or user package.
+
+**header** - Print the `Makefile` header that should be used when integrating this package.
+
+**todo** - Perform a case-insensitive search for `todo` in project directories.
+
+
 ## python
 
-TODO
+Targets for executing common, [Python](https://www.python.org/) workflow tasks.
+
 
 Prefix: `python-`
 
 ### Optional Arguments
 
-**TODO** - TODO
+**PYTEST_ARGS** - Set to override the default, additional [pytest](https://docs.pytest.org/en/stable/) arguments.
+
+**PYTHON_COV_PORT** - Port to host test-coverage HTML on (using `http.server`).
 
 
 ### Commands
 
-**lint** - TODO
+**lint** - Run [pylint](https://www.pylint.org/) and [flake8](https://flake8.pycqa.org/en/latest/) against a project's package sources.
 
-**sa** - TODO
+**sa** - Run [mypy](http://mypy-lang.org/) against a project's package sources.
 
-**test** - TODO
+**test** - Run all of a project's tests with [pytest](https://docs.pytest.org/en/stable/).
 
-**view** - TODO
+**test-%** - Run project tests based on a search pattern (i.e. the `-k` option).
 
-**host-coverage** - TODO
+**view** - Attempt to open the test-coverage HTML with `$BROWSER` (environment variable).
 
-**all** - TODO
+**host-coverage** - Host test-coverage HTML locally, with the port specified by `PYTHON_COV_PORT`.
 
-**clean** - TODO
+**all** - Run `lint`, `sa` and `test` in sequence.
 
-**dist** - TODO
+**clean** - Remove compiled and cached files, test coverage, built package artifacts and other caches.
 
-**upload** - TODO
+**dist** - Build `sdist` and `bdist_wheel` with `setup.py` in the project root.
 
-**editable** - TODO
+**upload** - Use [twine](https://pypi.org/project/twine/) to upload the built package to [PyPI](https://pypi.org/).
+
+**editable** - Install the project's package in editable mode (`-e` option) to the virtual environment.

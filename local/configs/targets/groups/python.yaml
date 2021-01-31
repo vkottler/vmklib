@@ -1,26 +1,32 @@
-description: "TODO"
+description: >
+  Targets for executing common, [Python](https://www.python.org/) workflow
+  tasks.
 prefix: python-
 args:
-- name: TODO
-  description: "TODO"
+- name: PYTEST_ARGS
+  description: "Set to override the default, additional [pytest](https://docs.pytest.org/en/stable/) arguments."
+- name: PYTHON_COV_PORT
+  description: "Port to host test-coverage HTML on (using `http.server`)."
 targets:
 - name: lint
-  description: "TODO"
+  description: "Run [pylint](https://www.pylint.org/) and [flake8](https://flake8.pycqa.org/en/latest/) against a project's package sources."
 - name: sa
-  description: "TODO"
+  description: "Run [mypy](http://mypy-lang.org/) against a project's package sources."
 - name: test
-  description: "TODO"
+  description: "Run all of a project's tests with [pytest](https://docs.pytest.org/en/stable/)."
+- name: test-%
+  description: "Run project tests based on a search pattern (i.e. the `-k` option)."
 - name: view
-  description: "TODO"
+  description: "Attempt to open the test-coverage HTML with `$BROWSER` (environment variable)."
 - name: host-coverage
-  description: "TODO"
+  description: "Host test-coverage HTML locally, with the port specified by `PYTHON_COV_PORT`."
 - name: all
-  description: "TODO"
+  description: "Run `lint`, `sa` and `test` in sequence."
 - name: clean
-  description: "TODO"
+  description: "Remove compiled and cached files, test coverage, built package artifacts and other caches."
 - name: dist
-  description: "TODO"
+  description: "Build `sdist` and `bdist_wheel` with `setup.py` in the project root."
 - name: upload
-  description: "TODO"
+  description: "Use [twine](https://pypi.org/project/twine/) to upload the built package to [PyPI](https://pypi.org/)."
 - name: editable
-  description: "TODO"
+  description: "Install the project's package in editable mode (`-e` option) to the virtual environment."

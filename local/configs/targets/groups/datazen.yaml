@@ -6,7 +6,7 @@ args:
 - name: DZ_MANIFEST
   description: "Optionally provide a non-default manifest file to `-m`."
 - name: DZ_VERBOSE
-  description: "Setting this passes `-v`."
+  description: "Setting this passes `-v` as an additional argument."
 targets:
 - name: sync
   description: "Run `dz`, executing the default target."

@@ -1,4 +1,4 @@
-.PHONY: venv clean-venv
+.PHONY: venv venv-clean
 
 # set the Python version if it hasn't been set yet
 PYTHON_VERSION   ?= 3.8
@@ -36,5 +36,5 @@ $(VENV_CONC): $(REQ_CONC)
 
 venv: $(VENV_CONC)
 
-clean-venv:
+venv-clean:
 	@rm -rf $($(PROJ)_DIR)/venv* $(BUILD_DIR)/venv* $(VENV_CONC) $(REQ_CONC)
