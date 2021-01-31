@@ -33,6 +33,7 @@ renders:
   dependencies:
   - "compiles-local"
   - "commands-help"
+  - "renders-python_readme_header.md"
 - name: "header.mk"
   output_dir: "{{project}}/data/data"
   dependencies:

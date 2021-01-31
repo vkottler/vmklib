@@ -1,17 +1,16 @@
 <!--
     =====================================
     generator=datazen
-    version=1.3.0
-    hash=a863628f6028cc1f16275ba2c0469871
+    version=1.3.1
+    hash=c6787fd7233ebd8acf3f972c53b3c08b
     =====================================
 -->
 
-# vmklib ([0.3.5](https://pypi.org/project/vmklib/))
+# vmklib ([0.3.6](https://pypi.org/project/vmklib/))
 
 ![Python package](https://github.com/vkottler/vmklib/workflows/Python%20package/badge.svg)
 
-A collection of universal includes for setting up project workflows around
-[GNU Make](https://www.gnu.org/software/make/).
+*Simplify project workflows by standardizing use of GNU Make.*
 
 This tool integrates with existing `Makefile`'s with zero additional
 content or bootstrapping required.
