@@ -2,7 +2,7 @@
     =====================================
     generator=datazen
     version=1.3.1
-    hash=c6787fd7233ebd8acf3f972c53b3c08b
+    hash=add1e1503f7df4a387d59efa67ea8836
     =====================================
 -->
 
@@ -50,8 +50,7 @@ optional arguments:
   -h, --help            show this help message and exit
   --version             show program's version number and exit
   -v, --verbose         set to increase logging verbosity
-  -C DIR, --dir DIR     execute from a specific directory (default:
-                        '/home/vkottler/Documents/git/workspace/vmklib')
+  -C DIR, --dir DIR     execute from a specific directory
   -p PREFIX, --prefix PREFIX
                         a prefix to apply to all targets
   -f FILE, --file FILE  file to source user-provided recipes from
