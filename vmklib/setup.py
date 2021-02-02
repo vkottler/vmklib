@@ -4,21 +4,53 @@ vmklib - A simpler setuptools-based package definition.
 """
 
 # built-in
+from contextlib import contextmanager
 import os
-from typing import Dict, List
+import shutil
+import tempfile
+from typing import Dict, List, Iterator
 
 # third-party
 import setuptools  # type: ignore
 
 REQ_DIR = "requirements"
+PKG_NAME = "vmklib"
+
+
+@contextmanager
+def inject_self(working_dir: str) -> Iterator[None]:
+    """
+    If this file (and our package name) is missing from the working directory,
+    copy us to our package directory.
+    """
+
+    added = False
+    to_create = os.path.join(working_dir, PKG_NAME)
+
+    try:
+        if not os.path.isdir(to_create):
+            os.mkdir(to_create)
+            fname = os.path.join(to_create, "__init__.py")
+            with open(fname, "w") as out_file:
+                out_file.write(os.linesep)
+            fname = os.path.join(to_create, os.path.basename(__file__))
+            shutil.copyfile(__file__, fname)
+            added = True
+        yield
+    finally:
+        if added:
+            shutil.rmtree(to_create)
 
 
 def get_long_description(desc_filename: str = "README.md") -> str:
     """ Get a package's long-description data from a file. """
 
-    with open(desc_filename, "r") as desc_file:
-        long_description = desc_file.read()
-    return long_description
+    try:
+        with open(desc_filename, "r") as desc_file:
+            long_description = desc_file.read()
+        return long_description
+    except FileNotFoundError:
+        return ""
 
 
 def default_requirements_file() -> str:
@@ -30,9 +62,12 @@ def default_requirements_file() -> str:
 def get_requirements(reqs_filename: str) -> List[str]:
     """ Get a package's requirements based on its requirements file. """
 
-    with open(reqs_filename, "r") as reqs_file:
-        reqs = reqs_file.read().strip().split()
-    return reqs
+    try:
+        with open(reqs_filename, "r") as reqs_file:
+            reqs = reqs_file.read().strip().split()
+        return reqs
+    except FileNotFoundError:
+        return []
 
 
 def get_data_files(pkg_name: str, data_dir: str = "data") -> List[str]:
@@ -83,20 +118,31 @@ def setup(pkg_info: Dict[str, str], author_info: Dict[str, str],
     for req_file in req_files:
         requirements += get_requirements(req_file)
 
-    setuptools.setup(
-        name=pkg_info["name"],
-        version=pkg_info["version"],
-        author=author_info["name"],
-        author_email=author_info["email"],
-        description=pkg_info["description"],
-        long_description=get_long_description(),
-        long_description_content_type="text/markdown",
-        url=url_override,
-        packages=setuptools.find_packages(),
-        classifiers=classifiers_override,
-        python_requires=">=3.6",
-        entry_points={"console_scripts": console_overrides},
-        install_requires=requirements,
-        package_data={pkg_info["name"]: get_data_files(pkg_info["name"]),
-                      REQ_DIR: [os.path.basename(req) for req in req_files]},
-    )
+    temp_dir = tempfile.TemporaryDirectory()
+    working_dir = temp_dir.name
+    dir_contents = os.listdir(os.getcwd())
+    if pkg_info["name"] in dir_contents:
+        working_dir = os.getcwd()
+
+    with inject_self(working_dir):
+        setuptools.setup(
+            name=pkg_info["name"],
+            version=pkg_info["version"],
+            author=author_info["name"],
+            author_email=author_info["email"],
+            description=pkg_info["description"],
+            long_description=get_long_description(),
+            long_description_content_type="text/markdown",
+            url=url_override,
+            packages=setuptools.find_packages(),
+            classifiers=classifiers_override,
+            python_requires=">=3.6",
+            entry_points={"console_scripts": console_overrides},
+            install_requires=requirements,
+            package_data={
+                pkg_info["name"]: get_data_files(pkg_info["name"]),
+                REQ_DIR: [os.path.basename(req) for req in req_files],
+            },
+        )
+
+    temp_dir.cleanup()

@@ -4,6 +4,8 @@ datazen - Test the 'setup' module.
 """
 
 # third-party
+import os
+import tempfile
 import setuptools  # type: ignore
 
 # module under test
@@ -29,7 +31,13 @@ def test_setup_fn():
     real_setup = setuptools.setup
     setuptools.setup = setup_stub
 
-    setup_fn(pkg_info, author_info, entry_override="mk")
-    setup_fn(pkg_info, author_info)
+    start_dir = os.getcwd()
+
+    with tempfile.TemporaryDirectory() as temp_dir:
+        setup_fn(pkg_info, author_info, entry_override="mk")
+        setup_fn(pkg_info, author_info)
+        os.chdir(temp_dir)
+        setup_fn(pkg_info, author_info)
+        os.chdir(start_dir)
 
     setuptools.setup = real_setup
