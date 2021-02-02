@@ -27,12 +27,8 @@ def default_requirements_file() -> str:
     return os.path.join(REQ_DIR, "requirements.txt")
 
 
-def get_requirements(reqs_filename: str = None) -> List[str]:
+def get_requirements(reqs_filename: str) -> List[str]:
     """ Get a package's requirements based on its requirements file. """
-
-    # use a default file location
-    if reqs_filename is None:
-        reqs_filename = default_requirements_file()
 
     with open(reqs_filename, "r") as reqs_file:
         reqs = reqs_file.read().strip().split()
