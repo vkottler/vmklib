@@ -10,6 +10,8 @@ from typing import Dict, List
 # third-party
 import setuptools  # type: ignore
 
+REQ_DIR = "requirements"
+
 
 def get_long_description(desc_filename: str = "README.md") -> str:
     """ Get a package's long-description data from a file. """
@@ -19,12 +21,18 @@ def get_long_description(desc_filename: str = "README.md") -> str:
     return long_description
 
 
+def default_requirements_file() -> str:
+    """ Default location where  """
+
+    return os.path.join(REQ_DIR, "requirements.txt")
+
+
 def get_requirements(reqs_filename: str = None) -> List[str]:
     """ Get a package's requirements based on its requirements file. """
 
     # use a default file location
     if reqs_filename is None:
-        reqs_filename = os.path.join("requirements", "requirements.txt")
+        reqs_filename = default_requirements_file()
 
     with open(reqs_filename, "r") as reqs_file:
         reqs = reqs_file.read().strip().split()
@@ -74,6 +82,11 @@ def setup(pkg_info: Dict[str, str], author_info: Dict[str, str],
             "Operating System :: OS Independent",
         ]
 
+    req_files = [default_requirements_file()]
+    requirements = []
+    for req_file in req_files:
+        requirements += get_requirements(req_file)
+
     setuptools.setup(
         name=pkg_info["name"],
         version=pkg_info["version"],
@@ -87,6 +100,7 @@ def setup(pkg_info: Dict[str, str], author_info: Dict[str, str],
         classifiers=classifiers_override,
         python_requires=">=3.6",
         entry_points={"console_scripts": console_overrides},
-        install_requires=get_requirements(),
-        package_data={pkg_info["name"]: get_data_files(pkg_info["name"])},
+        install_requires=requirements,
+        package_data={pkg_info["name"]: get_data_files(pkg_info["name"]),
+                      REQ_DIR: [os.path.basename(req) for req in req_files]},
     )
