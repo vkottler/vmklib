@@ -5,6 +5,8 @@ prefix: python-
 args:
 - name: PYTEST_ARGS
   description: "Set to override the default, additional [pytest](https://docs.pytest.org/en/stable/) arguments."
+- name: PYTEST_EXTRA_ARGS
+  description: "Add additional arguments to the default set."
 - name: PYTHON_COV_PORT
   description: "Port to host test-coverage HTML on (using `http.server`)."
 targets:

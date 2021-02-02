@@ -1,12 +1,12 @@
 <!--
     =====================================
     generator=datazen
-    version=1.3.1
-    hash=1b7991b4e3c2926db1a2571a8df2de68
+    version=1.3.3
+    hash=c97bd89032fde69f5aff6a627a4336b7
     =====================================
 -->
 
-# vmklib ([0.4.0](https://pypi.org/project/vmklib/))
+# vmklib ([0.4.1](https://pypi.org/project/vmklib/))
 
 ![Python package](https://github.com/vkottler/vmklib/workflows/Python%20package/badge.svg)
 
@@ -120,6 +120,8 @@ Prefix: `python-`
 ### Optional Arguments
 
 **PYTEST_ARGS** - Set to override the default, additional [pytest](https://docs.pytest.org/en/stable/) arguments.
+
+**PYTEST_EXTRA_ARGS** - Add additional arguments to the default set.
 
 **PYTHON_COV_PORT** - Port to host test-coverage HTML on (using `http.server`).
 

@@ -13,12 +13,14 @@ $(PY_PREFIX)lint: $(PY_PREFIX)lint-flake8 $(PY_PREFIX)lint-pylint
 
 $(PY_PREFIX)sa: $(PY_PREFIX)lint-mypy
 
-PYTEST_ARGS := -x --log-cli-level=10 --cov=$(PROJ) --cov-report html
+PYTEST_EXTRA_ARGS :=
+PYTEST_ARGS := -x --log-cli-level=10 --cov=$(PROJ) --cov-report html \
+               $(PYTEST_EXTRA_ARGS)
 $(PY_PREFIX)test: $(VENV_CONC)
-	$(PYTHON_BIN)/pytest $(PYTEST_ARGS)
+	$(PYTHON_BIN)/pytest $(PYTEST_ARGS) $($(PROJ)_DIR)/tests
 
 $(PY_PREFIX)test-%: $(VENV_CONC)
-	$(PYTHON_BIN)/pytest $(PYTEST_ARGS) -k "$*"
+	$(PYTHON_BIN)/pytest $(PYTEST_ARGS) -k "$*" $($(PROJ)_DIR)/tests
 
 $(PY_PREFIX)dist: $(VENV_CONC)
 	@rm -rf $($(PROJ)_DIR)/dist
