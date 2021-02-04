@@ -20,8 +20,10 @@ PKG_NAME = "vmklib"
 @contextmanager
 def inject_self(working_dir: str) -> Iterator[None]:
     """
-    If this file (and our package name) is missing from the working directory,
-    copy us to our package directory.
+    Copy this entire package into the caller's source distribution. This is
+    the only way to avoid a pointless requirement to already have this package
+    installed to install anything else, and also generally not requiring
+    an explicit install of this package except for command-line use.
     """
 
     added = False
@@ -30,11 +32,15 @@ def inject_self(working_dir: str) -> Iterator[None]:
     try:
         if not os.path.isdir(to_create):
             os.mkdir(to_create)
-            fname = os.path.join(to_create, "__init__.py")
-            with open(fname, "w") as out_file:
-                out_file.write(os.linesep)
-            fname = os.path.join(to_create, os.path.basename(__file__))
-            shutil.copyfile(__file__, fname)
+
+            # copy our sources into their package
+            to_copy = ["__init__.py", "app.py", "entry.py", "setup.py"]
+            vmklib_dir = os.path.dirname(__file__)
+            for fname in to_copy:
+                dest = os.path.join(to_create, fname)
+                if not os.path.isfile(dest):
+                    shutil.copyfile(os.path.join(vmklib_dir, fname), dest)
+
             added = True
         yield
     finally:
