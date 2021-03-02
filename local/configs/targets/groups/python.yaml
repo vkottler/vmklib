@@ -3,6 +3,10 @@ description: >
   tasks.
 prefix: python-
 args:
+- name: PY_LINT_ARGS
+  description: "Set to override the default, adds the `tests` directory and `PY_LINT_EXTRA_ARGS`."
+- name: PY_LINT_EXTRA_ARGS
+  description: "Set to add additional linting arguments."
 - name: PYTEST_ARGS
   description: "Set to override the default, additional [pytest](https://docs.pytest.org/en/stable/) arguments."
 - name: PYTEST_EXTRA_ARGS

@@ -1,12 +1,12 @@
 <!--
     =====================================
     generator=datazen
-    version=1.3.4
-    hash=0eaf33b2a3282a6c4820cdbc1a9669c6
+    version=1.6.1
+    hash=aaf18bb69c0083a4218f871ab0bef29e
     =====================================
 -->
 
-# vmklib ([0.4.3](https://pypi.org/project/vmklib/))
+# vmklib ([0.4.4](https://pypi.org/project/vmklib/))
 
 ![Python package](https://github.com/vkottler/vmklib/workflows/Python%20package/badge.svg)
 
@@ -26,17 +26,17 @@ else with simple package updates.
 
 ## Quick Links
 
-* [pypi](#pypi)
-* [venv](#venv)
-* [python](#python)
 * [grip](#grip)
+* [pypi](#pypi)
 * [datazen](#datazen)
+* [venv](#venv)
 * [vmklib](#vmklib)
+* [python](#python)
 
 # Command-line Options
 
 ```
-$ ./venv3.7/bin/mk -h
+$ ./venv3.8/bin/mk -h
 
 usage: mk [-h] [--version] [-v] [-C DIR] [-p PREFIX] [-f FILE] [-P PROJ]
           [targets [targets ...]]
@@ -66,6 +66,30 @@ Note that the full invocation for a target's command is:
 mk [options] <prefix>-<command> [ARG1=val1 ARG2=val2]
 ```
 
+## grip
+
+Targets for rendering [GitHub Markdown](https://docs.github.com/en/rest/reference/markdown) with [grip](https://github.com/joeyespo/grip).
+
+
+Prefix: `grip-`
+
+### Optional Arguments
+
+**SECRETHUB_GRIP_PATH** - The full path for the `secrethub read` command to source a [GitHub personal access token](https://docs.github.com/en/github/authenticating-to-github/creating-a-personal-access-token) from, requires [secrethub](https://secrethub.io/).
+
+
+**GRIP_PORT** - The `host:port` String to serve the rendered results on.
+
+**GRIP_ENV** - Output file to write to for sourcing credentials.
+
+
+### Commands
+
+**check-env** - Checks that `GRIP_TOKEN` is set in the environment, errors if not.
+
+**render** - Serve `README.md` with `grip`.
+
+
 ## pypi
 
 Targets for uploading packages to [PyPI](https://pypi.org/).
@@ -86,6 +110,32 @@ Prefix: `pypi-`
 
 
 **upload** - Attempt to upload everything in `dist` to [PyPI](https://pypi.org/).
+
+
+## datazen
+
+Targets for use with the [datazen](https://pypi.org/project/datazen/) package.
+
+Prefix: `dz-`
+
+### Optional Arguments
+
+**DZ_DIR** - Optionally override the `-C` argument.
+
+**DZ_MANIFEST** - Optionally provide a non-default manifest file to `-m`.
+
+**DZ_VERBOSE** - Setting this passes `-v` as an additional argument.
+
+
+### Commands
+
+**sync** - Run `dz`, executing the default target.
+
+**clean** - Run `dz` with `-c` to clean the cache.
+
+**describe** - Run `dz` with `-d` to describe cache contents.
+
+**upgrade** - Upgrade `datazen` in the resolved virtual environment with `pip`.
 
 
 ## venv
@@ -110,6 +160,24 @@ Prefix: `(no prefix)`
 **venv-clean** - Remove any virtual environments from the project root (or sub-directories).
 
 
+## vmklib
+
+Targets related to this package, itself.
+
+Prefix: `mk-`
+
+
+### Commands
+
+**upgrade** - Upgrade (or install) `vmklib` in the resolved virtual environment.
+
+**sys-upgrade** - Upgrade (or install) `vmklib` as a system or user package.
+
+**header** - Print the `Makefile` header that should be used when integrating this package.
+
+**todo** - Perform a case-insensitive search for `todo` in project directories.
+
+
 ## python
 
 Targets for executing common, [Python](https://www.python.org/) workflow tasks.
@@ -118,6 +186,10 @@ Targets for executing common, [Python](https://www.python.org/) workflow tasks.
 Prefix: `python-`
 
 ### Optional Arguments
+
+**PY_LINT_ARGS** - Set to override the default, adds the `tests` directory and `PY_LINT_EXTRA_ARGS`.
+
+**PY_LINT_EXTRA_ARGS** - Set to add additional linting arguments.
 
 **PYTEST_ARGS** - Set to override the default, additional [pytest](https://docs.pytest.org/en/stable/) arguments.
 
@@ -149,71 +221,3 @@ Prefix: `python-`
 **upload** - Use [twine](https://pypi.org/project/twine/) to upload the built package to [PyPI](https://pypi.org/).
 
 **editable** - Install the project's package in editable mode (`-e` option) to the virtual environment.
-
-
-## grip
-
-Targets for rendering [GitHub Markdown](https://docs.github.com/en/rest/reference/markdown) with [grip](https://github.com/joeyespo/grip).
-
-
-Prefix: `grip-`
-
-### Optional Arguments
-
-**SECRETHUB_GRIP_PATH** - The full path for the `secrethub read` command to source a [GitHub personal access token](https://docs.github.com/en/github/authenticating-to-github/creating-a-personal-access-token) from, requires [secrethub](https://secrethub.io/).
-
-
-**GRIP_PORT** - The `host:port` String to serve the rendered results on.
-
-**GRIP_ENV** - Output file to write to for sourcing credentials.
-
-
-### Commands
-
-**check-env** - Checks that `GRIP_TOKEN` is set in the environment, errors if not.
-
-**render** - Serve `README.md` with `grip`.
-
-
-## datazen
-
-Targets for use with the [datazen](https://pypi.org/project/datazen/) package.
-
-Prefix: `dz-`
-
-### Optional Arguments
-
-**DZ_DIR** - Optionally override the `-C` argument.
-
-**DZ_MANIFEST** - Optionally provide a non-default manifest file to `-m`.
-
-**DZ_VERBOSE** - Setting this passes `-v` as an additional argument.
-
-
-### Commands
-
-**sync** - Run `dz`, executing the default target.
-
-**clean** - Run `dz` with `-c` to clean the cache.
-
-**describe** - Run `dz` with `-d` to describe cache contents.
-
-**upgrade** - Upgrade `datazen` in the resolved virtual environment with `pip`.
-
-
-## vmklib
-
-Targets related to this package, itself.
-
-Prefix: `mk-`
-
-
-### Commands
-
-**upgrade** - Upgrade (or install) `vmklib` in the resolved virtual environment.
-
-**sys-upgrade** - Upgrade (or install) `vmklib` as a system or user package.
-
-**header** - Print the `Makefile` header that should be used when integrating this package.
-
-**todo** - Perform a case-insensitive search for `todo` in project directories.
