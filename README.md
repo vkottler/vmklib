@@ -1,12 +1,12 @@
 <!--
     =====================================
     generator=datazen
-    version=1.6.1
-    hash=aaf18bb69c0083a4218f871ab0bef29e
+    version=1.7.3
+    hash=64682c0c9a54d18e00035a2136762765
     =====================================
 -->
 
-# vmklib ([0.4.4](https://pypi.org/project/vmklib/))
+# vmklib ([0.4.5](https://pypi.org/project/vmklib/))
 
 ![Python package](https://github.com/vkottler/vmklib/workflows/Python%20package/badge.svg)
 
@@ -27,10 +27,10 @@ else with simple package updates.
 ## Quick Links
 
 * [grip](#grip)
-* [pypi](#pypi)
-* [datazen](#datazen)
 * [venv](#venv)
 * [vmklib](#vmklib)
+* [datazen](#datazen)
+* [pypi](#pypi)
 * [python](#python)
 
 # Command-line Options
@@ -90,54 +90,6 @@ Prefix: `grip-`
 **render** - Serve `README.md` with `grip`.
 
 
-## pypi
-
-Targets for uploading packages to [PyPI](https://pypi.org/).
-
-Prefix: `pypi-`
-
-### Optional Arguments
-
-**UPLOAD_ENV** - Output file to write to for sourcing credentials.
-
-**SECRETHUB_PYPI_PATH** - The full path for the `secrethub read` command to source a [PyPI API token](https://pypi.org/help/#apitoken) from, requires [secrethub](https://secrethub.io/).
-
-
-
-### Commands
-
-**check-env** - Enforces that `TWINE_USERNAME` and `TWINE_PASSWORD` are set in the environment, errors if not.
-
-
-**upload** - Attempt to upload everything in `dist` to [PyPI](https://pypi.org/).
-
-
-## datazen
-
-Targets for use with the [datazen](https://pypi.org/project/datazen/) package.
-
-Prefix: `dz-`
-
-### Optional Arguments
-
-**DZ_DIR** - Optionally override the `-C` argument.
-
-**DZ_MANIFEST** - Optionally provide a non-default manifest file to `-m`.
-
-**DZ_VERBOSE** - Setting this passes `-v` as an additional argument.
-
-
-### Commands
-
-**sync** - Run `dz`, executing the default target.
-
-**clean** - Run `dz` with `-c` to clean the cache.
-
-**describe** - Run `dz` with `-d` to describe cache contents.
-
-**upgrade** - Upgrade `datazen` in the resolved virtual environment with `pip`.
-
-
 ## venv
 
 Targets for managing [Python virtual environments](https://docs.python.org/3/library/venv.html).
@@ -176,6 +128,54 @@ Prefix: `mk-`
 **header** - Print the `Makefile` header that should be used when integrating this package.
 
 **todo** - Perform a case-insensitive search for `todo` in project directories.
+
+
+## datazen
+
+Targets for use with the [datazen](https://pypi.org/project/datazen/) package.
+
+Prefix: `dz-`
+
+### Optional Arguments
+
+**DZ_DIR** - Optionally override the `-C` argument.
+
+**DZ_MANIFEST** - Optionally provide a non-default manifest file to `-m`.
+
+**DZ_VERBOSE** - Setting this passes `-v` as an additional argument.
+
+
+### Commands
+
+**sync** - Run `dz`, executing the default target.
+
+**clean** - Run `dz` with `-c` to clean the cache.
+
+**describe** - Run `dz` with `-d` to describe cache contents.
+
+**upgrade** - Upgrade `datazen` in the resolved virtual environment with `pip`.
+
+
+## pypi
+
+Targets for uploading packages to [PyPI](https://pypi.org/).
+
+Prefix: `pypi-`
+
+### Optional Arguments
+
+**UPLOAD_ENV** - Output file to write to for sourcing credentials.
+
+**SECRETHUB_PYPI_PATH** - The full path for the `secrethub read` command to source a [PyPI API token](https://pypi.org/help/#apitoken) from, requires [secrethub](https://secrethub.io/).
+
+
+
+### Commands
+
+**check-env** - Enforces that `TWINE_USERNAME` and `TWINE_PASSWORD` are set in the environment, errors if not.
+
+
+**upload** - Attempt to upload everything in `dist` to [PyPI](https://pypi.org/).
 
 
 ## python

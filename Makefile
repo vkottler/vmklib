@@ -28,5 +28,5 @@ PY_EXTRA_LINT_ARGS += $($(PROJ)_DIR)/run.py
 
 all: $(PY_PREFIX)lint $(PY_PREFIX)sa $(PY_PREFIX)test
 
-clean: $(PY_PREFIX)clean $(DZ_PREFIX)clean
+clean: $(DZ_PREFIX)clean $(PY_PREFIX)clean venv-clean
 	@rm -rf $(BUILD_DIR)

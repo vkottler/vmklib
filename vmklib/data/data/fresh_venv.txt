@@ -1,5 +1,6 @@
 wheel
 setuptools
+types-setuptools
 twine
 grip
 pylint

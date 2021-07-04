@@ -90,6 +90,22 @@ def get_data_files(pkg_name: str, data_dir: str = "data") -> List[str]:
     return data_files
 
 
+def get_stub_files(pkg_name: str) -> List[str]:
+    """
+    Collect stub files (type annotations) for the project to be packaged.
+    """
+
+    stub_files = []
+    for root, _, files in os.walk(pkg_name):
+        for fname in files:
+            if fname.endswith(".pyi"):
+                rel_name = os.path.join(root, fname)
+                rel_name = rel_name.replace(pkg_name + os.sep, "")
+                stub_files.append(rel_name)
+
+    return stub_files
+
+
 # pylint: disable=too-many-arguments
 def setup(pkg_info: Dict[str, str], author_info: Dict[str, str],
           url_override: str = None, entry_override: str = None,
@@ -124,31 +140,32 @@ def setup(pkg_info: Dict[str, str], author_info: Dict[str, str],
     for req_file in req_files:
         requirements += get_requirements(req_file)
 
-    temp_dir = tempfile.TemporaryDirectory()
-    working_dir = temp_dir.name
-    dir_contents = os.listdir(os.getcwd())
-    if pkg_info["name"] in dir_contents:
-        working_dir = os.getcwd()
+    with tempfile.TemporaryDirectory() as temp_dir:
+        working_dir = temp_dir
+        dir_contents = os.listdir(os.getcwd())
+        if pkg_info["name"] in dir_contents:
+            working_dir = os.getcwd()
 
-    with inject_self(working_dir):
-        setuptools.setup(
-            name=pkg_info["name"],
-            version=pkg_info["version"],
-            author=author_info["name"],
-            author_email=author_info["email"],
-            description=pkg_info["description"],
-            long_description=get_long_description(),
-            long_description_content_type="text/markdown",
-            url=url_override,
-            packages=setuptools.find_packages(),
-            classifiers=classifiers_override,
-            python_requires=">=3.6",
-            entry_points={"console_scripts": console_overrides},
-            install_requires=requirements,
-            package_data={
-                pkg_info["name"]: get_data_files(pkg_info["name"]),
-                REQ_DIR: [os.path.basename(req) for req in req_files],
-            },
-        )
-
-    temp_dir.cleanup()
+        with inject_self(working_dir):
+            setuptools.setup(
+                name=pkg_info["name"],
+                version=pkg_info["version"],
+                author=author_info["name"],
+                author_email=author_info["email"],
+                description=pkg_info["description"],
+                long_description=get_long_description(),
+                long_description_content_type="text/markdown",
+                url=url_override,
+                packages=setuptools.find_packages(),
+                classifiers=classifiers_override,
+                python_requires=">=3.6",
+                entry_points={"console_scripts": console_overrides},
+                install_requires=requirements,
+                package_data={
+                    pkg_info["name"]: (
+                        get_data_files(pkg_info["name"]) +
+                        get_stub_files(pkg_info["name"])
+                    ),
+                    REQ_DIR: [os.path.basename(req) for req in req_files],
+                },
+            )

@@ -10,3 +10,4 @@ datazen-out
 .coverage
 htmlcov
 .*.env
+*.pyi

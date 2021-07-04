@@ -18,6 +18,7 @@ $(VENV_DIR): $(MK_DATA_DIR)/fresh_venv.txt
 	@touch $@
 	$(PYTHON_BIN)/pip install --upgrade pip
 	$(PYTHON_BIN)/pip install --upgrade -r $<
+	$(PYTHON_BIN)/mypy --install-types --non-interactive
 
 # add empty files for missing requirements files and let the caller know
 # an attempt to install from a missing one was made
@@ -29,6 +30,7 @@ $(REQUIREMENTS_DIR)/%.txt:
 # target for installing requirements files into the virtual environment
 $(call to_concrete, $(VENV_NAME)/req-%): $(REQUIREMENTS_DIR)/%.txt | $(BUILD_DIR) $(VENV_DIR)
 	$(PYTHON_BIN)/pip install --upgrade -r $<
+	$(PYTHON_BIN)/mypy --install-types --non-interactive
 	$(call generic_concrete,$@)
 
 $(VENV_CONC): $(REQ_CONC)
