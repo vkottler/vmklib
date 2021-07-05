@@ -102,10 +102,15 @@ def get_stub_files(pkg_name: str) -> List[str]:
                 rel_name = rel_name.replace(pkg_name + os.sep, "")
                 stub_files.append(rel_name)
 
+    init_file = os.path.join(pkg_name, "__init__.py")
+    if stub_files and not os.path.isfile(init_file):
+        with open(init_file, "w"):
+            pass
+
     return stub_files
 
 
-# pylint: disable=too-many-arguments
+# pylint: disable=too-many-arguments,too-many-locals
 def setup(
     pkg_info: Dict[str, str],
     author_info: Dict[str, str],
@@ -150,6 +155,11 @@ def setup(
         if pkg_info["name"] in dir_contents:
             working_dir = os.getcwd()
 
+        stubs_pkg = pkg_info["name"] + "-stubs"
+        packages = setuptools.find_packages()
+        if stubs_pkg not in packages:
+            packages.append(stubs_pkg)
+
         with inject_self(working_dir):
             setuptools.setup(
                 name=pkg_info["name"],
@@ -170,6 +180,7 @@ def setup(
                         get_data_files(pkg_info["name"])
                         + get_stub_files(pkg_info["name"])
                     ),
+                    stubs_pkg: get_stub_files(stubs_pkg),
                     REQ_DIR: [os.path.basename(req) for req in req_files],
                 },
             )

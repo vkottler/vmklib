@@ -11,3 +11,4 @@ datazen-out
 htmlcov
 .*.env
 *.pyi
+*-stubs

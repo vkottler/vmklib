@@ -32,7 +32,9 @@ $(PY_PREFIX)format-check: | $(VENV_CONC)
 	$(PYTHON_BIN)/black --check $(PY_BLACK_ARGS)
 
 $(PY_PREFIX)stubs: | $(VENV_CONC)
-	$(PYTHON_BIN)/stubgen -p $(PROJ) -o $($(PROJ)_DIR)
+	@rm -rf $($(PROJ)_DIR)/$(PROJ)-stubs
+	$(PYTHON_BIN)/stubgen -p $(PROJ) -o $($(PROJ)_DIR)/$(PROJ)-stubs
+	$(PYTHON_BIN)/stubgen -p $(PROJ) -o $($(PROJ)_DIR)/$(PROJ)
 
 PYTEST_EXTRA_ARGS :=
 PYTEST_ARGS := -x --log-cli-level=10 --cov=$(PROJ) --cov-report html \
@@ -50,7 +52,6 @@ $(PY_PREFIX)dist: $(PY_PREFIX)stubs | $(VENV_CONC)
 	cd $($(PROJ)_DIR) && \
 		$(PYTHON_BIN)/python $($(PROJ)_DIR)/setup.py bdist_wheel
 	@cd $($(PROJ)_DIR)/$(PROJ) && find -iname '*.pyi' -delete
-	@cd $($(PROJ)_DIR)/tests && find -iname '*.pyi' -delete
 
 TWINE_ARGS := --non-interactive --verbose
 $(PY_PREFIX)upload: $(PY_PREFIX)lint $(PY_PREFIX)sa $(PY_PREFIX)test $(PY_PREFIX)dist
@@ -76,6 +77,7 @@ $(PY_PREFIX)all: $(PY_PREFIX)lint $(PY_PREFIX)sa $(PY_PREFIX)test
 $(PY_PREFIX)clean:
 	@find -iname '*.pyc' -delete
 	@find -iname '__pycache__' -delete
+	@rm -rf $($(PROJ)_DIR)/$(PROJ)-stubs
 	@rm -rf $(BUILD_DIR) $($(PROJ)_DIR)/.mypy_cache
 	@rm -rf $($(PROJ)_DIR)/cover $($(PROJ)_DIR)/.coverage \
 		$($(PROJ)_DIR)/dist $($(PROJ)_DIR)/*.egg-info \
