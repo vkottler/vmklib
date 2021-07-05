@@ -1,12 +1,12 @@
 <!--
     =====================================
     generator=datazen
-    version=1.7.3
-    hash=e31a4cf64a9ad3b74a91f0fd2317d11f
+    version=1.7.4
+    hash=8a3c969e94a995e17a166084187e6e70
     =====================================
 -->
 
-# vmklib ([0.4.6](https://pypi.org/project/vmklib/))
+# vmklib ([0.4.7](https://pypi.org/project/vmklib/))
 
 ![Python package](https://github.com/vkottler/vmklib/workflows/Python%20package/badge.svg)
 
@@ -203,6 +203,8 @@ Prefix: `python-`
 **lint** - Run [pylint](https://www.pylint.org/) and [flake8](https://flake8.pycqa.org/en/latest/) against a project's package sources.
 
 **sa** - Run [mypy](http://mypy-lang.org/) against a project's package sources.
+
+**sa-types** - Run [mypy](http://mypy-lang.org/) without checking the result and attempt to install missing type/stub packages.
 
 **stubs** - Run [stubgen](https://mypy.readthedocs.io/en/stable/stubgen.html) against a project's package sources.
 

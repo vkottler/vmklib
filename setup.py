@@ -1,7 +1,7 @@
 # =====================================
 # generator=datazen
-# version=1.7.3
-# hash=ce10f5a933e962a144ed72911e699361
+# version=1.7.4
+# hash=75bc4128b0ba5edd0ee960cac6d2a8c1
 # =====================================
 
 """
@@ -9,7 +9,7 @@ vmklib - Package definition for distribution.
 """
 
 # third-party
-from vmklib.setup import setup  # type: ignore
+from vmklib.setup import setup
 
 # internal
 from vmklib import PKG_NAME, VERSION, DESCRIPTION

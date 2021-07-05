@@ -18,6 +18,8 @@ targets:
   description: "Run [pylint](https://www.pylint.org/) and [flake8](https://flake8.pycqa.org/en/latest/) against a project's package sources."
 - name: sa
   description: "Run [mypy](http://mypy-lang.org/) against a project's package sources."
+- name: sa-types
+  description: "Run [mypy](http://mypy-lang.org/) without checking the result and attempt to install missing type/stub packages."
 - name: stubs
   description: "Run [stubgen](https://mypy.readthedocs.io/en/stable/stubgen.html) against a project's package sources."
 - name: format
