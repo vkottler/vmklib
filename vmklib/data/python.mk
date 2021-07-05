@@ -49,7 +49,8 @@ $(PY_PREFIX)dist: $(PY_PREFIX)stubs | $(VENV_CONC)
 		$(PYTHON_BIN)/python $($(PROJ)_DIR)/setup.py sdist
 	cd $($(PROJ)_DIR) && \
 		$(PYTHON_BIN)/python $($(PROJ)_DIR)/setup.py bdist_wheel
-	@find -iname '*.pyi' -delete
+	@cd $($(PROJ)_DIR)/$(PROJ) && find -iname '*.pyi' -delete
+	@cd $($(PROJ)_DIR)/tests && find -iname '*.pyi' -delete
 
 TWINE_ARGS := --non-interactive --verbose
 $(PY_PREFIX)upload: $(PY_PREFIX)lint $(PY_PREFIX)sa $(PY_PREFIX)test $(PY_PREFIX)dist
@@ -74,7 +75,6 @@ $(PY_PREFIX)all: $(PY_PREFIX)lint $(PY_PREFIX)sa $(PY_PREFIX)test
 
 $(PY_PREFIX)clean:
 	@find -iname '*.pyc' -delete
-	@find -iname '*.pyi' -delete
 	@find -iname '__pycache__' -delete
 	@rm -rf $(BUILD_DIR) $($(PROJ)_DIR)/.mypy_cache
 	@rm -rf $($(PROJ)_DIR)/cover $($(PROJ)_DIR)/.coverage \
