@@ -89,28 +89,7 @@ def get_data_files(pkg_name: str, data_dir: str = "data") -> List[str]:
     return data_files
 
 
-def get_stub_files(pkg_name: str) -> List[str]:
-    """
-    Collect stub files (type annotations) for the project to be packaged.
-    """
-
-    stub_files = []
-    for root, _, files in os.walk(pkg_name):
-        for fname in files:
-            if fname.endswith(".pyi"):
-                rel_name = os.path.join(root, fname)
-                rel_name = rel_name.replace(pkg_name + os.sep, "")
-                stub_files.append(rel_name)
-
-    init_file = os.path.join(pkg_name, "__init__.py")
-    if stub_files and not os.path.isfile(init_file):
-        with open(init_file, "w"):
-            pass
-
-    return stub_files
-
-
-# pylint: disable=too-many-arguments,too-many-locals
+# pylint: disable=too-many-arguments
 def setup(
     pkg_info: Dict[str, str],
     author_info: Dict[str, str],
@@ -155,11 +134,6 @@ def setup(
         if pkg_info["name"] in dir_contents:
             working_dir = os.getcwd()
 
-        stubs_pkg = pkg_info["name"] + "-stubs"
-        packages = setuptools.find_packages()
-        if stubs_pkg not in packages:
-            packages.append(stubs_pkg)
-
         with inject_self(working_dir):
             setuptools.setup(
                 name=pkg_info["name"],
@@ -177,10 +151,8 @@ def setup(
                 install_requires=requirements,
                 package_data={
                     pkg_info["name"]: (
-                        get_data_files(pkg_info["name"])
-                        + get_stub_files(pkg_info["name"])
+                        get_data_files(pkg_info["name"]) + ["py.typed"]
                     ),
-                    stubs_pkg: get_stub_files(stubs_pkg),
                     REQ_DIR: [os.path.basename(req) for req in req_files],
                 },
             )

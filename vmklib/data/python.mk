@@ -32,9 +32,7 @@ $(PY_PREFIX)format-check: | $(VENV_CONC)
 	$(PYTHON_BIN)/black --check $(PY_BLACK_ARGS)
 
 $(PY_PREFIX)stubs: | $(VENV_CONC)
-	@rm -rf $($(PROJ)_DIR)/$(PROJ)-stubs
-	$(PYTHON_BIN)/stubgen -p $(PROJ) -o $($(PROJ)_DIR)/$(PROJ)-stubs
-	$(PYTHON_BIN)/stubgen -p $(PROJ) -o $($(PROJ)_DIR)/$(PROJ)
+	$(PYTHON_BIN)/stubgen -p $(PROJ) -o $($(PROJ)_DIR)
 
 PYTEST_EXTRA_ARGS :=
 PYTEST_ARGS := -x --log-cli-level=10 --cov=$(PROJ) --cov-report html \
