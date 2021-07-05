@@ -1,4 +1,3 @@
-
 """
 vmklib - This package's command-line entry-point application.
 """
@@ -20,14 +19,15 @@ DEFAULT_FILE = "Makefile"
 
 
 def get_resource(resource_name: str) -> str:
-    """ Locate the path to a package resource. """
+    """Locate the path to a package resource."""
 
     resource_path = os.path.join("data", resource_name)
 
     locations = [
         pkg_resources.resource_filename(__name__, resource_path),
-        os.path.join(os.path.dirname(os.path.realpath(__file__)),
-                     resource_path),
+        os.path.join(
+            os.path.dirname(os.path.realpath(__file__)), resource_path
+        ),
     ]
 
     resource = ""
@@ -42,9 +42,10 @@ def get_resource(resource_name: str) -> str:
 
 
 @contextmanager
-def build_makefile(user_file: str, directory: str,
-                   project_name: str = None) -> Iterator[str]:
-    """ Build a temporary makefile and return the path. """
+def build_makefile(
+    user_file: str, directory: str, project_name: str = None
+) -> Iterator[str]:
+    """Build a temporary makefile and return the path."""
 
     # create a temporary file
     with tempfile.NamedTemporaryFile(mode="w") as makefile:
@@ -58,9 +59,11 @@ def build_makefile(user_file: str, directory: str,
         # build the necessary file data
         if project_name is None:
             project_name = os.path.dirname(os.path.abspath(user_file))
-        data = {"PROJ": os.path.basename(project_name),
-                "$(PROJ)_DIR": directory,
-                "MK_AUTO": "1"}
+        data = {
+            "PROJ": os.path.basename(project_name),
+            "$(PROJ)_DIR": directory,
+            "MK_AUTO": "1",
+        }
 
         write_data = ""
         for key, item in data.items():
@@ -74,7 +77,7 @@ def build_makefile(user_file: str, directory: str,
 
 
 def entry(args: argparse.Namespace) -> int:
-    """ Execute the requested task. """
+    """Execute the requested task."""
 
     if not os.path.isfile(args.file):
         if os.path.basename(args.file) != DEFAULT_FILE:
@@ -108,12 +111,18 @@ def entry(args: argparse.Namespace) -> int:
 
 
 def add_app_args(parser: argparse.ArgumentParser) -> None:
-    """ Add application-specific arguments to the command-line parser. """
+    """Add application-specific arguments to the command-line parser."""
 
     parser.add_argument("targets", nargs="*", help="targets to execute")
-    parser.add_argument("-p", "--prefix", default="",
-                        help="a prefix to apply to all targets")
-    parser.add_argument("-f", "--file", default=DEFAULT_FILE,
-                        help="file to source user-provided recipes from")
-    parser.add_argument("-P", "--proj",
-                        help="project name for internal variable use")
+    parser.add_argument(
+        "-p", "--prefix", default="", help="a prefix to apply to all targets"
+    )
+    parser.add_argument(
+        "-f",
+        "--file",
+        default=DEFAULT_FILE,
+        help="file to source user-provided recipes from",
+    )
+    parser.add_argument(
+        "-P", "--proj", help="project name for internal variable use"
+    )

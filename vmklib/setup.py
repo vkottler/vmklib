@@ -1,4 +1,3 @@
-
 """
 vmklib - A simpler setuptools-based package definition.
 """
@@ -49,7 +48,7 @@ def inject_self(working_dir: str) -> Iterator[None]:
 
 
 def get_long_description(desc_filename: str = "README.md") -> str:
-    """ Get a package's long-description data from a file. """
+    """Get a package's long-description data from a file."""
 
     try:
         with open(desc_filename, "r") as desc_file:
@@ -60,13 +59,13 @@ def get_long_description(desc_filename: str = "README.md") -> str:
 
 
 def default_requirements_file() -> str:
-    """ Default location where  """
+    """Default location where"""
 
     return os.path.join(REQ_DIR, "requirements.txt")
 
 
 def get_requirements(reqs_filename: str) -> List[str]:
-    """ Get a package's requirements based on its requirements file. """
+    """Get a package's requirements based on its requirements file."""
 
     try:
         with open(reqs_filename, "r") as reqs_file:
@@ -107,10 +106,14 @@ def get_stub_files(pkg_name: str) -> List[str]:
 
 
 # pylint: disable=too-many-arguments
-def setup(pkg_info: Dict[str, str], author_info: Dict[str, str],
-          url_override: str = None, entry_override: str = None,
-          console_overrides: List[str] = None,
-          classifiers_override: List[str] = None) -> None:
+def setup(
+    pkg_info: Dict[str, str],
+    author_info: Dict[str, str],
+    url_override: str = None,
+    entry_override: str = None,
+    console_overrides: List[str] = None,
+    classifiers_override: List[str] = None,
+) -> None:
     """
     Build a 'setuptools.setup' call with sane defaults and making assumptions
     about certain aspects of a package's structure.
@@ -125,8 +128,9 @@ def setup(pkg_info: Dict[str, str], author_info: Dict[str, str],
 
     if url_override is None:
         url_fstring = "https://github.com/{}/{}"
-        url_override = url_fstring.format(author_info["username"],
-                                          pkg_info["name"])
+        url_override = url_fstring.format(
+            author_info["username"], pkg_info["name"]
+        )
 
     if classifiers_override is None:
         classifiers_override = [
@@ -163,8 +167,8 @@ def setup(pkg_info: Dict[str, str], author_info: Dict[str, str],
                 install_requires=requirements,
                 package_data={
                     pkg_info["name"]: (
-                        get_data_files(pkg_info["name"]) +
-                        get_stub_files(pkg_info["name"])
+                        get_data_files(pkg_info["name"])
+                        + get_stub_files(pkg_info["name"])
                     ),
                     REQ_DIR: [os.path.basename(req) for req in req_files],
                 },

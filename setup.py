@@ -1,7 +1,7 @@
 # =====================================
 # generator=datazen
 # version=1.7.3
-# hash=32ea9b2d7561a67edb745a95b7c6e1b3
+# hash=ce10f5a933e962a144ed72911e699361
 # =====================================
 
 """
@@ -15,9 +15,11 @@ from vmklib.setup import setup  # type: ignore
 from vmklib import PKG_NAME, VERSION, DESCRIPTION
 
 
-author_info = {"name": "Vaughn Kottler",
-               "email": "vaughnkottler@gmail.com",
-               "username": "vkottler"}
+author_info = {
+    "name": "Vaughn Kottler",
+    "email": "vaughnkottler@gmail.com",
+    "username": "vkottler",
+}
 pkg_info = {"name": PKG_NAME, "version": VERSION, "description": DESCRIPTION}
 setup(
     pkg_info,

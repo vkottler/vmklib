@@ -2,11 +2,11 @@
     =====================================
     generator=datazen
     version=1.7.3
-    hash=64682c0c9a54d18e00035a2136762765
+    hash=e31a4cf64a9ad3b74a91f0fd2317d11f
     =====================================
 -->
 
-# vmklib ([0.4.5](https://pypi.org/project/vmklib/))
+# vmklib ([0.4.6](https://pypi.org/project/vmklib/))
 
 ![Python package](https://github.com/vkottler/vmklib/workflows/Python%20package/badge.svg)
 
@@ -203,6 +203,12 @@ Prefix: `python-`
 **lint** - Run [pylint](https://www.pylint.org/) and [flake8](https://flake8.pycqa.org/en/latest/) against a project's package sources.
 
 **sa** - Run [mypy](http://mypy-lang.org/) against a project's package sources.
+
+**stubs** - Run [stubgen](https://mypy.readthedocs.io/en/stable/stubgen.html) against a project's package sources.
+
+**format** - Run [black](https://pypi.org/project/black/) against a project's package sources.
+
+**format-check** - Run [black](https://pypi.org/project/black/) with the `--check` argument.
 
 **test** - Run all of a project's tests with [pytest](https://docs.pytest.org/en/stable/).
 

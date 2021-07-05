@@ -2,7 +2,8 @@ PY_PREFIX := python-
 
 .PHONY: $(PY_PREFIX)lint $(PY_PREFIX)sa $(PY_PREFIX)test $(PY_PREFIX)view \
         $(PY_PREFIX)host-coverage $(PY_PREFIX)all $(PY_PREFIX)clean \
-        $(PY_PREFIX)dist $(PY_PREFIX)upload $(PY_PREFIX)editable
+        $(PY_PREFIX)dist $(PY_PREFIX)upload $(PY_PREFIX)editable \
+        $(PY_PREFIX)stubs $(PY_PREFIX)format $(PY_PREFIX)format-check
 
 PY_LINT_EXTRA_ARGS :=
 PY_LINT_ARGS := $($(PROJ)_DIR)/tests $(PY_LINT_EXTRA_ARGS)
@@ -11,9 +12,18 @@ PY_LINT_ARGS := $($(PROJ)_DIR)/tests $(PY_LINT_EXTRA_ARGS)
 $(PY_PREFIX)lint-%: | $(VENV_CONC)
 	$(PYTHON_BIN)/$* $($(PROJ)_DIR)/$(PROJ) $(PY_LINT_ARGS)
 
-$(PY_PREFIX)lint: $(PY_PREFIX)lint-flake8 $(PY_PREFIX)lint-pylint
+$(PY_PREFIX)lint: $(PY_PREFIX)lint-flake8 $(PY_PREFIX)lint-pylint $(PY_PREFIX)format-check
 
 $(PY_PREFIX)sa: $(PY_PREFIX)lint-mypy
+
+PY_BLACK_ARGS := --line-length 79 $($(PROJ)_DIR)/$(PROJ) $($(PROJ)_DIR)/tests \
+                 $($(PROJ)_DIR)/setup.py
+
+$(PY_PREFIX)format: | $(VENV_CONC)
+	$(PYTHON_BIN)/black $(PY_BLACK_ARGS)
+
+$(PY_PREFIX)format-check: | $(VENV_CONC)
+	$(PYTHON_BIN)/black --check $(PY_BLACK_ARGS)
 
 $(PY_PREFIX)stubs: | $(VENV_CONC)
 	$(PYTHON_BIN)/stubgen -p $(PROJ) -o $($(PROJ)_DIR)
@@ -57,6 +67,7 @@ $(PY_PREFIX)all: $(PY_PREFIX)lint $(PY_PREFIX)sa $(PY_PREFIX)test
 
 $(PY_PREFIX)clean:
 	@find -iname '*.pyc' -delete
+	@find -iname '*.pyi' -delete
 	@find -iname '__pycache__' -delete
 	@rm -rf $(BUILD_DIR) $($(PROJ)_DIR)/.mypy_cache
 	@rm -rf $($(PROJ)_DIR)/cover $($(PROJ)_DIR)/.coverage \

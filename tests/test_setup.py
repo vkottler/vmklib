@@ -1,4 +1,3 @@
-
 """
 datazen - Test the 'setup' module.
 """
@@ -18,15 +17,19 @@ def test_setup_fn():
     Test that that package-building capability we expose externally works.
     """
 
-    author_info = {"name": "Vaughn Kottler",
-                   "email": "vaughnkottler@gmail.com",
-                   "username": "vkottler"}
-    pkg_info = {"name": PKG_NAME,
-                "version": VERSION,
-                "description": DESCRIPTION}
+    author_info = {
+        "name": "Vaughn Kottler",
+        "email": "vaughnkottler@gmail.com",
+        "username": "vkottler",
+    }
+    pkg_info = {
+        "name": PKG_NAME,
+        "version": VERSION,
+        "description": DESCRIPTION,
+    }
 
     def setup_stub(*_, **__):
-        """ Don't do anything. """
+        """Don't do anything."""
 
     real_setup = setuptools.setup
     setuptools.setup = setup_stub

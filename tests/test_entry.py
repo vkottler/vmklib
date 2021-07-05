@@ -1,4 +1,3 @@
-
 """
 datazen - Test the program's entry-point.
 """
@@ -17,7 +16,7 @@ from . import get_resource, get_args
 
 
 def test_interrupt():
-    """ Test interrupting the process. """
+    """Test interrupting the process."""
 
     with get_args() as base_args:
         good_base_args = base_args + ["-f", get_resource("Makefile"), "sleep"]
@@ -29,7 +28,7 @@ def test_interrupt():
 
 
 def test_entry():
-    """ Test some basic command-line argument scenarios. """
+    """Test some basic command-line argument scenarios."""
 
     with get_args() as base_args:
         good_base_args = base_args + ["-f", get_resource("Makefile")]
