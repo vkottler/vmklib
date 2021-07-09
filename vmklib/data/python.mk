@@ -44,7 +44,7 @@ $(PY_PREFIX)test-%: | $(VENV_CONC)
 	$(PYTHON_BIN)/pytest $(PYTEST_ARGS) -k "$*" $($(PROJ)_DIR)/tests
 
 $(PY_PREFIX)dist: $(PY_PREFIX)stubs | $(VENV_CONC)
-	@rm -rf $($(PROJ)_DIR)/dist
+	@rm -rf $($(PROJ)_DIR)/dist $(BUILD_DIR)/bdist* $(BUILD_DIR)/lib
 	cd $($(PROJ)_DIR) && \
 		$(PYTHON_BIN)/python $($(PROJ)_DIR)/setup.py sdist
 	cd $($(PROJ)_DIR) && \
