@@ -144,7 +144,9 @@ def setup(
                 long_description=get_long_description(),
                 long_description_content_type="text/markdown",
                 url=url_override,
-                packages=setuptools.find_packages(exclude=["tests"]),
+                packages=setuptools.find_packages(
+                    exclude=["tests", "tests.*"]
+                ),
                 classifiers=classifiers_override,
                 python_requires=">=3.6",
                 entry_points={"console_scripts": console_overrides},
