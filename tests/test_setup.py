@@ -18,14 +18,15 @@ def test_setup_fn():
     """
 
     author_info = {
-        "name": "Vaughn Kottler",
-        "email": "vaughnkottler@gmail.com",
-        "username": "vkottler",
+        "name": "Example Example",
+        "email": "Example@example.com",
+        "username": "example",
     }
     pkg_info = {
         "name": PKG_NAME,
         "version": VERSION,
         "description": DESCRIPTION,
+        "versions": ["3"],
     }
 
     def setup_stub(*_, **__):

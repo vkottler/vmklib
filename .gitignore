@@ -12,3 +12,4 @@ htmlcov
 .*.env
 *.pyi
 *-stubs
+coverage*.xml

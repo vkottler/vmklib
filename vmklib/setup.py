@@ -7,7 +7,7 @@ from contextlib import contextmanager
 import os
 import shutil
 import tempfile
-from typing import Dict, List, Iterator
+from typing import Any, Dict, List, Iterator
 
 # third-party
 import setuptools  # type: ignore
@@ -91,7 +91,7 @@ def get_data_files(pkg_name: str, data_dir: str = "data") -> List[str]:
 
 # pylint: disable=too-many-arguments
 def setup(
-    pkg_info: Dict[str, str],
+    pkg_info: Dict[str, Any],
     author_info: Dict[str, str],
     url_override: str = None,
     entry_override: str = None,
@@ -118,10 +118,13 @@ def setup(
 
     if classifiers_override is None:
         classifiers_override = [
-            "Programming Language :: Python :: 3",
             "License :: OSI Approved :: MIT License",
             "Operating System :: OS Independent",
         ]
+    for version in pkg_info.get("versions", []):
+        classifiers_override.append(
+            "Programming Language :: Python :: {}".format(version)
+        )
 
     req_files = [default_requirements_file()]
     requirements = []
@@ -148,7 +151,9 @@ def setup(
                     exclude=["tests", "tests.*"]
                 ),
                 classifiers=classifiers_override,
-                python_requires=">=3.6",
+                python_requires=">={}".format(
+                    pkg_info.get("versions", ["3.6"])[0]
+                ),
                 entry_points={"console_scripts": console_overrides},
                 install_requires=requirements,
                 package_data={

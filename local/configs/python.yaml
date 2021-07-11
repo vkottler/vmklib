@@ -1,0 +1,2 @@
+# note: keep this in sync with github workflow config
+versions: ["3.6", "3.7", "3.8", "3.9"]
