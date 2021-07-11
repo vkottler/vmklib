@@ -2,7 +2,7 @@
     =====================================
     generator=datazen
     version=1.7.6
-    hash=3dd2b29ac989a643a6f903c1703c12ec
+    hash=78f06e4acff3c1ec7fb2e84e6eb528a2
     =====================================
 -->
 
@@ -10,6 +10,7 @@
 
 [![python](https://img.shields.io/pypi/pyversions/vmklib.svg)](https://pypi.org/project/vmklib/)
 ![Build Status](https://github.com/vkottler/vmklib/workflows/Python%20package/badge.svg)
+[![codecov](https://codecov.io/gh/vkottler/vmklib/branch/master/graphs/badge.svg?branch=master)](https://codecov.io/github/vkottler/vmklib)
 
 *Simplify project workflows by standardizing use of GNU Make.*
 
