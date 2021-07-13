@@ -13,3 +13,4 @@ htmlcov
 *.pyi
 *-stubs
 coverage*.xml
+tags

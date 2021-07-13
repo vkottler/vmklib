@@ -38,6 +38,11 @@ renders:
   output_dir: "{{project}}/data/data"
   dependencies:
   - "compiles-local"
+- name: "LICENSE"
+  key: "LICENSE_MIT"
+  output_dir: "."
+  dependencies:
+  - "compiles-local"
 
 groups:
 - name: "all"
@@ -45,3 +50,4 @@ groups:
   - "groups-python"
   - "renders-README.md"
   - "renders-header.mk"
+  - "renders-LICENSE"

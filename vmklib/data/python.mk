@@ -28,6 +28,10 @@ PY_BLACK_ARGS := --line-length 79 $($(PROJ)_DIR)/$(PROJ) $($(PROJ)_DIR)/tests \
 $(PY_PREFIX)format: | $(VENV_CONC)
 	$(PYTHON_BIN)/black $(PY_BLACK_ARGS)
 
+$(PY_PREFIX)tags:
+	ctags -f $($(PROJ)_DIR)/tags -R \
+		$($(PROJ)_DIR)/$(PROJ) $($(PROJ)_DIR)/tests
+
 $(PY_PREFIX)format-check: | $(VENV_CONC)
 	$(PYTHON_BIN)/black --check $(PY_BLACK_ARGS)
 

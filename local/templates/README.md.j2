@@ -14,7 +14,7 @@ else with simple package updates.
 
 ## Quick Links
 
-{% for group, data in targets["groups"].items() %}
+{% for group, data in targets["groups"].items()|sort %}
 * [{{group}}](#{{group}})
 {% endfor %}
 
@@ -34,7 +34,7 @@ Note that the full invocation for a target's command is:
 mk [options] <prefix>-<command> [ARG1=val1 ARG2=val2]
 ```
 
-{% for group, data in targets["groups"].items() %}
+{% for group, data in targets["groups"].items()|sort %}
 ## {{group}}
 
 {{data["description"]}}

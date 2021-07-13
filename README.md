@@ -1,12 +1,12 @@
 <!--
     =====================================
     generator=datazen
-    version=1.7.7
-    hash=78f06e4acff3c1ec7fb2e84e6eb528a2
+    version=1.7.8
+    hash=a02648c222c27a310feab1037e10802c
     =====================================
 -->
 
-# vmklib ([0.4.14](https://pypi.org/project/vmklib/))
+# vmklib ([0.4.15](https://pypi.org/project/vmklib/))
 
 [![python](https://img.shields.io/pypi/pyversions/vmklib.svg)](https://pypi.org/project/vmklib/)
 ![Build Status](https://github.com/vkottler/vmklib/workflows/Python%20package/badge.svg)
@@ -28,12 +28,12 @@ else with simple package updates.
 
 ## Quick Links
 
+* [datazen](#datazen)
 * [grip](#grip)
 * [pypi](#pypi)
-* [datazen](#datazen)
+* [python](#python)
 * [venv](#venv)
 * [vmklib](#vmklib)
-* [python](#python)
 
 # Command-line Options
 
@@ -67,6 +67,32 @@ Note that the full invocation for a target's command is:
 ```
 mk [options] <prefix>-<command> [ARG1=val1 ARG2=val2]
 ```
+
+## datazen
+
+Targets for use with the [datazen](https://pypi.org/project/datazen/) package.
+
+Prefix: `dz-`
+
+### Optional Arguments
+
+**DZ_DIR** - Optionally override the `-C` argument.
+
+**DZ_MANIFEST** - Optionally provide a non-default manifest file to `-m`.
+
+**DZ_VERBOSE** - Setting this passes `-v` as an additional argument.
+
+
+### Commands
+
+**sync** - Run `dz`, executing the default target.
+
+**clean** - Run `dz` with `-c` to clean the cache.
+
+**describe** - Run `dz` with `-d` to describe cache contents.
+
+**upgrade** - Upgrade `datazen` in the resolved virtual environment with `pip`.
+
 
 ## grip
 
@@ -114,30 +140,59 @@ Prefix: `pypi-`
 **upload** - Attempt to upload everything in `dist` to [PyPI](https://pypi.org/).
 
 
-## datazen
+## python
 
-Targets for use with the [datazen](https://pypi.org/project/datazen/) package.
+Targets for executing common, [Python](https://www.python.org/) workflow tasks.
 
-Prefix: `dz-`
+
+Prefix: `python-`
 
 ### Optional Arguments
 
-**DZ_DIR** - Optionally override the `-C` argument.
+**PY_LINT_ARGS** - Set to override the default, adds the `tests` directory and `PY_LINT_EXTRA_ARGS`.
 
-**DZ_MANIFEST** - Optionally provide a non-default manifest file to `-m`.
+**PY_LINT_EXTRA_ARGS** - Set to add additional linting arguments.
 
-**DZ_VERBOSE** - Setting this passes `-v` as an additional argument.
+**PYTEST_ARGS** - Set to override the default, additional [pytest](https://docs.pytest.org/en/stable/) arguments.
+
+**PYTEST_EXTRA_ARGS** - Add additional arguments to the default set.
+
+**PYTHON_COV_PORT** - Port to host test-coverage HTML on (using `http.server`).
 
 
 ### Commands
 
-**sync** - Run `dz`, executing the default target.
+**lint** - Run [pylint](https://www.pylint.org/) and [flake8](https://flake8.pycqa.org/en/latest/) against a project's package sources.
 
-**clean** - Run `dz` with `-c` to clean the cache.
+**sa** - Run [mypy](http://mypy-lang.org/) against a project's package sources.
 
-**describe** - Run `dz` with `-d` to describe cache contents.
+**sa-types** - Run [mypy](http://mypy-lang.org/) without checking the result and attempt to install missing type/stub packages.
 
-**upgrade** - Upgrade `datazen` in the resolved virtual environment with `pip`.
+**stubs** - Run [stubgen](https://mypy.readthedocs.io/en/stable/stubgen.html) against a project's package sources.
+
+**format** - Run [black](https://pypi.org/project/black/) against a project's package sources.
+
+**format-check** - Run [black](https://pypi.org/project/black/) with the `--check` argument.
+
+**tags** - Create a `tags` file for the project using [ctags](https://github.com/universal-ctags/ctags) (must be installed).
+
+**test** - Run all of a project's tests with [pytest](https://docs.pytest.org/en/stable/).
+
+**test-%** - Run project tests based on a search pattern (i.e. the `-k` option).
+
+**view** - Attempt to open the test-coverage HTML with `$BROWSER` (environment variable).
+
+**host-coverage** - Host test-coverage HTML locally, with the port specified by `PYTHON_COV_PORT`.
+
+**all** - Run `lint`, `sa` and `test` in sequence.
+
+**clean** - Remove compiled and cached files, test coverage, built package artifacts and other caches.
+
+**dist** - Build `sdist` and `bdist_wheel` with `setup.py` in the project root.
+
+**upload** - Use [twine](https://pypi.org/project/twine/) to upload the built package to [PyPI](https://pypi.org/).
+
+**editable** - Install the project's package in editable mode (`-e` option) to the virtual environment.
 
 
 ## venv
@@ -178,56 +233,3 @@ Prefix: `mk-`
 **header** - Print the `Makefile` header that should be used when integrating this package.
 
 **todo** - Perform a case-insensitive search for `todo` in project directories.
-
-
-## python
-
-Targets for executing common, [Python](https://www.python.org/) workflow tasks.
-
-
-Prefix: `python-`
-
-### Optional Arguments
-
-**PY_LINT_ARGS** - Set to override the default, adds the `tests` directory and `PY_LINT_EXTRA_ARGS`.
-
-**PY_LINT_EXTRA_ARGS** - Set to add additional linting arguments.
-
-**PYTEST_ARGS** - Set to override the default, additional [pytest](https://docs.pytest.org/en/stable/) arguments.
-
-**PYTEST_EXTRA_ARGS** - Add additional arguments to the default set.
-
-**PYTHON_COV_PORT** - Port to host test-coverage HTML on (using `http.server`).
-
-
-### Commands
-
-**lint** - Run [pylint](https://www.pylint.org/) and [flake8](https://flake8.pycqa.org/en/latest/) against a project's package sources.
-
-**sa** - Run [mypy](http://mypy-lang.org/) against a project's package sources.
-
-**sa-types** - Run [mypy](http://mypy-lang.org/) without checking the result and attempt to install missing type/stub packages.
-
-**stubs** - Run [stubgen](https://mypy.readthedocs.io/en/stable/stubgen.html) against a project's package sources.
-
-**format** - Run [black](https://pypi.org/project/black/) against a project's package sources.
-
-**format-check** - Run [black](https://pypi.org/project/black/) with the `--check` argument.
-
-**test** - Run all of a project's tests with [pytest](https://docs.pytest.org/en/stable/).
-
-**test-%** - Run project tests based on a search pattern (i.e. the `-k` option).
-
-**view** - Attempt to open the test-coverage HTML with `$BROWSER` (environment variable).
-
-**host-coverage** - Host test-coverage HTML locally, with the port specified by `PYTHON_COV_PORT`.
-
-**all** - Run `lint`, `sa` and `test` in sequence.
-
-**clean** - Remove compiled and cached files, test coverage, built package artifacts and other caches.
-
-**dist** - Build `sdist` and `bdist_wheel` with `setup.py` in the project root.
-
-**upload** - Use [twine](https://pypi.org/project/twine/) to upload the built package to [PyPI](https://pypi.org/).
-
-**editable** - Install the project's package in editable mode (`-e` option) to the virtual environment.
