@@ -3,7 +3,7 @@ MK_PREFIX := mk-
 .PHONY: $(MK_PREFIX)upgrade $(MK_PREFIX)sys-upgrade $(MK_PREFIX)header \
         $(MK_PREFIX)todo
 
-UPGRADE_CMD := install --upgrade vmklib
+UPGRADE_CMD := install --upgrade vmklib --force-reinstall
 
 $(MK_PREFIX)upgrade: $(VENV_CONC)
 	$(PYTHON_BIN)/pip $(UPGRADE_CMD)
