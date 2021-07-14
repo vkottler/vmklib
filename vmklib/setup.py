@@ -107,7 +107,7 @@ def setup(
         entry_override = pkg_info["name"]
 
     if console_overrides is None:
-        entry_str = "{}={}.entry:main".format(entry_override, pkg_info["name"])
+        entry_str = "{}={}.entry:main".format(entry_override, pkg_info["slug"])
         console_overrides = [entry_str]
 
     if url_override is None:
@@ -134,7 +134,7 @@ def setup(
     with tempfile.TemporaryDirectory() as temp_dir:
         working_dir = temp_dir
         dir_contents = os.listdir(os.getcwd())
-        if pkg_info["name"] in dir_contents:
+        if pkg_info["slug"] in dir_contents:
             working_dir = os.getcwd()
 
         with inject_self(working_dir):
@@ -157,8 +157,8 @@ def setup(
                 entry_points={"console_scripts": console_overrides},
                 install_requires=requirements,
                 package_data={
-                    pkg_info["name"]: (
-                        get_data_files(pkg_info["name"])
+                    pkg_info["slug"]: (
+                        get_data_files(pkg_info["slug"])
                         + ["py.typed", "*.pyi"]
                     ),
                     "": ["*.pyi"],

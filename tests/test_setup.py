@@ -28,6 +28,7 @@ def test_setup_fn():
         "description": DESCRIPTION,
         "versions": ["3"],
     }
+    pkg_info["slug"] = pkg_info["name"].replace("-", "_")
 
     def setup_stub(*_, **__):
         """Don't do anything."""
