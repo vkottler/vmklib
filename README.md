@@ -2,11 +2,11 @@
     =====================================
     generator=datazen
     version=1.7.8
-    hash=7375ff7ecd98ac5258555f1f75e37f95
+    hash=08bab8a62f1888f1eda55da4a2299a3f
     =====================================
 -->
 
-# vmklib ([0.4.17](https://pypi.org/project/vmklib/))
+# vmklib ([0.4.18](https://pypi.org/project/vmklib/))
 
 [![python](https://img.shields.io/pypi/pyversions/vmklib.svg)](https://pypi.org/project/vmklib/)
 ![Build Status](https://github.com/vkottler/vmklib/workflows/Python%20package/badge.svg)
@@ -109,6 +109,8 @@ Prefix: `grip-`
 **GRIP_PORT** - The `host:port` String to serve the rendered results on.
 
 **GRIP_ENV** - Output file to write to for sourcing credentials.
+
+**GRIP_FILE** - The file to render, path is relative to project root.
 
 
 ### Commands

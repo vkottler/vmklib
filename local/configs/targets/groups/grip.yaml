@@ -13,6 +13,8 @@ args:
   description: "The `host:port` String to serve the rendered results on."
 - name: GRIP_ENV
   description: "Output file to write to for sourcing credentials."
+- name: GRIP_FILE
+  description: "The file to render, path is relative to project root."
 targets:
 - name: check-env
   description: "Checks that `GRIP_TOKEN` is set in the environment, errors if not."

@@ -15,5 +15,10 @@ ifndef GRIP_TOKEN
 endif
 
 GRIP_PORT := 0.0.0.0:8000
+GRIP_FILE := README.md
 $(GRIP_PREFIX)render: $(GRIP_PREFIX)check-env $(VENV_CONC)
-	@$(PYTHON_BIN)/grip --pass $(GRIP_TOKEN) --title=$(PROJ) $(GRIP_PORT)
+	@$(PYTHON_BIN)/grip \
+		--pass $(GRIP_TOKEN) \
+		--title=$(PROJ) \
+		$($(PROJ)_DIR)/$(GRIP_FILE) \
+		$(GRIP_PORT)
