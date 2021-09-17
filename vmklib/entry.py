@@ -1,7 +1,7 @@
 # =====================================
 # generator=datazen
 # version=1.7.8
-# hash=63b82b45a918c8677acfeba4e6bdd8f5
+# hash=e29a8be17f62de9750d9185719ca584b
 # =====================================
 
 """
@@ -35,7 +35,7 @@ def main(argv: List[str] = None) -> int:
     parser.add_argument(
         "--version",
         action="version",
-        version="%(prog)s {0}".format(VERSION),
+        version=f"%(prog)s {VERSION}",
     )
     parser.add_argument(
         "-v",

@@ -50,11 +50,11 @@ def build_makefile(
     # create a temporary file
     with tempfile.NamedTemporaryFile(mode="w") as makefile:
         # read the user's file
-        with open(user_file) as user_makefile:
+        with open(user_file, encoding="utf-8") as user_makefile:
             user_data = user_makefile.read()
 
         # get the path to this package's data to include our "conf.mk"
-        include_str = "include {}".format(get_resource("conf.mk"))
+        include_str = f"include {get_resource('conf.mk')}"
 
         # build the necessary file data
         if project_name is None:
@@ -67,7 +67,7 @@ def build_makefile(
 
         write_data = ""
         for key, item in data.items():
-            write_data += "{} := {}".format(key, item) + os.linesep
+            write_data += f"{key} := {item}" + os.linesep
         write_data += include_str + os.linesep + os.linesep + user_data
 
         # write the file and return the path
@@ -94,7 +94,7 @@ def entry(args: argparse.Namespace) -> int:
         for target in args.targets:
             target_str = target
             if args.prefix and "=" not in target_str:
-                target_str = "{}-{}".format(args.prefix, target_str)
+                target_str = f"{args.prefix}-{target_str}"
             invocation_args.append(target_str)
 
         # start the process

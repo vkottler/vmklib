@@ -51,7 +51,7 @@ def get_long_description(desc_filename: str = "README.md") -> str:
     """Get a package's long-description data from a file."""
 
     try:
-        with open(desc_filename, "r") as desc_file:
+        with open(desc_filename, "r", encoding="utf-8") as desc_file:
             long_description = desc_file.read()
         return long_description
     except FileNotFoundError:
@@ -68,7 +68,7 @@ def get_requirements(reqs_filename: str) -> List[str]:
     """Get a package's requirements based on its requirements file."""
 
     try:
-        with open(reqs_filename, "r") as reqs_file:
+        with open(reqs_filename, "r", encoding="utf-8") as reqs_file:
             reqs = reqs_file.read().strip().split()
         return reqs
     except FileNotFoundError:
@@ -107,13 +107,12 @@ def setup(
         entry_override = pkg_info["name"]
 
     if console_overrides is None:
-        entry_str = "{}={}.entry:main".format(entry_override, pkg_info["slug"])
+        entry_str = f"{entry_override}={pkg_info['slug']}.entry:main"
         console_overrides = [entry_str]
 
     if url_override is None:
-        url_fstring = "https://github.com/{}/{}"
-        url_override = url_fstring.format(
-            author_info["username"], pkg_info["name"]
+        url_override = (
+            f"https://github.com/{author_info['username']}/{pkg_info['name']}"
         )
 
     if classifiers_override is None:
@@ -123,7 +122,7 @@ def setup(
         ]
     for version in pkg_info.get("versions", []):
         classifiers_override.append(
-            "Programming Language :: Python :: {}".format(version)
+            f"Programming Language :: Python :: {version}"
         )
 
     req_files = [default_requirements_file()]
@@ -151,9 +150,7 @@ def setup(
                     exclude=["tests", "tests.*"]
                 ),
                 classifiers=classifiers_override,
-                python_requires=">={}".format(
-                    pkg_info.get("versions", ["3.6"])[0]
-                ),
+                python_requires=f">={pkg_info.get('versions', ['3.6'])[0]}",
                 entry_points={"console_scripts": console_overrides},
                 install_requires=requirements,
                 package_data={
