@@ -2,11 +2,11 @@
     =====================================
     generator=datazen
     version=1.7.9
-    hash=68ab66ce22f935c267f1a7d2e399c3fe
+    hash=6c12e8f696d98de3e8f33dd259e94794
     =====================================
 -->
 
-# vmklib ([0.5.0](https://pypi.org/project/vmklib/))
+# vmklib ([0.5.1](https://pypi.org/project/vmklib/))
 
 [![python](https://img.shields.io/pypi/pyversions/vmklib.svg)](https://pypi.org/project/vmklib/)
 ![Build Status](https://github.com/vkottler/vmklib/workflows/Python%20package/badge.svg)
@@ -91,7 +91,9 @@ Prefix: `dz-`
 
 **describe** - Run `dz` with `-d` to describe cache contents.
 
-**upgrade** - Upgrade `datazen` in the resolved virtual environment with `pip`.
+**install** - Install `datazen` in the resolved virtual environment (with `pip`). This depends on a "concrete" underlying target that allows it to be installed only once.
+
+**upgrade** - Upgrade `datazen` in the resolved virtual environment (with `pip`).
 
 
 ## grip

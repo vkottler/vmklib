@@ -1,4 +1,6 @@
-description: "Targets for use with the [datazen](https://pypi.org/project/datazen/) package."
+description: >-
+  Targets for use with the [datazen](https://pypi.org/project/datazen/)
+  package.
 prefix: dz-
 args:
 - name: DZ_DIR
@@ -14,5 +16,11 @@ targets:
   description: "Run `dz` with `-c` to clean the cache."
 - name: describe
   description: "Run `dz` with `-d` to describe cache contents."
+- name: install
+  description: >-
+    Install `datazen` in the resolved virtual environment (with `pip`). This
+    depends on a "concrete" underlying target that allows it to be installed
+    only once.
 - name: upgrade
-  description: "Upgrade `datazen` in the resolved virtual environment with `pip`."
+  description: >-
+    Upgrade `datazen` in the resolved virtual environment (with `pip`).
