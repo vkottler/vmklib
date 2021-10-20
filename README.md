@@ -1,12 +1,12 @@
 <!--
     =====================================
     generator=datazen
-    version=1.7.9
-    hash=6c12e8f696d98de3e8f33dd259e94794
+    version=1.8.4
+    hash=ef74f6ddacc7d5aedc85ab6ba6cd4503
     =====================================
 -->
 
-# vmklib ([0.5.1](https://pypi.org/project/vmklib/))
+# vmklib ([0.5.2](https://pypi.org/project/vmklib/))
 
 [![python](https://img.shields.io/pypi/pyversions/vmklib.svg)](https://pypi.org/project/vmklib/)
 ![Build Status](https://github.com/vkottler/vmklib/workflows/Python%20package/badge.svg)
@@ -179,6 +179,8 @@ Prefix: `python-`
 **format-check** - Run [black](https://pypi.org/project/black/) with the `--check` argument.
 
 **tags** - Create a `tags` file for the project using [ctags](https://github.com/universal-ctags/ctags) (must be installed).
+
+**edit** - Create `tags` and then open $EDITOR in the project directory.
 
 **test** - Run all of a project's tests with [pytest](https://docs.pytest.org/en/stable/).
 

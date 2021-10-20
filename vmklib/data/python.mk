@@ -4,7 +4,7 @@ PY_PREFIX := python-
         $(PY_PREFIX)host-coverage $(PY_PREFIX)all $(PY_PREFIX)clean \
         $(PY_PREFIX)dist $(PY_PREFIX)upload $(PY_PREFIX)editable \
         $(PY_PREFIX)stubs $(PY_PREFIX)format $(PY_PREFIX)format-check \
-        $(PY_PREFIX)sa-types
+        $(PY_PREFIX)sa-types $(PY_PREFIX)edit
 
 PY_LINT_EXTRA_ARGS :=
 PY_LINT_ARGS := $($(PROJ)_DIR)/tests $($(PROJ)_DIR)/setup.py \
@@ -31,6 +31,9 @@ $(PY_PREFIX)format: | $(VENV_CONC)
 $(PY_PREFIX)tags:
 	ctags -f $($(PROJ)_DIR)/tags -R \
 		$($(PROJ)_DIR)/$(PROJ) $($(PROJ)_DIR)/tests
+
+$(PY_PREFIX)edit: $(PY_PREFIX)tags | $(VENV_CONC)
+	. $(VENV_ACTIVATE) && cd $($(PROJ)_DIR) && $(EDITOR)
 
 $(PY_PREFIX)format-check: | $(VENV_CONC)
 	$(PYTHON_BIN)/black --check $(PY_BLACK_ARGS)

@@ -8,6 +8,7 @@ REQ_FILES        ?= requirements dev_requirements
 VENV_NAME        := venv$(PYTHON_VERSION)
 VENV_DIR         := $($(PROJ)_DIR)/$(VENV_NAME)
 PYTHON_BIN       := $(VENV_DIR)/bin
+VENV_ACTIVATE    := $(PYTHON_BIN)/activate
 
 VENV_CONC        := $(call to_concrete, $(VENV_NAME))
 REQ_CONC         := $(REQ_FILES:%=$(call to_concrete,$(VENV_NAME)/req-%))

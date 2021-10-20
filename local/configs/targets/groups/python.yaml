@@ -28,6 +28,8 @@ targets:
   description: "Run [black](https://pypi.org/project/black/) with the `--check` argument."
 - name: tags
   description: "Create a `tags` file for the project using [ctags](https://github.com/universal-ctags/ctags) (must be installed)."
+- name: edit
+  description: "Create `tags` and then open $EDITOR in the project directory."
 - name: test
   description: "Run all of a project's tests with [pytest](https://docs.pytest.org/en/stable/)."
 - name: test-%
