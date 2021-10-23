@@ -33,7 +33,13 @@ def inject_self(working_dir: str) -> Iterator[None]:
             os.mkdir(to_create)
 
             # copy our sources into their package
-            to_copy = ["__init__.py", "app.py", "entry.py", "setup.py"]
+            to_copy = [
+                "__init__.py",
+                "app.py",
+                "entry.py",
+                "setup.py",
+                "py.typed",
+            ]
             vmklib_dir = os.path.dirname(__file__)
             for fname in to_copy:
                 dest = os.path.join(to_create, fname)
