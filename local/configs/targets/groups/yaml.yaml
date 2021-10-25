@@ -1,0 +1,15 @@
+---
+description: >-
+  Targets for interacting with [yaml](https://yaml.org/) data (files).
+prefix: yaml-
+args:
+  - name: YAMLLINT_ARGS
+    description: >-
+      Set to provide arguments to `yamllint` (such as the path to a config
+      file).
+targets:
+  - name: yaml-lint-install
+    description: >-
+      Install [yamllint](https://yamllint.readthedocs.io/en/stable/index.html).
+  - name: yaml-lint-%
+    description: Execute `yamllint` against `$*`.

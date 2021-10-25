@@ -1,14 +1,26 @@
-description: "Targets for managing [Python virtual environments](https://docs.python.org/3/library/venv.html)."
+---
+description: >-
+  Targets for managing
+  [Python virtual environments](https://docs.python.org/3/library/venv.html).
 prefix: (no prefix)
 args:
-- name: PYTHON_VERSION
-  description: "The version of Python to create a virtual environment for. (default: `3.8`)"
-- name: REQUIREMENTS_DIR
-  description: "The location of the directory containing requirements files. (default: `requirements` in the project root)"
-- name: REQ_FILES
-  description: "Text files to install requirements from (using `-r`), in the requirements directory. (default: `requirements.txt` and `dev_requirements.txt`)"
+  - name: PYTHON_VERSION
+    description: >-
+      The version of Python to create a virtual environment for.
+      (default: `3.8`)
+  - name: REQUIREMENTS_DIR
+    description: >-
+      The location of the directory containing requirements files.
+      (default: `requirements` in the project root)
+  - name: REQ_FILES
+    description: >-
+      Text files to install requirements from (using `-r`), in the requirements
+      directory. (default: `requirements.txt` and `dev_requirements.txt`)
 targets:
-- name: venv
-  description: "Create or update the resolved virtual environment, if necessary."
-- name: venv-clean
-  description: "Remove any virtual environments from the project root (or sub-directories)."
+  - name: venv
+    description: >-
+      Create or update the resolved virtual environment, if necessary.
+  - name: venv-clean
+    description: >-
+      Remove any virtual environments from the project root
+      (or sub-directories).

@@ -1,12 +1,12 @@
 <!--
     =====================================
     generator=datazen
-    version=1.8.4
-    hash=d691f6d8279e4c2ac7996e3427354ea0
+    version=1.8.5
+    hash=0a4a31c2133817a149392d11c3a01d4d
     =====================================
 -->
 
-# vmklib ([0.5.3](https://pypi.org/project/vmklib/))
+# vmklib ([0.6.0](https://pypi.org/project/vmklib/))
 
 [![python](https://img.shields.io/pypi/pyversions/vmklib.svg)](https://pypi.org/project/vmklib/)
 ![Build Status](https://github.com/vkottler/vmklib/workflows/Python%20package/badge.svg)
@@ -34,11 +34,12 @@ else with simple package updates.
 * [python](#python)
 * [venv](#venv)
 * [vmklib](#vmklib)
+* [yaml](#yaml)
 
 # Command-line Options
 
 ```
-$ ./venv3.8/bin/mk -h
+$ ./venv3.7/bin/mk -h
 
 usage: mk [-h] [--version] [-v] [-C DIR] [-p PREFIX] [-f FILE] [-P PROJ]
           [targets [targets ...]]
@@ -82,7 +83,6 @@ Prefix: `dz-`
 
 **DZ_VERBOSE** - Setting this passes `-v` as an additional argument.
 
-
 ### Commands
 
 **sync** - Run `dz`, executing the default target.
@@ -95,18 +95,15 @@ Prefix: `dz-`
 
 **upgrade** - Upgrade `datazen` in the resolved virtual environment (with `pip`).
 
-
 ## grip
 
 Targets for rendering [GitHub Markdown](https://docs.github.com/en/rest/reference/markdown) with [grip](https://github.com/joeyespo/grip).
-
 
 Prefix: `grip-`
 
 ### Optional Arguments
 
-**SECRETHUB_GRIP_PATH** - The full path for the `secrethub read` command to source a [GitHub personal access token](https://docs.github.com/en/github/authenticating-to-github/creating-a-personal-access-token) from, requires [secrethub](https://secrethub.io/).
-
+**SECRETHUB_GRIP_PATH** - The full path for the `secrethub read` command to source a [GitHub personal access token](https://docs.github.com/en/github/ authenticating-to-github/creating-a-personal-access-token) from, requires [secrethub](https://secrethub.io/).
 
 **GRIP_PORT** - The `host:port` String to serve the rendered results on.
 
@@ -114,13 +111,11 @@ Prefix: `grip-`
 
 **GRIP_FILE** - The file to render, path is relative to project root.
 
-
 ### Commands
 
 **check-env** - Checks that `GRIP_TOKEN` is set in the environment, errors if not.
 
 **render** - Serve `README.md` with `grip`.
-
 
 ## pypi
 
@@ -134,20 +129,15 @@ Prefix: `pypi-`
 
 **SECRETHUB_PYPI_PATH** - The full path for the `secrethub read` command to source a [PyPI API token](https://pypi.org/help/#apitoken) from, requires [secrethub](https://secrethub.io/).
 
-
-
 ### Commands
 
 **check-env** - Enforces that `TWINE_USERNAME` and `TWINE_PASSWORD` are set in the environment, errors if not.
 
-
 **upload** - Attempt to upload everything in `dist` to [PyPI](https://pypi.org/).
-
 
 ## python
 
 Targets for executing common, [Python](https://www.python.org/) workflow tasks.
-
 
 Prefix: `python-`
 
@@ -162,7 +152,6 @@ Prefix: `python-`
 **PYTEST_EXTRA_ARGS** - Add additional arguments to the default set.
 
 **PYTHON_COV_PORT** - Port to host test-coverage HTML on (using `http.server`).
-
 
 ### Commands
 
@@ -200,7 +189,6 @@ Prefix: `python-`
 
 **editable** - Install the project's package in editable mode (`-e` option) to the virtual environment.
 
-
 ## venv
 
 Targets for managing [Python virtual environments](https://docs.python.org/3/library/venv.html).
@@ -215,20 +203,17 @@ Prefix: `(no prefix)`
 
 **REQ_FILES** - Text files to install requirements from (using `-r`), in the requirements directory. (default: `requirements.txt` and `dev_requirements.txt`)
 
-
 ### Commands
 
 **venv** - Create or update the resolved virtual environment, if necessary.
 
 **venv-clean** - Remove any virtual environments from the project root (or sub-directories).
 
-
 ## vmklib
 
 Targets related to this package, itself.
 
 Prefix: `mk-`
-
 
 ### Commands
 
@@ -239,3 +224,19 @@ Prefix: `mk-`
 **header** - Print the `Makefile` header that should be used when integrating this package.
 
 **todo** - Perform a case-insensitive search for `todo` in project directories.
+
+## yaml
+
+Targets for interacting with [yaml](https://yaml.org/) data (files).
+
+Prefix: `yaml-`
+
+### Optional Arguments
+
+**YAMLLINT_ARGS** - Set to provide arguments to `yamllint` (such as the path to a config file).
+
+### Commands
+
+**yaml-lint-install** - Install [yamllint](https://yamllint.readthedocs.io/en/stable/index.html).
+
+**yaml-lint-%** - Execute `yamllint` against `$*`.

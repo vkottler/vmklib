@@ -1,17 +1,19 @@
+---
 description: "Targets for uploading packages to [PyPI](https://pypi.org/)."
 prefix: pypi-
 args:
-- name: UPLOAD_ENV
-  description: "Output file to write to for sourcing credentials."
-- name: SECRETHUB_PYPI_PATH
-  description: >
-    The full path for the `secrethub read` command to source a
-    [PyPI API token](https://pypi.org/help/#apitoken)
-    from, requires [secrethub](https://secrethub.io/).
+  - name: UPLOAD_ENV
+    description: "Output file to write to for sourcing credentials."
+  - name: SECRETHUB_PYPI_PATH
+    description: >-
+      The full path for the `secrethub read` command to source a
+      [PyPI API token](https://pypi.org/help/#apitoken)
+      from, requires [secrethub](https://secrethub.io/).
 targets:
-- name: check-env
-  description: >
-    Enforces that `TWINE_USERNAME` and `TWINE_PASSWORD` are set in the
-    environment, errors if not.
-- name: upload
-  description: "Attempt to upload everything in `dist` to [PyPI](https://pypi.org/)."
+  - name: check-env
+    description: >-
+      Enforces that `TWINE_USERNAME` and `TWINE_PASSWORD` are set in the
+      environment, errors if not.
+  - name: upload
+    description: >-
+      Attempt to upload everything in `dist` to [PyPI](https://pypi.org/).

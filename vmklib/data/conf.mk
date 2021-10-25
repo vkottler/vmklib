@@ -42,3 +42,4 @@ include $(MK_SRC_DIR)/pypi.mk
 include $(MK_SRC_DIR)/vmklib.mk
 include $(MK_SRC_DIR)/datazen.mk
 include $(MK_SRC_DIR)/grip.mk
+include $(MK_SRC_DIR)/yaml.mk

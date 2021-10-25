@@ -1,53 +1,54 @@
+---
 default_target: "groups-all"
 
 params:
   project: "vmklib"
-  python_version: "3.8"
+  python_version: "3.7"
   entry: "mk"
 
 includes:
-- "config/includes/python.yaml"
-- "config/includes/help.yaml"
+  - "config/includes/python.yaml"
+  - "config/includes/help.yaml"
 
 configs:
-- "local/configs"
+  - "local/configs"
 
 variables:
-- "local/variables"
+  - "local/variables"
 
 templates:
-- "local/templates"
+  - "local/templates"
 
 schemas:
-- "local/schemas"
+  - "local/schemas"
 
 schema_types:
-- "local/schema_types"
+  - "local/schema_types"
 
 compiles:
-- name: "local"
+  - name: "local"
 
 renders:
-- name: "README.md"
-  output_dir: "."
-  dependencies:
-  - "compiles-local"
-  - "commands-help"
-  - "renders-python_readme_header.md"
-- name: "header.mk"
-  output_dir: "{{project}}/data/data"
-  dependencies:
-  - "compiles-local"
-- name: "LICENSE"
-  key: "LICENSE_MIT"
-  output_dir: "."
-  dependencies:
-  - "compiles-local"
+  - name: "README.md"
+    output_dir: "."
+    dependencies:
+      - "compiles-local"
+      - "commands-help"
+      - "renders-python_readme_header.md"
+  - name: "header.mk"
+    output_dir: "{{project}}/data/data"
+    dependencies:
+      - "compiles-local"
+  - name: "LICENSE"
+    key: "LICENSE_MIT"
+    output_dir: "."
+    dependencies:
+      - "compiles-local"
 
 groups:
-- name: "all"
-  dependencies:
-  - "groups-python"
-  - "renders-README.md"
-  - "renders-header.mk"
-  - "renders-LICENSE"
+  - name: "all"
+    dependencies:
+      - "groups-python"
+      - "renders-README.md"
+      - "renders-header.mk"
+      - "renders-LICENSE"

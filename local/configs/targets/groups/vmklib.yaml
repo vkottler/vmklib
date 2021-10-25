@@ -1,12 +1,17 @@
+---
 description: "Targets related to this package, itself."
 prefix: mk-
 args: []
 targets:
-- name: upgrade
-  description: "Upgrade (or install) `vmklib` in the resolved virtual environment."
-- name: sys-upgrade
-  description: "Upgrade (or install) `vmklib` as a system or user package."
-- name: header
-  description: "Print the `Makefile` header that should be used when integrating this package."
-- name: todo
-  description: "Perform a case-insensitive search for `todo` in project directories."
+  - name: upgrade
+    description: >-
+      Upgrade (or install) `vmklib` in the resolved virtual environment.
+  - name: sys-upgrade
+    description: "Upgrade (or install) `vmklib` as a system or user package."
+  - name: header
+    description: >-
+      Print the `Makefile` header that should be used when integrating this
+      package.
+  - name: todo
+    description: >-
+      Perform a case-insensitive search for `todo` in project directories.

@@ -1,22 +1,25 @@
-description: >
+---
+description: >-
   Targets for rendering
   [GitHub Markdown](https://docs.github.com/en/rest/reference/markdown)
   with [grip](https://github.com/joeyespo/grip).
 prefix: grip-
 args:
-- name: SECRETHUB_GRIP_PATH
-  description: >
-    The full path for the `secrethub read` command to source a
-    [GitHub personal access token](https://docs.github.com/en/github/authenticating-to-github/creating-a-personal-access-token)
-    from, requires [secrethub](https://secrethub.io/).
-- name: GRIP_PORT
-  description: "The `host:port` String to serve the rendered results on."
-- name: GRIP_ENV
-  description: "Output file to write to for sourcing credentials."
-- name: GRIP_FILE
-  description: "The file to render, path is relative to project root."
+  - name: SECRETHUB_GRIP_PATH
+    description: >-
+      The full path for the `secrethub read` command to source a
+      [GitHub personal access token](https://docs.github.com/en/github/
+      authenticating-to-github/creating-a-personal-access-token)
+      from, requires [secrethub](https://secrethub.io/).
+  - name: GRIP_PORT
+    description: "The `host:port` String to serve the rendered results on."
+  - name: GRIP_ENV
+    description: "Output file to write to for sourcing credentials."
+  - name: GRIP_FILE
+    description: "The file to render, path is relative to project root."
 targets:
-- name: check-env
-  description: "Checks that `GRIP_TOKEN` is set in the environment, errors if not."
-- name: render
-  description: "Serve `README.md` with `grip`."
+  - name: check-env
+    description: >-
+      Checks that `GRIP_TOKEN` is set in the environment, errors if not.
+  - name: render
+    description: "Serve `README.md` with `grip`."

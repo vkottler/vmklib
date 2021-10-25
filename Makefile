@@ -1,6 +1,6 @@
 # put names of targets here that aren't real file outputs (not essential, but
 # idiomatically correct)
-.PHONY: all clean edit
+.PHONY: all clean edit lint
 
 # set this to control what target is resolved by only invoking 'make'
 .DEFAULT_GOAL  := all
@@ -26,9 +26,11 @@ endif
 
 PY_EXTRA_LINT_ARGS += $($(PROJ)_DIR)/run.py
 
-all: $(PY_PREFIX)lint $(PY_PREFIX)sa $(PY_PREFIX)test
+all: $(PY_PREFIX)lint $(PY_PREFIX)sa $(PY_PREFIX)test lint
 
 edit: $(PY_PREFIX)edit
 
 clean: $(DZ_PREFIX)clean $(PY_PREFIX)clean venv-clean
 	@rm -rf $(BUILD_DIR)
+
+lint: $(YAML_PREFIX)lint-local $(YAML_PREFIX)lint-manifest.yaml
