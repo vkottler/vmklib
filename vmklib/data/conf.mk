@@ -32,9 +32,18 @@ makefile_to_dir = $(patsubst %/$(2),%,$(1))
 MK_CFG_NAME ?= conf.mk
 get_current_makefile_dir = $(call makefile_to_dir,$(call get_current_makefile),$(MK_CFG_NAME))
 
+# Package directories.
 MK_SRC_DIR  := $(call get_current_makefile_dir)
 MK_PY_DIR   := $(MK_SRC_DIR)/..
 MK_DATA_DIR := $(MK_SRC_DIR)/data
+
+# Set a root directory for the current git repository if we're in one,
+# otherwise use the project directory.
+GIT_ROOT    := $(shell git rev-parse --show-toplevel 2>/dev/null)
+ifeq ($(GIT_ROOT),)
+GIT_ROOT    := $($(PROJ)_DIR)
+endif
+
 include $(MK_SRC_DIR)/functions.mk
 include $(MK_SRC_DIR)/venv.mk
 include $(MK_SRC_DIR)/python.mk
