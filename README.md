@@ -2,11 +2,11 @@
     =====================================
     generator=datazen
     version=1.9.0
-    hash=8e733e62eff190dbf140bf0eebc25207
+    hash=b5907a80056ea5de6aecd9ce38225310
     =====================================
 -->
 
-# vmklib ([0.6.1](https://pypi.org/project/vmklib/))
+# vmklib ([0.7.0](https://pypi.org/project/vmklib/))
 
 [![python](https://img.shields.io/pypi/pyversions/vmklib.svg)](https://pypi.org/project/vmklib/)
 ![Build Status](https://github.com/vkottler/vmklib/workflows/Python%20package/badge.svg)
@@ -145,17 +145,19 @@ Prefix: `python-`
 
 **PY_LINT_ARGS** - Set to override the default, adds the `tests` directory and `PY_LINT_EXTRA_ARGS`.
 
+**PY_WIDTH** - Override (from `79`) to set `--line-length` arguments for formatters.
+
 **PY_LINT_EXTRA_ARGS** - Set to add additional linting arguments.
 
 **PYTEST_ARGS** - Set to override the default, additional [pytest](https://docs.pytest.org/en/stable/) arguments.
 
 **PYTEST_EXTRA_ARGS** - Add additional arguments to the default set.
 
-**PYTHON_COV_PORT** - Port to host test-coverage HTML on (using `http.server`).
+**PYTHON_COV_PORT** - Port to host test-coverage HTML on (using `http.server`). Defaults to zero.
 
 ### Commands
 
-**lint** - Run [pylint](https://www.pylint.org/) and [flake8](https://flake8.pycqa.org/en/latest/) against a project's package sources.
+**lint** - Run [pylint](https://www.pylint.org/) and [flake8](https://flake8.pycqa.org/en/latest/) against a project's package sources. Also runs the format checkers.
 
 **sa** - Run [mypy](http://mypy-lang.org/) against a project's package sources.
 
@@ -163,9 +165,9 @@ Prefix: `python-`
 
 **stubs** - Run [stubgen](https://mypy.readthedocs.io/en/stable/stubgen.html) against a project's package sources.
 
-**format** - Run [black](https://pypi.org/project/black/) against a project's package sources.
+**format** - Run [black](https://pypi.org/project/black/) and [isort](https://pypi.org/project/isort/) against a project's package sources.
 
-**format-check** - Run [black](https://pypi.org/project/black/) with the `--check` argument.
+**format-check** - Run [black](https://pypi.org/project/black/) with the `--check` argument and [isort](https://pypi.org/project/isort/) with the `--check-only` argument.
 
 **tags** - Create a `tags` file for the project using [ctags](https://github.com/universal-ctags/ctags) (must be installed).
 

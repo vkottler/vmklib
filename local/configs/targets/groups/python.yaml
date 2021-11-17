@@ -8,6 +8,9 @@ args:
     description: >-
       Set to override the default, adds the `tests` directory and
       `PY_LINT_EXTRA_ARGS`.
+  - name: PY_WIDTH
+    description: >-
+      Override (from `79`) to set `--line-length` arguments for formatters.
   - name: PY_LINT_EXTRA_ARGS
     description: "Set to add additional linting arguments."
   - name: PYTEST_ARGS
@@ -17,13 +20,15 @@ args:
   - name: PYTEST_EXTRA_ARGS
     description: "Add additional arguments to the default set."
   - name: PYTHON_COV_PORT
-    description: "Port to host test-coverage HTML on (using `http.server`)."
+    description: >-
+      Port to host test-coverage HTML on (using `http.server`).
+      Defaults to zero.
 targets:
   - name: lint
     description: >-
       Run [pylint](https://www.pylint.org/) and
       [flake8](https://flake8.pycqa.org/en/latest/) against a project's
-      package sources.
+      package sources. Also runs the format checkers.
   - name: sa
     description: >-
       Run [mypy](http://mypy-lang.org/) against a project's package sources.
@@ -37,11 +42,14 @@ targets:
       a project's package sources.
   - name: format
     description: >-
-      Run [black](https://pypi.org/project/black/) against a project's package
+      Run [black](https://pypi.org/project/black/) and
+      [isort](https://pypi.org/project/isort/) against a project's package
       sources.
   - name: format-check
     description: >-
-      Run [black](https://pypi.org/project/black/) with the `--check` argument.
+      Run [black](https://pypi.org/project/black/) with the `--check` argument
+      and [isort](https://pypi.org/project/isort/) with the `--check-only`
+      argument.
   - name: tags
     description: >-
       Create a `tags` file for the project using

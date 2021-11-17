@@ -5,10 +5,11 @@ datazen - Test the 'setup' module.
 # third-party
 import os
 import tempfile
+
 import setuptools  # type: ignore
 
 # module under test
-from vmklib import PKG_NAME, VERSION, DESCRIPTION
+from vmklib import DESCRIPTION, PKG_NAME, VERSION
 from vmklib.setup import setup as setup_fn
 
 

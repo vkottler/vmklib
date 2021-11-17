@@ -12,7 +12,7 @@ import time
 from vmklib.entry import main as mk_main
 
 # internal
-from . import get_resource, get_args
+from . import get_args, get_resource
 
 
 def test_interrupt():

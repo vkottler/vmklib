@@ -10,3 +10,4 @@ pytest-cov
 mypy
 black
 pynvim
+isort

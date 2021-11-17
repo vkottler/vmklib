@@ -7,7 +7,7 @@ from contextlib import contextmanager
 import os
 import shutil
 import tempfile
-from typing import Any, Dict, List, Iterator
+from typing import Any, cast, Dict, Iterator, List, Union
 
 # third-party
 import setuptools  # type: ignore
@@ -109,23 +109,42 @@ def setup(
     about certain aspects of a package's structure.
     """
 
-    if entry_override is None:
-        entry_override = pkg_info["name"]
-
-    if console_overrides is None:
-        entry_str = f"{entry_override}={pkg_info['slug']}.entry:main"
-        console_overrides = [entry_str]
-
-    if url_override is None:
-        url_override = (
-            f"https://github.com/{author_info['username']}/{pkg_info['name']}"
-        )
-
-    if classifiers_override is None:
-        classifiers_override = [
+    defaults: Dict[str, Union[str, List[str]]] = {
+        "entry_override": pkg_info["name"],
+        "console_overrides": [
+            f"{entry_override}={pkg_info['slug']}.entry:main"
+        ],
+        "url_override": (
+            f"https://github.com/{author_info['username']}/"
+            f"{pkg_info['name']}"
+        ),
+        "classifiers_override": [
             "License :: OSI Approved :: MIT License",
             "Operating System :: OS Independent",
-        ]
+        ],
+    }
+
+    # Resolve defaults if necessary.
+    entry_override = (
+        cast(str, defaults["entry_override"])
+        if entry_override is None
+        else entry_override
+    )
+    console_overrides = (
+        cast(List[str], defaults["console_overrides"])
+        if console_overrides is None
+        else console_overrides
+    )
+    url_override = cast(
+        str, defaults["url_override"] if url_override is None else url_override
+    )
+    classifiers_override = cast(
+        List[str],
+        defaults["classifiers_override"]
+        if classifiers_override is None
+        else classifiers_override,
+    )
+
     for version in pkg_info.get("versions", []):
         classifiers_override.append(
             f"Programming Language :: Python :: {version}"
