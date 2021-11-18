@@ -16,8 +16,8 @@ import sys
 from typing import List
 
 # internal
-from vmklib import VERSION, DESCRIPTION
-from vmklib.app import entry, add_app_args
+from vmklib import DESCRIPTION, VERSION
+from vmklib.app import add_app_args, entry
 
 
 def main(argv: List[str] = None) -> int:

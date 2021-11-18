@@ -81,6 +81,11 @@ targets:
   - name: dist
     description: >-
       Build `sdist` and `bdist_wheel` with `setup.py` in the project root.
+  - name: dist-with-stubs
+    description: >-
+      Build `sdist` and `bdist_wheel` with `setup.py` in the project root, this
+      also runs `stubgen` ahead of packaging so that stubs are included in the
+      source distribution and wheel.
   - name: upload
     description: >-
       Use [twine](https://pypi.org/project/twine/) to upload the built package

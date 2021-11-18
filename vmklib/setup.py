@@ -7,7 +7,7 @@ from contextlib import contextmanager
 import os
 import shutil
 import tempfile
-from typing import Any, cast, Dict, Iterator, List, Union
+from typing import Any, Dict, Iterator, List, Set, Union, cast
 
 # third-party
 import setuptools  # type: ignore
@@ -64,21 +64,21 @@ def get_long_description(desc_filename: str = "README.md") -> str:
         return ""
 
 
-def default_requirements_file() -> str:
+def default_requirements_file(directory: str) -> str:
     """Default location where"""
 
-    return os.path.join(REQ_DIR, "requirements.txt")
+    return os.path.join(directory, "requirements.txt")
 
 
-def get_requirements(reqs_filename: str) -> List[str]:
+def get_requirements(reqs_filename: str) -> Set[str]:
     """Get a package's requirements based on its requirements file."""
 
     try:
         with open(reqs_filename, "r", encoding="utf-8") as reqs_file:
-            reqs = reqs_file.read().strip().split()
-        return reqs
+            reqs: List[str] = reqs_file.read().strip().split()
+        return set(reqs)
     except FileNotFoundError:
-        return []
+        return set()
 
 
 def get_data_files(pkg_name: str, data_dir: str = "data") -> List[str]:
@@ -103,13 +103,14 @@ def setup(
     entry_override: str = None,
     console_overrides: List[str] = None,
     classifiers_override: List[str] = None,
+    requirements: Set[str] = None,
 ) -> None:
     """
     Build a 'setuptools.setup' call with sane defaults and making assumptions
     about certain aspects of a package's structure.
     """
 
-    defaults: Dict[str, Union[str, List[str]]] = {
+    defaults: Dict[str, Union[str, List[str], Set[str]]] = {
         "entry_override": pkg_info["name"],
         "console_overrides": [
             f"{entry_override}={pkg_info['slug']}.entry:main"
@@ -122,6 +123,7 @@ def setup(
             "License :: OSI Approved :: MIT License",
             "Operating System :: OS Independent",
         ],
+        "requirements": set(),
     }
 
     # Resolve defaults if necessary.
@@ -144,16 +146,20 @@ def setup(
         if classifiers_override is None
         else classifiers_override,
     )
+    requirements = cast(
+        Set[str],
+        defaults["requirements"] if requirements is None else requirements,
+    )
 
     for version in pkg_info.get("versions", []):
         classifiers_override.append(
             f"Programming Language :: Python :: {version}"
         )
 
-    req_files = [default_requirements_file()]
-    requirements = []
+    # Find requirements files inside the package's root directory.
+    req_files = [default_requirements_file(pkg_info["slug"])]
     for req_file in req_files:
-        requirements += get_requirements(req_file)
+        requirements |= get_requirements(req_file)
 
     with tempfile.TemporaryDirectory() as temp_dir:
         working_dir = temp_dir
@@ -177,13 +183,12 @@ def setup(
                 classifiers=classifiers_override,
                 python_requires=f">={pkg_info.get('versions', ['3.6'])[0]}",
                 entry_points={"console_scripts": console_overrides},
-                install_requires=requirements,
+                install_requires=list(requirements),
                 package_data={
                     pkg_info["slug"]: (
                         get_data_files(pkg_info["slug"])
-                        + ["py.typed", "*.pyi"]
+                        + ["py.typed", "*.pyi", "*.txt"]
                     ),
                     "": ["*.pyi"],
-                    REQ_DIR: [os.path.basename(req) for req in req_files],
                 },
             )

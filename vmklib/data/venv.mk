@@ -2,7 +2,7 @@
 
 # set the Python version if it hasn't been set yet
 PYTHON_VERSION   ?= 3.8
-REQUIREMENTS_DIR ?= $($(PROJ)_DIR)/requirements
+REQUIREMENTS_DIR ?= $($(PROJ)_DIR)/$(PROJ)
 REQ_FILES        ?= requirements dev_requirements
 
 VENV_NAME        := venv$(PYTHON_VERSION)

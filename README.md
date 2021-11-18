@@ -2,11 +2,11 @@
     =====================================
     generator=datazen
     version=1.9.0
-    hash=b5907a80056ea5de6aecd9ce38225310
+    hash=cf924abfeef361b00fa91b29f54b1324
     =====================================
 -->
 
-# vmklib ([0.7.0](https://pypi.org/project/vmklib/))
+# vmklib ([0.7.1](https://pypi.org/project/vmklib/))
 
 [![python](https://img.shields.io/pypi/pyversions/vmklib.svg)](https://pypi.org/project/vmklib/)
 ![Build Status](https://github.com/vkottler/vmklib/workflows/Python%20package/badge.svg)
@@ -186,6 +186,8 @@ Prefix: `python-`
 **clean** - Remove compiled and cached files, test coverage, built package artifacts and other caches.
 
 **dist** - Build `sdist` and `bdist_wheel` with `setup.py` in the project root.
+
+**dist-with-stubs** - Build `sdist` and `bdist_wheel` with `setup.py` in the project root, this also runs `stubgen` ahead of packaging so that stubs are included in the source distribution and wheel.
 
 **upload** - Use [twine](https://pypi.org/project/twine/) to upload the built package to [PyPI](https://pypi.org/).
 

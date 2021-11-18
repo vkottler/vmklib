@@ -1,7 +1,7 @@
 # =====================================
 # generator=datazen
 # version=1.9.0
-# hash=79a081b91b996591c811f3f6269519de
+# hash=1520f3bd12b39f4ad8f5e886f2c52397
 # =====================================
 
 """
@@ -9,5 +9,5 @@ vmklib - Useful defaults and other package metadata.
 """
 
 PKG_NAME = "vmklib"
-VERSION = "0.7.0"
+VERSION = "0.7.1"
 DESCRIPTION = "Simplify project workflows by standardizing use of GNU Make."
