@@ -1,7 +1,7 @@
 # =====================================
 # generator=datazen
 # version=1.9.0
-# hash=76b4488474014107d8c26255f2c388e6
+# hash=091f7871148ddd40eef4ad38027e0162
 # =====================================
 
 """
@@ -13,9 +13,8 @@ from vmklib import DESCRIPTION, PKG_NAME, VERSION
 
 try:
     from vmklib.setup import setup
-except ImportError:
+except (ImportError, ModuleNotFoundError):
     from vmklib_bootstrap.setup import setup  # type: ignore
-
 
 author_info = {
     "name": "Vaughn Kottler",

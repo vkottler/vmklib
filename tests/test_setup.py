@@ -28,6 +28,7 @@ def test_setup_fn():
         "version": VERSION,
         "description": DESCRIPTION,
         "versions": ["3"],
+        "force_copy": True,
     }
     pkg_info["slug"] = pkg_info["name"].replace("-", "_")
 

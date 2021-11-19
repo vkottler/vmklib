@@ -12,13 +12,13 @@ from typing import Any, Dict, Iterator, List, Set, Union, cast
 # third-party
 import setuptools  # type: ignore
 
-# internal
-from vmklib import PKG_NAME
-
 
 @contextmanager
 def inject_self(
-    working_dir: str, curr_pkg: str, pkg: str = PKG_NAME
+    working_dir: str,
+    curr_pkg: str,
+    pkg: str = "vmklib",
+    force_copy: bool = False,
 ) -> Iterator[None]:
     """
     Copy this entire package into the caller's source distribution. This is
@@ -34,8 +34,10 @@ def inject_self(
     to_create = os.path.join(working_dir, f"{pkg}_bootstrap")
 
     try:
-        # do nothing if we are building ourselves
-        if PKG_NAME not in curr_pkg and not os.path.isdir(to_create):
+        # do nothing if we are building ourselves (but allow forcing this)
+        if (force_copy or pkg not in curr_pkg) and not os.path.isdir(
+            to_create
+        ):
             os.mkdir(to_create)
 
             # copy our sources into their package
@@ -175,7 +177,11 @@ def setup(
         if pkg_info["slug"] in dir_contents:
             working_dir = os.getcwd()
 
-        with inject_self(working_dir, pkg_info["name"]):
+        with inject_self(
+            working_dir,
+            pkg_info["name"],
+            force_copy=pkg_info.get("force_copy", False),
+        ):
             setuptools.setup(
                 name=pkg_info["name"],
                 version=pkg_info["version"],
