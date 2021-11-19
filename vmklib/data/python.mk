@@ -10,10 +10,11 @@ PY_PREFIX := python-
 PY_WIDTH := 79
 PY_LINE_LENGTH_ARG := --line-length $(PY_WIDTH)
 PY_SOURCES_ARG := $($(PROJ)_DIR)/$(PROJ) \
-                  $($(PROJ)_DIR)/tests
+                  $($(PROJ)_DIR)/tests \
+                  $($(PROJ)_DIR)/*.py
 
 PY_LINT_EXTRA_ARGS :=
-PY_LINT_ARGS := $(PY_SOURCES_ARG) $($(PROJ)_DIR)/setup.py $(PY_LINT_EXTRA_ARGS)
+PY_LINT_ARGS := $(PY_SOURCES_ARG) $(PY_LINT_EXTRA_ARGS)
 
 # don't turn this into a concrete target so we can spam it
 $(PY_PREFIX)lint-%: | $(VENV_CONC)
@@ -29,8 +30,7 @@ $(PY_PREFIX)sa-types:
 	-$(PYTHON_BIN)/mypy $(PY_LINT_ARGS)
 	$(PYTHON_BIN)/mypy --install-types --non-interactive
 
-PY_BLACK_ARGS := $(PY_LINE_LENGTH_ARG) $(PY_SOURCES_ARG) \
-                 $($(PROJ)_DIR)/setup.py
+PY_BLACK_ARGS := $(PY_LINE_LENGTH_ARG) $(PY_SOURCES_ARG)
 PY_ISORT_ARGS := $(PY_LINE_LENGTH_ARG) $(PY_SOURCES_ARG) \
                  --profile black --fss -m 3
 

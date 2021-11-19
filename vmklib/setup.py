@@ -12,12 +12,14 @@ from typing import Any, Dict, Iterator, List, Set, Union, cast
 # third-party
 import setuptools  # type: ignore
 
-REQ_DIR = "requirements"
-PKG_NAME = "vmklib"
+# internal
+from vmklib import PKG_NAME
 
 
 @contextmanager
-def inject_self(working_dir: str) -> Iterator[None]:
+def inject_self(
+    working_dir: str, curr_pkg: str, pkg: str = PKG_NAME
+) -> Iterator[None]:
     """
     Copy this entire package into the caller's source distribution. This is
     the only way to avoid a pointless requirement to already have this package
@@ -26,10 +28,14 @@ def inject_self(working_dir: str) -> Iterator[None]:
     """
 
     added = False
-    to_create = os.path.join(working_dir, PKG_NAME)
+
+    # inject sources into a package with a different name, otherwise
+    # installation becomes very broken and messed up
+    to_create = os.path.join(working_dir, f"{pkg}_bootstrap")
 
     try:
-        if not os.path.isdir(to_create):
+        # do nothing if we are building ourselves
+        if PKG_NAME not in curr_pkg and not os.path.isdir(to_create):
             os.mkdir(to_create)
 
             # copy our sources into their package
@@ -43,10 +49,12 @@ def inject_self(working_dir: str) -> Iterator[None]:
             vmklib_dir = os.path.dirname(__file__)
             for fname in to_copy:
                 dest = os.path.join(to_create, fname)
-                if not os.path.isfile(dest):
-                    shutil.copyfile(os.path.join(vmklib_dir, fname), dest)
+                src = os.path.join(vmklib_dir, fname)
+                if not os.path.isfile(dest) and os.path.isfile(src):
+                    shutil.copyfile(src, dest)
 
             added = True
+
         yield
     finally:
         if added:
@@ -65,7 +73,7 @@ def get_long_description(desc_filename: str = "README.md") -> str:
 
 
 def default_requirements_file(directory: str) -> str:
-    """Default location where"""
+    """Default location to look for the requirements file."""
 
     return os.path.join(directory, "requirements.txt")
 
@@ -167,7 +175,7 @@ def setup(
         if pkg_info["slug"] in dir_contents:
             working_dir = os.getcwd()
 
-        with inject_self(working_dir):
+        with inject_self(working_dir, pkg_info["name"]):
             setuptools.setup(
                 name=pkg_info["name"],
                 version=pkg_info["version"],

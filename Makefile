@@ -24,13 +24,11 @@ include $($(PROJ)_DIR)/vmklib/data/conf.mk
 
 endif
 
-PY_EXTRA_LINT_ARGS += $($(PROJ)_DIR)/run.py
-
 all: $(PY_PREFIX)lint $(PY_PREFIX)sa $(PY_PREFIX)test lint
 
 edit: $(PY_PREFIX)edit
 
-clean: $(DZ_PREFIX)clean $(PY_PREFIX)clean venv-clean
-	@rm -rf $(BUILD_DIR)
+clean: $(PY_PREFIX)clean venv-clean
+	@rm -rf $(BUILD_DIR) $($(PROJ)_DIR)/tags
 
 lint: $(YAML_PREFIX)lint-local $(YAML_PREFIX)lint-manifest.yaml

@@ -1,18 +1,20 @@
 # =====================================
 # generator=datazen
 # version=1.9.0
-# hash=1b779f83ea09cc421cd4bc0c7ace4b21
+# hash=76b4488474014107d8c26255f2c388e6
 # =====================================
 
 """
 vmklib - Package definition for distribution.
 """
 
-# third-party
-from vmklib.setup import setup
-
 # internal
-from vmklib import PKG_NAME, VERSION, DESCRIPTION
+from vmklib import DESCRIPTION, PKG_NAME, VERSION
+
+try:
+    from vmklib.setup import setup
+except ImportError:
+    from vmklib_bootstrap.setup import setup  # type: ignore
 
 
 author_info = {

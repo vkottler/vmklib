@@ -16,7 +16,7 @@ endif
 
 GRIP_PORT := 0.0.0.0:8000
 GRIP_FILE := README.md
-$(GRIP_PREFIX)render: $(GRIP_PREFIX)check-env $(VENV_CONC)
+$(GRIP_PREFIX)render: $(GRIP_PREFIX)check-env | $(VENV_CONC)
 	@$(PYTHON_BIN)/grip \
 		--pass $(GRIP_TOKEN) \
 		--title=$(PROJ) \
