@@ -164,12 +164,9 @@ def setup(
         if classifiers_override is None
         else classifiers_override,
     )
-    requirements = (
-        cast(
-            Set[str],
-            defaults["requirements"] if requirements is None else requirements,
-        )
-        | {SELF}
+    requirements = cast(
+        Set[str],
+        defaults["requirements"] if requirements is None else requirements,
     )
 
     for version in pkg_info.get("versions", []):
