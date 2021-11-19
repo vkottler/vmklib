@@ -12,12 +12,14 @@ from typing import Any, Dict, Iterator, List, Set, Union, cast
 # third-party
 import setuptools  # type: ignore
 
+SELF = "vmklib"
+
 
 @contextmanager
 def inject_self(
     working_dir: str,
     curr_pkg: str,
-    pkg: str = "vmklib",
+    pkg: str = SELF,
     force_copy: bool = False,
 ) -> Iterator[None]:
     """
@@ -121,27 +123,33 @@ def setup(
     """
 
     defaults: Dict[str, Union[str, List[str], Set[str]]] = {
-        "entry_override": pkg_info["name"],
-        "console_overrides": [
-            f"{entry_override}={pkg_info['slug']}.entry:main"
-        ],
-        "url_override": (
-            f"https://github.com/{author_info['username']}/"
-            f"{pkg_info['name']}"
-        ),
-        "classifiers_override": [
-            "License :: OSI Approved :: MIT License",
-            "Operating System :: OS Independent",
-        ],
-        "requirements": set(),
+        "entry_override": pkg_info["name"]
     }
 
-    # Resolve defaults if necessary.
     entry_override = (
         cast(str, defaults["entry_override"])
         if entry_override is None
         else entry_override
     )
+
+    defaults.update(
+        {
+            "console_overrides": [
+                f"{entry_override}={pkg_info['slug']}.entry:main"
+            ],
+            "url_override": (
+                f"https://github.com/{author_info['username']}/"
+                f"{pkg_info['name']}"
+            ),
+            "classifiers_override": [
+                "License :: OSI Approved :: MIT License",
+                "Operating System :: OS Independent",
+            ],
+            "requirements": set(),
+        }
+    )
+
+    # Resolve defaults if necessary.
     console_overrides = (
         cast(List[str], defaults["console_overrides"])
         if console_overrides is None
@@ -156,9 +164,12 @@ def setup(
         if classifiers_override is None
         else classifiers_override,
     )
-    requirements = cast(
-        Set[str],
-        defaults["requirements"] if requirements is None else requirements,
+    requirements = (
+        cast(
+            Set[str],
+            defaults["requirements"] if requirements is None else requirements,
+        )
+        | {SELF}
     )
 
     for version in pkg_info.get("versions", []):
