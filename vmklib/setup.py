@@ -18,7 +18,7 @@ SELF = "vmklib"
 @contextmanager
 def inject_self(
     working_dir: str,
-    curr_pkg: str,
+    curr_pkg_slug: str,
     pkg: str = SELF,
     force_copy: bool = False,
 ) -> Iterator[None]:
@@ -33,11 +33,11 @@ def inject_self(
 
     # inject sources into a package with a different name, otherwise
     # installation becomes very broken and messed up
-    to_create = os.path.join(working_dir, f"{pkg}_bootstrap")
+    to_create = os.path.join(working_dir, f"{curr_pkg_slug}_bootstrap")
 
     try:
         # do nothing if we are building ourselves (but allow forcing this)
-        if (force_copy or pkg not in curr_pkg) and not os.path.isdir(
+        if (force_copy or pkg not in curr_pkg_slug) and not os.path.isdir(
             to_create
         ):
             os.mkdir(to_create)
@@ -187,7 +187,7 @@ def setup(
 
         with inject_self(
             working_dir,
-            pkg_info["name"],
+            pkg_info["slug"],
             force_copy=pkg_info.get("force_copy", False),
         ):
             setuptools.setup(
@@ -211,6 +211,7 @@ def setup(
                         get_data_files(pkg_info["slug"])
                         + ["py.typed", "*.pyi", "*.txt"]
                     ),
+                    f"{pkg_info['slug']}_bootstrap": ["py.typed"],
                     "": ["*.pyi"],
                 },
             )
