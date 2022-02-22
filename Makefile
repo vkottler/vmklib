@@ -1,6 +1,6 @@
 # put names of targets here that aren't real file outputs (not essential, but
 # idiomatically correct)
-.PHONY: all clean edit lint
+.PHONY: all clean edit lint yaml
 
 # set this to control what target is resolved by only invoking 'make'
 .DEFAULT_GOAL  := all
@@ -32,3 +32,5 @@ clean: $(PY_PREFIX)clean venv-clean
 	@rm -rf $(BUILD_DIR) $($(PROJ)_DIR)/tags
 
 lint: $(YAML_PREFIX)lint-local $(YAML_PREFIX)lint-manifest.yaml
+
+yaml: lint
