@@ -7,6 +7,7 @@ import argparse
 from contextlib import contextmanager
 import logging
 import os
+from pathlib import Path
 import subprocess
 import tempfile
 from typing import Iterator
@@ -15,10 +16,10 @@ from typing import Iterator
 import pkg_resources
 
 LOG = logging.getLogger(__name__)
-DEFAULT_FILE = "Makefile"
+DEFAULT_FILE = Path("Makefile")
 
 
-def get_resource(resource_name: str) -> str:
+def get_resource(resource_name: str) -> Path:
     """Locate the path to a package resource."""
 
     resource_path = os.path.join("data", resource_name)
@@ -37,31 +38,39 @@ def get_resource(resource_name: str) -> str:
             break
 
     # ensure that the resource can actually be found
-    assert resource
-    return resource
+    assert resource, f"Couldn't load resource '{resource_name}'!"
+    return Path(resource)
 
 
 @contextmanager
 def build_makefile(
-    user_file: str, directory: str, project_name: str = None
+    user_file: Path, directory: Path, project_name: str = None
 ) -> Iterator[str]:
     """Build a temporary makefile and return the path."""
 
     # create a temporary file
     with tempfile.NamedTemporaryFile(mode="w") as makefile:
         # read the user's file
-        with open(user_file, encoding="utf-8") as user_makefile:
+        with user_file.open(encoding="utf-8") as user_makefile:
             user_data = user_makefile.read()
 
         # get the path to this package's data to include our "conf.mk"
         include_str = f"include {get_resource('conf.mk')}"
 
-        # build the necessary file data
+        # if the project name wasn't provided, guess that it's either the name
+        # of the parent directory, or that name as a "slug"
         if project_name is None:
-            project_name = os.path.dirname(os.path.abspath(user_file))
+            parent = user_file.resolve().parent
+            parent_slug = parent.name.replace("-", "_")
+            if Path(parent, parent_slug).is_dir():
+                project_name = parent_slug
+            else:
+                project_name = str(parent)
+
+        # build the necessary file data
         data = {
             "PROJ": os.path.basename(project_name),
-            "$(PROJ)_DIR": directory,
+            "$(PROJ)_DIR": str(directory),
             "MK_AUTO": "1",
         }
 
@@ -79,14 +88,14 @@ def build_makefile(
 def entry(args: argparse.Namespace) -> int:
     """Execute the requested task."""
 
-    if not os.path.isfile(args.file):
-        if os.path.basename(args.file) != DEFAULT_FILE:
+    if not args.file.is_file():
+        if args.file.name != str(DEFAULT_FILE):
             LOG.error("'%s' not found", args.file)
             return 1
         args.file = get_resource(os.path.join("data", "header.mk"))
 
     # build the beginning of the invocation args
-    invocation_args = ["make", "-C", args.dir, "-f"]
+    invocation_args = ["make", "-C", str(args.dir), "-f"]
     with build_makefile(args.file, args.dir, args.proj) as makefile:
         invocation_args.append(makefile)
 
@@ -121,6 +130,7 @@ def add_app_args(parser: argparse.ArgumentParser) -> None:
         "-f",
         "--file",
         default=DEFAULT_FILE,
+        type=Path,
         help="file to source user-provided recipes from",
     )
     parser.add_argument(
