@@ -1,7 +1,7 @@
 # =====================================
 # generator=datazen
-# version=1.9.0
-# hash=2705ab54e401048b063b194abfe74220
+# version=1.12.1
+# hash=b397b1fa0e6794dba46d5185b5dabb20
 # =====================================
 
 """
@@ -12,6 +12,7 @@ vmklib - This package's command-line entry-point (boilerplate).
 import argparse
 import logging
 import os
+from pathlib import Path
 import sys
 from typing import List
 
@@ -46,11 +47,12 @@ def main(argv: List[str] = None) -> int:
     parser.add_argument(
         "-C",
         "--dir",
-        default=os.getcwd(),
+        default=Path.cwd(),
         dest="dir",
+        type=Path,
         help="execute from a specific directory",
     )
-    starting_dir = os.getcwd()
+    starting_dir = Path.cwd()
 
     add_app_args(parser)
 
@@ -58,7 +60,7 @@ def main(argv: List[str] = None) -> int:
     try:
         args = parser.parse_args(command_args[1:])
         args.version = VERSION
-        args.dir = os.path.abspath(args.dir)
+        args.dir = args.dir.resolve()
 
         # initialize logging
         log_level = logging.DEBUG if args.verbose else logging.INFO

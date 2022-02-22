@@ -9,6 +9,7 @@ import signal
 import time
 
 # module under test
+from vmklib import PKG_NAME
 from vmklib.entry import main as mk_main
 
 # internal
@@ -39,3 +40,11 @@ def test_entry():
         assert mk_main(good_base_args + ["--weird-option", "yo"]) != 0
         assert mk_main(base_args + ["-f", "nah"]) != 0
         assert mk_main(base_args) == 0
+
+
+def test_entry_proj_slug():
+    """Ensure that the slug-replacement logic takes effect."""
+
+    assert (
+        mk_main([PKG_NAME, "-C", get_resource("test-scenario"), "test"]) == 0
+    )
