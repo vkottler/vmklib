@@ -3,16 +3,16 @@ MK_PREFIX := mk-
 .PHONY: $(MK_PREFIX)upgrade $(MK_PREFIX)sys-upgrade $(MK_PREFIX)header \
         $(MK_PREFIX)todo
 
-UPGRADE_CMD := install --upgrade vmklib --force-reinstall
+UPGRADE_CMD := install --upgrade vmklib
 
 $(MK_PREFIX)upgrade: $(VENV_CONC)
-	$(PYTHON_BIN)/pip $(UPGRADE_CMD)
+	$(PIP) $(UPGRADE_CMD)
 
 $(MK_PREFIX)sys-upgrade:
 ifdef MK_SUDO
-	sudo -H pip$(PYTHON_VERSION) $(UPGRADE_CMD)
+	sudo -H python$(PYTHON_VERSION) -m pip $(UPGRADE_CMD)
 else
-	pip$(PYTHON_VERSION) $(UPGRADE_CMD)
+	python$(PYTHON_VERSION) -m pip $(UPGRADE_CMD)
 endif
 
 $(MK_PREFIX)header:
