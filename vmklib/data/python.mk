@@ -66,18 +66,18 @@ $(PY_PREFIX)clean-build:
 
 $(PY_PREFIX)dist: $(PY_PREFIX)clean-build | $(VENV_CONC)
 	cd $($(PROJ)_DIR) && \
-		$(PYTHON_BIN)/python $($(PROJ)_DIR)/setup.py sdist
+		$(PYTHON) $($(PROJ)_DIR)/setup.py sdist
 	cd $($(PROJ)_DIR) && \
-		$(PYTHON_BIN)/python $($(PROJ)_DIR)/setup.py bdist_wheel
+		$(PYTHON) $($(PROJ)_DIR)/setup.py bdist_wheel
 
 # Prefer 'dist' because stubgen does not work very well (the resulting stubs
 # are missing a lot of actual type information that mypy and other tools should
 # infer by looking at source).
 $(PY_PREFIX)dist-with-stubs: $(PY_PREFIX)clean-build $(PY_PREFIX)stubs | $(VENV_CONC)
 	cd $($(PROJ)_DIR) && \
-		$(PYTHON_BIN)/python $($(PROJ)_DIR)/setup.py sdist
+		$(PYTHON) $($(PROJ)_DIR)/setup.py sdist
 	cd $($(PROJ)_DIR) && \
-		$(PYTHON_BIN)/python $($(PROJ)_DIR)/setup.py bdist_wheel
+		$(PYTHON) $($(PROJ)_DIR)/setup.py bdist_wheel
 	@cd $($(PROJ)_DIR)/$(PROJ) && find -iname '*.pyi' -delete
 
 TWINE_ARGS := --non-interactive --verbose
@@ -87,7 +87,7 @@ $(PY_PREFIX)upload: $(PY_PREFIX)lint $(PY_PREFIX)sa $(PY_PREFIX)test $(PY_PREFIX
 
 EDITABLE_CONC := $(call to_concrete, $(PY_PREFIX)editable)
 $(EDITABLE_CONC): | $(VENV_CONC)
-	$(PYTHON_BIN)/pip install -e $($(PROJ)_DIR)
+	$(PIP) install -e $($(PROJ)_DIR)
 	$(call generic_concrete,$@)
 
 $(PY_PREFIX)editable: $(EDITABLE_CONC)

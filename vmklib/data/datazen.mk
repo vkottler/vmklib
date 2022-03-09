@@ -17,7 +17,7 @@ DZ_DIR  := $($(PROJ)_DIR)/datazen-out
 
 DZ_CONC := $(call to_concrete, $(DZ_INSTALL)-$(VENV_NAME))
 $(DZ_CONC): | $(VENV_CONC)
-	$(PYTHON_BIN)/pip install --upgrade datazen
+	$(PIP) install --upgrade datazen
 	$(call generic_concrete,$@)
 
 $(DZ_INSTALL): $(DZ_CONC)
@@ -33,4 +33,4 @@ $(DZ_PREFIX)describe: | $(DZ_CONC)
 	$(PYTHON_BIN)/dz $(DZ_ARGS) -d
 
 $(DZ_PREFIX)upgrade: | $(VENV_CONC)
-	$(PYTHON_BIN)/pip install --upgrade datazen
+	$(PIP) install --upgrade datazen
