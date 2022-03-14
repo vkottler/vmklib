@@ -8,6 +8,7 @@ params:
 
 includes:
   - "config/includes/python.yaml"
+  - "config/includes/license.yaml"
   - "config/includes/help.yaml"
 
 configs:
@@ -39,16 +40,11 @@ renders:
     output_dir: "{{project}}/data/data"
     dependencies:
       - "compiles-local"
-  - name: "LICENSE"
-    key: "LICENSE_MIT"
-    output_dir: "."
-    dependencies:
-      - "compiles-local"
 
 groups:
-  - name: "all"
+  - name: all
     dependencies:
-      - "groups-python"
+      - groups-python
+      - groups-license
       - "renders-README.md"
       - "renders-header.mk"
-      - "renders-LICENSE"

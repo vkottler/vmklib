@@ -23,6 +23,10 @@ args:
     description: >-
       Port to host test-coverage HTML on (using `http.server`).
       Defaults to zero.
+  - name: PY_BUILDER
+    description: >-
+      The target name to use as a `python-upload` dependency (e.g.
+      `python-dist` versus `python-build`). Defaults to `python-build`.
 targets:
   - name: lint
     description: >-
@@ -81,6 +85,9 @@ targets:
   - name: dist
     description: >-
       Build `sdist` and `bdist_wheel` with `setup.py` in the project root.
+  - name: build
+    description: >-
+      Build the package with `python -m build`.
   - name: dist-with-stubs
     description: >-
       Build `sdist` and `bdist_wheel` with `setup.py` in the project root, this

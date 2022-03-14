@@ -1,0 +1,48 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+
+[project]
+name = "vmklib"
+version = "0.8.0"
+description = "Simplify project workflows by standardizing use of GNU Make."
+readme = "README.md"
+requires-python = ">=3.6"
+license = {file = "LICENSE"}
+keywords = [
+  "workflow",
+  "tool",
+  "make"
+]
+authors = [
+  {name = "Vaughn Kottler", email = "vaughnkottler@gmail.com"}
+]
+maintainers = [
+  {name = "Vaughn Kottler", email = "vaughnkottler@gmail.com"}
+]
+classifiers = [
+  "Topic :: Software Development :: Build Tools",
+  "Programming Language :: Python :: 3.6",
+  "Programming Language :: Python :: 3.7",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "License :: OSI Approved :: MIT License"
+]
+dependencies = [
+  "setuptools"
+]
+
+[project.optional-dependencies]
+test = [
+  "types-setuptools",
+  "pylint",
+  "flake8",
+  "pytest",
+  "pytest-cov",
+  "mypy",
+  "black",
+  "isort"
+]
+
+[project.scripts]
+mk = "vmklib.entry:main"

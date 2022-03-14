@@ -1,12 +1,12 @@
 <!--
     =====================================
     generator=datazen
-    version=1.13.4
-    hash=dbb7d8bb5e8fe7cfc170ee9b84388b67
+    version=1.13.3
+    hash=ca96a8f401e7a81d76770f64d86947d0
     =====================================
 -->
 
-# vmklib ([0.7.7](https://pypi.org/project/vmklib/))
+# vmklib ([0.8.0](https://pypi.org/project/vmklib/))
 
 [![python](https://img.shields.io/pypi/pyversions/vmklib.svg)](https://pypi.org/project/vmklib/)
 ![Build Status](https://github.com/vkottler/vmklib/workflows/Python%20package/badge.svg)
@@ -39,7 +39,7 @@ else with simple package updates.
 # Command-line Options
 
 ```
-$ ./venv3.7/bin/mk -h
+$ ./venv3.8/bin/mk -h
 
 usage: mk [-h] [--version] [-v] [-C DIR] [-p PREFIX] [-f FILE] [-P PROJ]
           [targets [targets ...]]
@@ -155,6 +155,8 @@ Prefix: `python-`
 
 **PYTHON_COV_PORT** - Port to host test-coverage HTML on (using `http.server`). Defaults to zero.
 
+**PY_BUILDER** - The target name to use as a `python-upload` dependency (e.g. `python-dist` versus `python-build`). Defaults to `python-build`.
+
 ### Commands
 
 **lint** - Run [pylint](https://www.pylint.org/) and [flake8](https://flake8.pycqa.org/en/latest/) against a project's package sources. Also runs the format checkers.
@@ -186,6 +188,8 @@ Prefix: `python-`
 **clean** - Remove compiled and cached files, test coverage, built package artifacts and other caches.
 
 **dist** - Build `sdist` and `bdist_wheel` with `setup.py` in the project root.
+
+**build** - Build the package with `python -m build`.
 
 **dist-with-stubs** - Build `sdist` and `bdist_wheel` with `setup.py` in the project root, this also runs `stubgen` ahead of packaging so that stubs are included in the source distribution and wheel.
 
