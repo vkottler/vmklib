@@ -5,7 +5,7 @@ PY_PREFIX := python-
         $(PY_PREFIX)dist $(PY_PREFIX)upload $(PY_PREFIX)editable \
         $(PY_PREFIX)stubs $(PY_PREFIX)format $(PY_PREFIX)format-check \
         $(PY_PREFIX)sa-types $(PY_PREFIX)edit $(PY_PREFIX)dist-with-stubs \
-        $(PY_PREFIX)clean-build
+        $(PY_PREFIX)build $(PY_PREFIX)clean-build
 
 PY_WIDTH := 79
 PY_LINE_LENGTH_ARG := --line-length $(PY_WIDTH)
@@ -70,6 +70,13 @@ $(PY_PREFIX)dist: $(PY_PREFIX)clean-build | $(VENV_CONC)
 	cd $($(PROJ)_DIR) && \
 		$(PYTHON) $($(PROJ)_DIR)/setup.py bdist_wheel
 
+$(PY_PREFIX)build: $(PY_PREFIX)clean-build | $(VENV_CONC)
+	cd $($(PROJ)_DIR) && \
+		$(PYTHON) -m build
+
+# Allow overriding the target used to build the package distributions.
+PY_BUILDER ?= $(PY_PREFIX)build
+
 # Prefer 'dist' because stubgen does not work very well (the resulting stubs
 # are missing a lot of actual type information that mypy and other tools should
 # infer by looking at source).
@@ -80,8 +87,13 @@ $(PY_PREFIX)dist-with-stubs: $(PY_PREFIX)clean-build $(PY_PREFIX)stubs | $(VENV_
 		$(PYTHON) $($(PROJ)_DIR)/setup.py bdist_wheel
 	@cd $($(PROJ)_DIR)/$(PROJ) && find -iname '*.pyi' -delete
 
+TWINE_CONC := $(call to_concrete, twine-$(VENV_NAME))
+$(TWINE_CONC): | $(VENV_CONC)
+	$(PIP) install --upgrade twine
+	$(call generic_concrete,$@)
+
 TWINE_ARGS := --non-interactive --verbose
-$(PY_PREFIX)upload: $(PY_PREFIX)lint $(PY_PREFIX)sa $(PY_PREFIX)test $(PY_PREFIX)dist
+$(PY_PREFIX)upload: $(PY_PREFIX)lint $(PY_PREFIX)sa $(PY_PREFIX)test $(PY_BUILDER) | $(TWINE_CONC)
 	cd $($(PROJ)_DIR) && \
 		$(PYTHON_BIN)/twine upload $(TWINE_ARGS) $($(PROJ)_DIR)/dist/*
 

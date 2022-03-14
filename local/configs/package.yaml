@@ -5,3 +5,13 @@ description: "Simplify project workflows by standardizing use of GNU Make."
 entry: {{entry}}
 setup_args:
   - entry_override="{{entry}}"
+requirements:
+  - setuptools
+dev_requirements:
+  - types-setuptools
+keywords:
+  - workflow
+  - tool
+  - make
+classifiers:
+  - "Topic :: Software Development :: Build Tools"

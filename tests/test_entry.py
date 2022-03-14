@@ -6,6 +6,8 @@ datazen - Test the program's entry-point.
 from multiprocessing import Process
 import os
 import signal
+from subprocess import check_output
+from sys import executable
 import time
 
 # module under test
@@ -40,6 +42,14 @@ def test_entry():
         assert mk_main(good_base_args + ["--weird-option", "yo"]) != 0
         assert mk_main(base_args + ["-f", "nah"]) != 0
         assert mk_main(base_args) == 0
+
+
+def test_package_entry():
+    """Test the command-line entry through the 'python -m' invocation."""
+
+    with get_args() as base_args:
+        args = [executable, "-m"] + base_args
+        check_output(args)
 
 
 def test_entry_proj_slug():
