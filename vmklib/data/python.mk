@@ -70,7 +70,12 @@ $(PY_PREFIX)dist: $(PY_PREFIX)clean-build | $(VENV_CONC)
 	cd $($(PROJ)_DIR) && \
 		$(PYTHON) $($(PROJ)_DIR)/setup.py bdist_wheel
 
-$(PY_PREFIX)build: $(PY_PREFIX)clean-build | $(VENV_CONC)
+BUILD_CONC := $(call to_concrete, build-$(VENV_NAME))
+$(BUILD_CONC): | $(VENV_CONC)
+	$(PIP) install --upgrade build
+	$(call generic_concrete,$@)
+
+$(PY_PREFIX)build: $(PY_PREFIX)clean-build | $(BUILD_CONC)
 	cd $($(PROJ)_DIR) && \
 		$(PYTHON) -m build
 
