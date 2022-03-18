@@ -32,7 +32,7 @@ $(REQUIREMENTS_DIR)/%.txt:
 
 # target for installing requirements files into the virtual environment
 $(call to_concrete, $(VENV_NAME)/req-%): $(REQUIREMENTS_DIR)/%.txt | $(BUILD_DIR) $(VENV_DIR)
-	$(PIP) install --upgrade -r $<
+	$(call time_wrap,$(PIP) install --upgrade -r $<)
 	$(call generic_concrete,$@)
 
 $(VENV_CONC): $(REQ_CONC)

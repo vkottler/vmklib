@@ -45,6 +45,7 @@ GIT_ROOT    := $($(PROJ)_DIR)
 endif
 
 include $(MK_SRC_DIR)/functions.mk
+include $(MK_SRC_DIR)/time.mk
 include $(MK_SRC_DIR)/venv.mk
 include $(MK_SRC_DIR)/python.mk
 include $(MK_SRC_DIR)/pypi.mk
