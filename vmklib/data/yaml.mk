@@ -13,4 +13,5 @@ $(YAMLLINT_CONC): | $(VENV_CONC)
 $(YAMLLINT_INSTALL): $(YAMLLINT_CONC)
 
 $(YAML_PREFIX)lint-%: | $(YAMLLINT_CONC)
-	$(PYTHON_BIN)/yamllint $(YAMLLINT_ARGS) $($(PROJ)_DIR)/$*
+	$(call time_wrap,$(PYTHON_BIN)/yamllint \
+		$(YAMLLINT_ARGS) $($(PROJ)_DIR)/$*)

@@ -18,7 +18,7 @@ PY_LINT_ARGS := $(PY_SOURCES_ARG) $(PY_LINT_EXTRA_ARGS)
 
 # don't turn this into a concrete target so we can spam it
 $(PY_PREFIX)lint-%: | $(VENV_CONC)
-	$(PYTHON_BIN)/$* $(PY_LINT_ARGS)
+	$(call time_wrap,$(PYTHON_BIN)/$* $(PY_LINT_ARGS))
 
 $(PY_PREFIX)lint: $(PY_PREFIX)lint-flake8 \
                   $(PY_PREFIX)lint-pylint \
@@ -35,8 +35,8 @@ PY_ISORT_ARGS := $(PY_LINE_LENGTH_ARG) $(PY_SOURCES_ARG) \
                  --profile black --fss -m 3
 
 $(PY_PREFIX)format: | $(VENV_CONC)
-	$(PYTHON_BIN)/isort $(PY_ISORT_ARGS)
-	$(PYTHON_BIN)/black $(PY_BLACK_ARGS)
+	$(call time_wrap,$(PYTHON_BIN)/isort $(PY_ISORT_ARGS))
+	$(call time_wrap,$(PYTHON_BIN)/black $(PY_BLACK_ARGS))
 
 $(PY_PREFIX)tags:
 	ctags -f $($(PROJ)_DIR)/tags -R \
@@ -46,8 +46,8 @@ $(PY_PREFIX)edit: $(PY_PREFIX)tags | $(VENV_CONC)
 	. $(VENV_ACTIVATE) && cd $($(PROJ)_DIR) && $(EDITOR)
 
 $(PY_PREFIX)format-check: | $(VENV_CONC)
-	$(PYTHON_BIN)/isort --check-only $(PY_ISORT_ARGS)
-	$(PYTHON_BIN)/black --check $(PY_BLACK_ARGS)
+	$(call time_wrap,$(PYTHON_BIN)/isort --check-only $(PY_ISORT_ARGS))
+	$(call time_wrap,$(PYTHON_BIN)/black --check $(PY_BLACK_ARGS))
 
 $(PY_PREFIX)stubs: | $(VENV_CONC)
 	$(PYTHON_BIN)/stubgen -p $(PROJ) -o $($(PROJ)_DIR)
@@ -56,10 +56,10 @@ PYTEST_EXTRA_ARGS :=
 PYTEST_ARGS := -x --log-cli-level=10 --cov=$(PROJ) --cov-report html \
                $(PYTEST_EXTRA_ARGS)
 $(PY_PREFIX)test: | $(VENV_CONC)
-	$(PYTHON_BIN)/pytest $(PYTEST_ARGS) $($(PROJ)_DIR)/tests
+	$(call time_wrap,$(PYTHON_BIN)/pytest $(PYTEST_ARGS) $($(PROJ)_DIR)/tests)
 
 $(PY_PREFIX)test-%: | $(VENV_CONC)
-	$(PYTHON_BIN)/pytest $(PYTEST_ARGS) -k "$*" $($(PROJ)_DIR)/tests
+	$(call time_wrap,$(PYTHON_BIN)/pytest $(PYTEST_ARGS) -k "$*" $($(PROJ)_DIR)/tests)
 
 $(PY_PREFIX)clean-build:
 	@rm -rf $($(PROJ)_DIR)/dist $(BUILD_DIR)/bdist* $(BUILD_DIR)/lib
@@ -76,8 +76,7 @@ $(BUILD_CONC): | $(VENV_CONC)
 	$(call generic_concrete,$@)
 
 $(PY_PREFIX)build: $(PY_PREFIX)clean-build | $(BUILD_CONC)
-	cd $($(PROJ)_DIR) && \
-		$(PYTHON) -m build
+	$(call time_wrap_cd,$(PYTHON) -m build,$($(PROJ)_DIR))
 
 # Allow overriding the target used to build the package distributions.
 PY_BUILDER ?= $(PY_PREFIX)build
