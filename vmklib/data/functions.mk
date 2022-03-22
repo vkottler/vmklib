@@ -9,6 +9,17 @@ define generic_concrete
 endef
 
 #
+# A simple target for linking adjacent projects into a project's root
+# directory.
+#
+# 1: name of the adjacent directory
+#
+define generic_link_adjacent
+        test -d $($(PROJ)_DIR)/../$1
+        ln -s $($(PROJ)_DIR)/../$1 $@
+endef
+
+#
 # This function can convert a phony target name into a concrete file in
 # BUILD_DIR to use `@date > $@` to build phony recipes that are still tracked
 # by a concrete output.
