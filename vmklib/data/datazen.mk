@@ -13,7 +13,8 @@ ifdef DZ_VERBOSE
 DZ_ARGS     += -v
 endif
 
-DZ_DIR  := $($(PROJ)_DIR)/datazen-out
+DZ_DIR   := $($(PROJ)_DIR)/datazen-out
+DZ_ENTRY := $(PYTHON) -m datazen
 
 DZ_CONC := $(call to_concrete, $(DZ_INSTALL)-$(VENV_NAME))
 $(DZ_CONC): | $(VENV_CONC)
@@ -23,14 +24,14 @@ $(DZ_CONC): | $(VENV_CONC)
 $(DZ_INSTALL): $(DZ_CONC)
 
 $(DZ_PREFIX)sync: | $(DZ_CONC)
-	$(PYTHON_BIN)/dz $(DZ_ARGS)
+	$(DZ_ENTRY) $(DZ_ARGS)
 
 $(DZ_PREFIX)clean: | $(DZ_CONC)
-	$(PYTHON_BIN)/dz $(DZ_ARGS) -c
+	$(DZ_ENTRY) $(DZ_ARGS) -c
 	@rm -rf $(DZ_DIR)
 
 $(DZ_PREFIX)describe: | $(DZ_CONC)
-	$(PYTHON_BIN)/dz $(DZ_ARGS) -d
+	$(DZ_ENTRY) $(DZ_ARGS) -d
 
 $(DZ_PREFIX)upgrade: | $(VENV_CONC)
 	$(PIP) install --upgrade datazen
