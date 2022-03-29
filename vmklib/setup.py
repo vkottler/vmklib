@@ -113,7 +113,6 @@ def setup(
     author_info: Dict[str, str],
     url_override: str = None,
     entry_override: str = None,
-    console_overrides: List[str] = None,
     classifiers_override: List[str] = None,
     requirements: Set[str] = None,
 ) -> None:
@@ -134,9 +133,6 @@ def setup(
 
     defaults.update(
         {
-            "console_overrides": [
-                f"{entry_override}={pkg_info['slug']}.entry:main"
-            ],
             "url_override": (
                 f"https://github.com/{author_info['username']}/"
                 f"{pkg_info['name']}"
@@ -150,11 +146,6 @@ def setup(
     )
 
     # Resolve defaults if necessary.
-    console_overrides = (
-        cast(List[str], defaults["console_overrides"])
-        if console_overrides is None
-        else console_overrides
-    )
     url_override = cast(
         str, defaults["url_override"] if url_override is None else url_override
     )
@@ -204,7 +195,6 @@ def setup(
                 ),
                 classifiers=classifiers_override,
                 python_requires=f">={pkg_info.get('versions', ['3.6'])[0]}",
-                entry_points={"console_scripts": console_overrides},
                 install_requires=list(requirements),
                 package_data={
                     pkg_info["slug"]: (
