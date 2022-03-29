@@ -10,7 +10,7 @@ import tempfile
 from typing import Any, Dict, Iterator, List, Set, Union, cast
 
 # third-party
-import setuptools  # type: ignore
+import setuptools
 
 SELF = "vmklib"
 
@@ -112,9 +112,9 @@ def setup(
     pkg_info: Dict[str, Any],
     author_info: Dict[str, str],
     url_override: str = None,
-    entry_override: str = None,
     classifiers_override: List[str] = None,
     requirements: Set[str] = None,
+    **kwargs,
 ) -> None:
     """
     Build a 'setuptools.setup' call with sane defaults and making assumptions
@@ -122,28 +122,16 @@ def setup(
     """
 
     defaults: Dict[str, Union[str, List[str], Set[str]]] = {
-        "entry_override": pkg_info["name"]
+        "url_override": (
+            f"https://github.com/{author_info['username']}/"
+            f"{pkg_info['name']}"
+        ),
+        "classifiers_override": [
+            "License :: OSI Approved :: MIT License",
+            "Operating System :: OS Independent",
+        ],
+        "requirements": set(),
     }
-
-    entry_override = (
-        cast(str, defaults["entry_override"])
-        if entry_override is None
-        else entry_override
-    )
-
-    defaults.update(
-        {
-            "url_override": (
-                f"https://github.com/{author_info['username']}/"
-                f"{pkg_info['name']}"
-            ),
-            "classifiers_override": [
-                "License :: OSI Approved :: MIT License",
-                "Operating System :: OS Independent",
-            ],
-            "requirements": set(),
-        }
-    )
 
     # Resolve defaults if necessary.
     url_override = cast(
@@ -204,4 +192,5 @@ def setup(
                     f"{pkg_info['slug']}_bootstrap": ["py.typed"],
                     "": ["*.pyi"],
                 },
+                **kwargs,
             )

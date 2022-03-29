@@ -2,11 +2,11 @@
     =====================================
     generator=datazen
     version=1.14.0
-    hash=53d50efcc811986922305e4438c20ea0
+    hash=ab17f81bbc44c33fc7da6e19eac8368f
     =====================================
 -->
 
-# vmklib ([0.8.2](https://pypi.org/project/vmklib/))
+# vmklib ([0.9.0](https://pypi.org/project/vmklib/))
 
 [![python](https://img.shields.io/pypi/pyversions/vmklib.svg)](https://pypi.org/project/vmklib/)
 ![Build Status](https://github.com/vkottler/vmklib/workflows/Python%20package/badge.svg)
