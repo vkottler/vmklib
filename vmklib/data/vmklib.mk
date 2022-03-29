@@ -24,7 +24,9 @@ else
 endif
 
 $(MK_PREFIX)header:
-	+@cat $(MK_DATA_DIR)/header.mk
+	+@cat $(MK_DATA_DIR)/header.mk | tail -n 9
+	@test -f Makefile || \
+		cat $(MK_DATA_DIR)/header.mk | tail -n 9 > Makefile
 
 $(MK_PREFIX)todo:
 	-cd $($(PROJ)_DIR) && ack -i todo $(PROJ) tests
