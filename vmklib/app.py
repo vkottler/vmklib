@@ -5,6 +5,7 @@ vmklib - This package's command-line entry-point application.
 # built-in
 import argparse
 from contextlib import contextmanager
+from json import load
 import logging
 import os
 from pathlib import Path
@@ -14,6 +15,9 @@ from typing import Iterator
 
 # third-party
 import pkg_resources
+
+# internal
+from vmklib import PKG_NAME
 
 LOG = logging.getLogger(__name__)
 DEFAULT_FILE = Path("Makefile")
@@ -44,19 +48,18 @@ def get_resource(resource_name: str) -> Path:
 
 @contextmanager
 def build_makefile(
-    user_file: Path, directory: Path, project_name: str = None
+    user_file: Path,
+    directory: Path,
+    project_name: str = None,
+    data: dict = None,
 ) -> Iterator[str]:
     """Build a temporary makefile and return the path."""
 
+    if data is None:
+        data = {}
+
     # create a temporary file
     with tempfile.NamedTemporaryFile(mode="w") as makefile:
-        # read the user's file
-        with user_file.open(encoding="utf-8") as user_makefile:
-            user_data = user_makefile.read()
-
-        # get the path to this package's data to include our "conf.mk"
-        include_str = f"include {get_resource('conf.mk')}"
-
         # if the project name wasn't provided, guess that it's either the name
         # of the parent directory, or that name as a "slug"
         if project_name is None:
@@ -68,19 +71,29 @@ def build_makefile(
                 project_name = str(parent)
 
         # build the necessary file data
-        data = {
-            "PROJ": os.path.basename(project_name),
-            "$(PROJ)_DIR": str(directory),
-            "MK_AUTO": "1",
-        }
+        data["PROJ"] = os.path.basename(project_name)
+        data["$(PROJ)_DIR"] = directory
+        data["MK_AUTO"] = 1
 
-        write_data = ""
+        # get the path to this package's data to include our "conf.mk"
+        include_strs = [
+            "-include $($(PROJ)_DIR)/mk/conf.mk",
+            f"include {get_resource('conf.mk')}",
+        ]
+
         for key, item in data.items():
-            write_data += f"{key} := {item}" + os.linesep
-        write_data += include_str + os.linesep + os.linesep + user_data
+            makefile.write(f"{key} := {item}")
+            makefile.write(os.linesep)
+        for line in include_strs:
+            makefile.write(line)
+            makefile.write(os.linesep)
 
-        # write the file and return the path
-        makefile.write(write_data)
+        makefile.write(os.linesep)
+
+        # read the user's file
+        with user_file.open(encoding="utf-8") as user_makefile:
+            makefile.write(user_makefile.read())
+
         makefile.flush()
         yield makefile.name
 
@@ -96,7 +109,17 @@ def entry(args: argparse.Namespace) -> int:
 
     # build the beginning of the invocation args
     invocation_args = ["make", "-C", str(args.dir), "-f"]
-    with build_makefile(args.file, args.dir, args.proj) as makefile:
+
+    # load configuration data, if configuration data is found
+    data = None
+    if args.config.is_file():
+        with args.config.open(encoding="utf-8") as config_fd:
+            data = load(config_fd)
+            assert isinstance(
+                data, dict
+            ), f"Configuration from '{args.config}', is not an object!"
+
+    with build_makefile(args.file, args.dir, args.proj, data) as makefile:
         invocation_args.append(makefile)
 
         # add each target to the list
@@ -131,7 +154,20 @@ def add_app_args(parser: argparse.ArgumentParser) -> None:
         "--file",
         default=DEFAULT_FILE,
         type=Path,
-        help="file to source user-provided recipes from",
+        help=(
+            "file to source user-provided recipes from "
+            "(default: '%(default)s')"
+        ),
+    )
+    parser.add_argument(
+        "-c",
+        "--config",
+        default=DEFAULT_FILE.parent.joinpath(f"{PKG_NAME}.json"),
+        type=Path,
+        help=(
+            "file to source user-provided variable definitions, ahead of "
+            "loading package makefiles (default: '%(default)s')"
+        ),
     )
     parser.add_argument(
         "-P", "--proj", help="project name for internal variable use"

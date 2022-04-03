@@ -2,11 +2,11 @@
     =====================================
     generator=datazen
     version=1.14.0
-    hash=f0589ef1b883ec3d728f2d4c9f542c49
+    hash=eb8088a9c5915a8ba9923318dcfd1d91
     =====================================
 -->
 
-# vmklib ([0.9.1](https://pypi.org/project/vmklib/))
+# vmklib ([0.10.0](https://pypi.org/project/vmklib/))
 
 [![python](https://img.shields.io/pypi/pyversions/vmklib.svg)](https://pypi.org/project/vmklib/)
 ![Build Status](https://github.com/vkottler/vmklib/workflows/Python%20package/badge.svg)
@@ -41,7 +41,8 @@ else with simple package updates.
 ```
 $ ./venv3.8/bin/mk -h
 
-usage: mk [-h] [--version] [-v] [-C DIR] [-p PREFIX] [-f FILE] [-P PROJ]
+usage: mk [-h] [--version] [-v] [-C DIR] [-p PREFIX] [-f FILE] [-c CONFIG]
+          [-P PROJ]
           [targets [targets ...]]
 
 Simplify project workflows by standardizing use of GNU Make.
@@ -56,7 +57,12 @@ optional arguments:
   -C DIR, --dir DIR     execute from a specific directory
   -p PREFIX, --prefix PREFIX
                         a prefix to apply to all targets
-  -f FILE, --file FILE  file to source user-provided recipes from
+  -f FILE, --file FILE  file to source user-provided recipes from (default:
+                        'Makefile')
+  -c CONFIG, --config CONFIG
+                        file to source user-provided variable definitions,
+                        ahead of loading package makefiles (default:
+                        'vmklib.json')
   -P PROJ, --proj PROJ  project name for internal variable use
 
 ```
@@ -157,6 +163,12 @@ Prefix: `python-`
 
 **PY_BUILDER** - The target name to use as a `python-upload` dependency (e.g. `python-dist` versus `python-build`). Defaults to `python-build`.
 
+**PY_DOCS_HOST** - Host argument passed to `pydoc` module (`-n`). Defaults to `0.0.0.0`.
+
+**PY_DOCS_PORT** - Port argument passed to `pydoc` module (`-p`). Defaults to `0`.
+
+**PY_DOCS_EXTRA_ARGS** - Extra arguments to pass to the `pydoc` module.
+
 ### Commands
 
 **lint** - Run [pylint](https://www.pylint.org/) and [flake8](https://flake8.pycqa.org/en/latest/) against a project's package sources. Also runs the format checkers.
@@ -198,6 +210,8 @@ Prefix: `python-`
 **editable** - Install the project's package in editable mode (`-e` option) to the virtual environment.
 
 **docs** - Run the `pydoc` module and host HTML documentation via an arbitrary HTTP port.
+
+**docs-%** - Run the `pydoc` module and pass the stem as an argument.
 
 ## venv
 

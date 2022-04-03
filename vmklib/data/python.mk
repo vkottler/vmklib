@@ -116,8 +116,19 @@ $(PY_PREFIX)host-coverage:
 	cd $($(PROJ)_DIR)/htmlcov \
 		&& python$(PYTHON_VERSION) -m http.server $(PYTHON_COV_PORT)
 
+PY_DOCS_HOST ?= 0.0.0.0
+PY_DOCS_PORT ?= 0
+PY_DOCS_EXTRA_ARGS ?=
+
 $(PY_PREFIX)docs: | $(VENV_CONC)
-	cd $(PROJ) && $(PYTHON) -m pydoc -n 0.0.0.0 -p 0
+	cd $($(PROJ)_DIR) && $(PYTHON) -m pydoc \
+		$(PY_DOCS_EXTRA_ARGS) \
+		-n $(PY_DOCS_HOST) \
+		-p $(PY_DOCS_PORT)
+
+$(PY_PREFIX)docs-%: | $(VENV_CONC)
+	$(PYTHON) -m pydoc \
+		$(PY_DOCS_EXTRA_ARGS) $*
 
 $(PY_PREFIX)all: $(PY_PREFIX)lint $(PY_PREFIX)sa $(PY_PREFIX)test
 
