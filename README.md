@@ -2,11 +2,11 @@
     =====================================
     generator=datazen
     version=1.14.0
-    hash=ab17f81bbc44c33fc7da6e19eac8368f
+    hash=f0589ef1b883ec3d728f2d4c9f542c49
     =====================================
 -->
 
-# vmklib ([0.9.0](https://pypi.org/project/vmklib/))
+# vmklib ([0.9.1](https://pypi.org/project/vmklib/))
 
 [![python](https://img.shields.io/pypi/pyversions/vmklib.svg)](https://pypi.org/project/vmklib/)
 ![Build Status](https://github.com/vkottler/vmklib/workflows/Python%20package/badge.svg)
@@ -196,6 +196,8 @@ Prefix: `python-`
 **upload** - Use [twine](https://pypi.org/project/twine/) to upload the built package to [PyPI](https://pypi.org/).
 
 **editable** - Install the project's package in editable mode (`-e` option) to the virtual environment.
+
+**docs** - Run the `pydoc` module and host HTML documentation via an arbitrary HTTP port.
 
 ## venv
 

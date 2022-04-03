@@ -5,7 +5,7 @@ PY_PREFIX := python-
         $(PY_PREFIX)dist $(PY_PREFIX)upload $(PY_PREFIX)editable \
         $(PY_PREFIX)stubs $(PY_PREFIX)format $(PY_PREFIX)format-check \
         $(PY_PREFIX)sa-types $(PY_PREFIX)edit $(PY_PREFIX)dist-with-stubs \
-        $(PY_PREFIX)build $(PY_PREFIX)clean-build
+        $(PY_PREFIX)build $(PY_PREFIX)clean-build $(PY_PREFIX)docs
 
 PY_WIDTH := 79
 PY_LINE_LENGTH_ARG := --line-length $(PY_WIDTH)
@@ -115,6 +115,9 @@ PYTHON_COV_PORT := 0
 $(PY_PREFIX)host-coverage:
 	cd $($(PROJ)_DIR)/htmlcov \
 		&& python$(PYTHON_VERSION) -m http.server $(PYTHON_COV_PORT)
+
+$(PY_PREFIX)docs: | $(VENV_CONC)
+	cd $(PROJ) && $(PYTHON) -m pydoc -n 0.0.0.0 -p 0
 
 $(PY_PREFIX)all: $(PY_PREFIX)lint $(PY_PREFIX)sa $(PY_PREFIX)test
 

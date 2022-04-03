@@ -3,7 +3,7 @@ requires = ["setuptools", "wheel", "trove-classifiers"]
 
 [project]
 name = "vmklib"
-version = "0.9.0"
+version = "0.9.1"
 description = "Simplify project workflows by standardizing use of GNU Make."
 readme = "README.md"
 requires-python = ">=3.6"
