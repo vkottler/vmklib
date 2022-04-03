@@ -101,3 +101,7 @@ targets:
     description: >-
       Install the project's package in editable mode (`-e` option) to the
       virtual environment.
+  - name: docs
+    description: >-
+      Run the `pydoc` module and host HTML documentation via an arbitrary HTTP
+      port.
