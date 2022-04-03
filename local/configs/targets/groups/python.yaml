@@ -27,6 +27,15 @@ args:
     description: >-
       The target name to use as a `python-upload` dependency (e.g.
       `python-dist` versus `python-build`). Defaults to `python-build`.
+  - name: PY_DOCS_HOST
+    description: >-
+      Host argument passed to `pydoc` module (`-n`). Defaults to `0.0.0.0`.
+  - name: PY_DOCS_PORT
+    description: >-
+      Port argument passed to `pydoc` module (`-p`). Defaults to `0`.
+  - name: PY_DOCS_EXTRA_ARGS
+    description: >-
+      Extra arguments to pass to the `pydoc` module.
 targets:
   - name: lint
     description: >-
@@ -105,3 +114,6 @@ targets:
     description: >-
       Run the `pydoc` module and host HTML documentation via an arbitrary HTTP
       port.
+  - name: docs-%
+    description: >-
+      Run the `pydoc` module and pass the stem as an argument.
