@@ -1,7 +1,7 @@
 # =====================================
 # generator=datazen
 # version=1.14.0
-# hash=4d6c1ed02e646ac75581ebbf5850ab6d
+# hash=77111c33324b64990fdbd486c8b83e31
 # =====================================
 
 """
@@ -37,4 +37,5 @@ pkg_info = {
 setup(
     pkg_info,
     author_info,
+    entry_points={"console_scripts": ["mk=vmklib.entry:main"]},
 )
