@@ -1,11 +1,11 @@
 # =====================================
 # generator=datazen
 # version=1.14.0
-# hash=b397b1fa0e6794dba46d5185b5dabb20
+# hash=00ba91bb7d4186ef4911a6c0e23834c9
 # =====================================
 
 """
-vmklib - This package's command-line entry-point (boilerplate).
+This package's command-line entry-point (boilerplate).
 """
 
 # built-in
