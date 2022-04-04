@@ -13,7 +13,7 @@ PY_SOURCES_ARG := $($(PROJ)_DIR)/$(PROJ) \
                   $($(PROJ)_DIR)/tests \
                   $($(PROJ)_DIR)/*.py
 
-PY_LINT_EXTRA_ARGS :=
+PY_LINT_EXTRA_ARGS ?=
 PY_LINT_ARGS := $(PY_SOURCES_ARG) $(PY_LINT_EXTRA_ARGS)
 
 # don't turn this into a concrete target so we can spam it
@@ -52,7 +52,7 @@ $(PY_PREFIX)format-check: | $(VENV_CONC)
 $(PY_PREFIX)stubs: | $(VENV_CONC)
 	$(PYTHON_BIN)/stubgen -p $(PROJ) -o $($(PROJ)_DIR)
 
-PYTEST_EXTRA_ARGS :=
+PYTEST_EXTRA_ARGS ?=
 PYTEST_ARGS := -x --log-cli-level=10 --cov=$(PROJ) --cov-report html \
                $(PYTEST_EXTRA_ARGS)
 $(PY_PREFIX)test: | $(VENV_CONC)
@@ -96,10 +96,16 @@ $(TWINE_CONC): | $(VENV_CONC)
 	$(PIP) install --upgrade twine
 	$(call generic_concrete,$@)
 
-TWINE_ARGS := --non-interactive --verbose
+TWINE_ARGS := --non-interactive --verbose --skip-existing
 $(PY_PREFIX)upload: $(PY_PREFIX)lint $(PY_PREFIX)sa $(PY_PREFIX)test $(PY_BUILDER) | $(TWINE_CONC)
 	cd $($(PROJ)_DIR) && \
-		$(PYTHON_BIN)/twine upload $(TWINE_ARGS) $($(PROJ)_DIR)/dist/*
+		$(PYTHON_BIN)/twine check dist/* && \
+		$(PYTHON_BIN)/twine upload $(TWINE_ARGS) dist/*
+
+$(PY_PREFIX)upload-only: $(PY_BUILDER) | $(TWINE_CONC)
+	cd $($(PROJ)_DIR) && \
+		$(PYTHON_BIN)/twine check dist/* && \
+		$(PYTHON_BIN)/twine upload $(TWINE_ARGS) dist/*
 
 EDITABLE_CONC := $(call to_concrete, $(PY_PREFIX)editable)
 $(EDITABLE_CONC): | $(VENV_CONC)

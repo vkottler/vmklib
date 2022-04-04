@@ -74,11 +74,13 @@ def build_makefile(
         data["PROJ"] = os.path.basename(project_name)
         data["$(PROJ)_DIR"] = directory
         data["MK_AUTO"] = 1
+        data["$(PROJ)_MK_DIR"] = os.path.join(data["$(PROJ)_DIR"], "mk")
 
         # get the path to this package's data to include our "conf.mk"
         include_strs = [
-            "-include $($(PROJ)_DIR)/mk/conf.mk",
+            "-include $($(PROJ)_MK_DIR)/init.mk",
             f"include {get_resource('conf.mk')}",
+            "-include $($(PROJ)_MK_DIR)/conf.mk",
         ]
 
         for key, item in data.items():
