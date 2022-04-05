@@ -1,12 +1,12 @@
 <!--
     =====================================
     generator=datazen
-    version=1.14.0
-    hash=41a3ad464b32976f99f251f2cd60387c
+    version=2.0.0
+    hash=de67d16492d327467ecd3ec2d5c934f2
     =====================================
 -->
 
-# vmklib ([0.10.3](https://pypi.org/project/vmklib/))
+# vmklib ([0.10.4](https://pypi.org/project/vmklib/))
 
 [![python](https://img.shields.io/pypi/pyversions/vmklib.svg)](https://pypi.org/project/vmklib/)
 ![Build Status](https://github.com/vkottler/vmklib/workflows/Python%20package/badge.svg)
@@ -35,6 +35,7 @@ else with simple package updates.
 * [venv](#venv)
 * [vmklib](#vmklib)
 * [yaml](#yaml)
+* [Dependency Graph](#dependency-graph)
 
 # Command-line Options
 
@@ -109,7 +110,7 @@ Prefix: `grip-`
 
 ### Optional Arguments
 
-**SECRETHUB_GRIP_PATH** - The full path for the `secrethub read` command to source a [GitHub personal access token](https://docs.github.com/en/github/ authenticating-to-github/creating-a-personal-access-token) from, requires [secrethub](https://secrethub.io/).
+**SECRETHUB_GRIP_PATH** - The full path for the `secrethub read` command to source a [GitHub personal access token](https://docs.github.com/en/github/authenticating-to-github/creating-a-personal-access-token) from, requires [secrethub](https://secrethub.io/).
 
 **GRIP_PORT** - The `host:port` String to serve the rendered results on.
 
@@ -213,6 +214,8 @@ Prefix: `python-`
 
 **docs-%** - Run the `pydoc` module and pass the stem as an argument.
 
+**deps** - Run `pydeps` against the project (producing [SVG](https://www.w3.org/TR/SVG2/) output).
+
 ## venv
 
 Targets for managing [Python virtual environments](https://docs.python.org/3/library/venv.html).
@@ -264,3 +267,10 @@ Prefix: `yaml-`
 **yaml-lint-install** - Install [yamllint](https://yamllint.readthedocs.io/en/stable/index.html).
 
 **yaml-lint-%** - Execute `yamllint` against `$*`.
+
+# Dependency Graph
+
+Generated using [pydeps](https://github.com/thebjorn/pydeps) (via
+`mk python-deps`).
+
+![vmklib's Dependency Graph](im/pydeps.svg)

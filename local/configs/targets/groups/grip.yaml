@@ -8,8 +8,7 @@ args:
   - name: SECRETHUB_GRIP_PATH
     description: >-
       The full path for the `secrethub read` command to source a
-      [GitHub personal access token](https://docs.github.com/en/github/
-      authenticating-to-github/creating-a-personal-access-token)
+      [GitHub personal access token](https://docs.github.com/en/github/authenticating-to-github/creating-a-personal-access-token)
       from, requires [secrethub](https://secrethub.io/).
   - name: GRIP_PORT
     description: "The `host:port` String to serve the rendered results on."

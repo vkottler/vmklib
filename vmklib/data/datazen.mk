@@ -2,7 +2,7 @@ DZ_PREFIX  := dz-
 DZ_INSTALL := $(DZ_PREFIX)install
 
 .PHONY: $(DZ_PREFIX)sync $(DZ_PREFIX)clean $(DZ_PREFIX)describe \
-        $(DZ_PREFIX)upgrade $(DZ_INSTALL)
+        $(DZ_PREFIX)upgrade $(DZ_INSTALL) dz
 
 DZ_DIR      ?= $($(PROJ)_DIR)
 DZ_ARGS     := -C $(DZ_DIR)
@@ -25,6 +25,8 @@ $(DZ_INSTALL): $(DZ_CONC)
 
 $(DZ_PREFIX)sync: | $(DZ_CONC)
 	$(DZ_ENTRY) $(DZ_ARGS)
+
+dz: $(DZ_PREFIX)sync
 
 $(DZ_PREFIX)clean: | $(DZ_CONC)
 	$(DZ_ENTRY) $(DZ_ARGS) -c
