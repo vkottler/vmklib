@@ -47,8 +47,13 @@ endif
 include $(MK_SRC_DIR)/functions.mk
 include $(MK_SRC_DIR)/time.mk
 include $(MK_SRC_DIR)/venv.mk
+
 include $(MK_SRC_DIR)/python.mk
-include $(MK_SRC_DIR)/pypi.mk
+include $(MK_SRC_DIR)/python/build.mk
+include $(MK_SRC_DIR)/python/upload.mk
+include $(MK_SRC_DIR)/python/pypi.mk
+include $(MK_SRC_DIR)/python/docs.mk
+
 include $(MK_SRC_DIR)/vmklib.mk
 include $(MK_SRC_DIR)/datazen.mk
 include $(MK_SRC_DIR)/grip.mk

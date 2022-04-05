@@ -117,3 +117,7 @@ targets:
   - name: docs-%
     description: >-
       Run the `pydoc` module and pass the stem as an argument.
+  - name: deps
+    description: >-
+      Run `pydeps` against the project (producing
+      [SVG](https://www.w3.org/TR/SVG2/) output).

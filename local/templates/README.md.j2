@@ -17,6 +17,7 @@ else with simple package updates.
 {% for group, data in targets["groups"].items()|sort %}
 * [{{group}}](#{{group}})
 {% endfor %}
+* [Dependency Graph](#dependency-graph)
 
 # Command-line Options
 
@@ -55,3 +56,10 @@ Prefix: `{{data["prefix"]}}`
 **{{subtarget["name"]}}** - {{subtarget["description"]}}
 {% endfor %}
 {% endfor %}
+
+# Dependency Graph
+
+Generated using [pydeps](https://github.com/thebjorn/pydeps) (via
+`mk python-deps`).
+
+![{{package["name"]}}'s Dependency Graph](im/pydeps.svg)
