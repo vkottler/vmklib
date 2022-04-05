@@ -62,7 +62,8 @@ $(PY_PREFIX)test: | $(VENV_CONC)
 $(PY_PREFIX)test-%: | $(VENV_CONC)
 	$(call time_wrap,$(PYTHON_BIN)/pytest $(PYTEST_ARGS) -k "$*" $($(PROJ)_DIR)/tests)
 
-PY_CLEAN_BUILD_CMD := rm -rf $($(PROJ)_DIR)/dist $(BUILD_DIR)/bdist* $(BUILD_DIR)/lib
+PY_CLEAN_BUILD_CMD := rm -rf $($(PROJ)_DIR)/dist $(BUILD_DIR)/bdist* \
+                      $(BUILD_DIR)/lib
 
 $(PY_PREFIX)clean-build:
 	$(PY_CLEAN_BUILD_CMD)
