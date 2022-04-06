@@ -57,9 +57,4 @@ Prefix: `{{data["prefix"]}}`
 {% endfor %}
 {% endfor %}
 
-# Dependency Graph
-
-Generated using [pydeps](https://github.com/thebjorn/pydeps) (via
-`mk python-deps`).
-
-![{{package["name"]}}'s Dependency Graph](im/pydeps.svg)
+{{python_readme_dep_graph_md}}

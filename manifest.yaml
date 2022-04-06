@@ -1,49 +1,50 @@
 ---
-default_target: "groups-all"
+default_target: groups-all
 
 params:
-  project: "vmklib"
+  project: vmklib
   python_version: "$PYTHON_VERSION"
-  entry: "mk"
+  entry: mk
 
 includes:
-  - "config/includes/python.yaml"
-  - "config/includes/license.yaml"
+  - config/includes/python.yaml
+  - config/includes/license.yaml
 
 configs:
-  - "local/configs"
+  - local/configs
 
 variables:
-  - "local/variables"
+  - local/variables
 
 templates:
-  - "local/templates"
+  - local/templates
 
 schemas:
-  - "local/schemas"
+  - local/schemas
 
 schema_types:
-  - "local/schema_types"
+  - local/schema_types
 
 compiles:
-  - name: "local"
+  - name: local
 
 renders:
-  - name: "README.md"
+  - name: README.md
     output_dir: "."
     dependencies:
-      - "compiles-local"
-      - "commands-help"
-      - "renders-python_readme_header.md"
-  - name: "header.mk"
+      - compiles-local
+      - commands-help
+      - renders-python_readme_header.md
+      - renders-python_readme_dep_graph.md
+  - name: header.mk
     output_dir: "{{project}}/data/data"
     dependencies:
-      - "compiles-local"
+      - compiles-local
 
 groups:
   - name: all
     dependencies:
       - groups-python
       - groups-license
-      - "renders-README.md"
-      - "renders-header.mk"
+      - renders-README.md
+      - renders-header.mk
