@@ -3,10 +3,9 @@ name: vmklib
 version: "{{major}}.{{minor}}.{{patch}}"
 description: "Simplify project workflows by standardizing use of GNU Make."
 entry: {{entry}}
-requirements:
-  - setuptools
+requirements: []
 dev_requirements:
-  - types-setuptools
+  - setuptools-wrapper
 keywords:
   - workflow
   - tool
