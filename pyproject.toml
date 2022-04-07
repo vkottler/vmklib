@@ -1,9 +1,9 @@
 [build-system]
-requires = ["setuptools", "wheel", "trove-classifiers"]
+requires = ["setuptools-wrapper", "trove-classifiers"]
 
 [project]
 name = "vmklib"
-version = "0.10.4"
+version = "1.0.0"
 description = "Simplify project workflows by standardizing use of GNU Make."
 readme = "README.md"
 requires-python = ">=3.6"
@@ -28,13 +28,10 @@ classifiers = [
   "Programming Language :: Python :: 3.10",
   "License :: OSI Approved :: MIT License"
 ]
-dependencies = [
-  "setuptools"
-]
 
 [project.optional-dependencies]
 test = [
-  "types-setuptools",
+  "setuptools-wrapper",
   "pylint",
   "flake8",
   "pytest",

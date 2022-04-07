@@ -1,20 +1,21 @@
 # =====================================
 # generator=datazen
 # version=2.0.0
-# hash=4d6c1ed02e646ac75581ebbf5850ab6d
+# hash=c12525032ffdcc560f1b009f9eb1d2a0
 # =====================================
 
 """
 vmklib - Package definition for distribution.
 """
 
-# internal
-from vmklib import DESCRIPTION, PKG_NAME, VERSION
-
+# third-party
 try:
-    from vmklib.setup import setup
+    from setuptools_wrapper.setup import setup
 except (ImportError, ModuleNotFoundError):
     from vmklib_bootstrap.setup import setup  # type: ignore
+
+# internal
+from vmklib import DESCRIPTION, PKG_NAME, VERSION
 
 author_info = {
     "name": "Vaughn Kottler",
