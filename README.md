@@ -2,7 +2,7 @@
     =====================================
     generator=datazen
     version=2.0.0
-    hash=de67d16492d327467ecd3ec2d5c934f2
+    hash=533ab0b097196ce0be3d2051c5e82dff
     =====================================
 -->
 
@@ -268,8 +268,10 @@ Prefix: `yaml-`
 
 **yaml-lint-%** - Execute `yamllint` against `$*`.
 
-# Dependency Graph
+# Internal Dependency Graph
 
+A coarse view of the internal structure and scale of
+`vmklib`'s source.
 Generated using [pydeps](https://github.com/thebjorn/pydeps) (via
 `mk python-deps`).
 
