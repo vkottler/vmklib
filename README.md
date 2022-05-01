@@ -2,7 +2,7 @@
     =====================================
     generator=datazen
     version=2.0.0
-    hash=3c141483d1315daf42ed0dd4da3164cb
+    hash=f73da0796720693bc9b838b9c454310a
     =====================================
 -->
 
@@ -13,6 +13,9 @@
 [![codecov](https://codecov.io/gh/vkottler/vmklib/branch/master/graphs/badge.svg?branch=master)](https://codecov.io/github/vkottler/vmklib)
 
 *Simplify project workflows by standardizing use of GNU Make.*
+
+See also: [generated documentation](https://vkottler.github.io/python/pydoc/vmklib.html)
+(created with [`pydoc`](https://docs.python.org/3/library/pydoc.html)).
 
 This tool integrates with existing `Makefile`'s with zero additional
 content or bootstrapping required.
