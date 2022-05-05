@@ -10,6 +10,7 @@ import logging
 import os
 from pathlib import Path
 import subprocess
+from sys import version_info
 import tempfile
 from typing import Iterator
 
@@ -59,7 +60,7 @@ def build_makefile(
         data = {}
 
     # create a temporary file
-    with tempfile.NamedTemporaryFile(mode="w") as makefile:
+    with tempfile.NamedTemporaryFile(mode="w", delete=False) as makefile:
         # if the project name wasn't provided, guess that it's either the name
         # of the parent directory, or that name as a "slug"
         if project_name is None:
@@ -78,9 +79,9 @@ def build_makefile(
 
         # get the path to this package's data to include our "conf.mk"
         include_strs = [
-            "-include $($(PROJ)_MK_DIR)/init.mk",
+            f"-include $($(PROJ)_MK_DIR){os.sep}init.mk",
             f"include {get_resource('conf.mk')}",
-            "-include $($(PROJ)_MK_DIR)/conf.mk",
+            f"-include $($(PROJ)_MK_DIR){os.sep}conf.mk",
         ]
 
         for key, item in data.items():
@@ -109,6 +110,10 @@ def entry(args: argparse.Namespace) -> int:
             return 1
         args.file = get_resource(os.path.join("data", "header.mk"))
 
+    # set useful environment variables if necessary
+    if "PYTHON_VERSION" not in os.environ:
+        os.environ["PYTHON_VERSION"] = f"{version_info[0]}.{version_info[1]}"
+
     # build the beginning of the invocation args
     invocation_args = ["make", "-C", str(args.dir), "-f"]
 
@@ -124,22 +129,25 @@ def entry(args: argparse.Namespace) -> int:
     with build_makefile(args.file, args.dir, args.proj, data) as makefile:
         invocation_args.append(makefile)
 
-        # add each target to the list
-        for target in args.targets:
-            target_str = target
-            if args.prefix and "=" not in target_str:
-                target_str = f"{args.prefix}-{target_str}"
-            invocation_args.append(target_str)
+    # add each target to the list
+    for target in args.targets:
+        target_str = target
+        if args.prefix and "=" not in target_str:
+            target_str = f"{args.prefix}-{target_str}"
+        invocation_args.append(target_str)
 
-        # start the process
-        LOG.debug(invocation_args)
-        try:
-            result = subprocess.run(invocation_args, check=True)
-            retcode = result.returncode
-        except subprocess.CalledProcessError as exc:
-            retcode = exc.returncode
-        except KeyboardInterrupt:
-            retcode = 1
+    # start the process
+    LOG.debug(invocation_args)
+    try:
+        result = subprocess.run(invocation_args, check=True)
+        retcode = result.returncode
+    except subprocess.CalledProcessError as exc:
+        retcode = exc.returncode
+    except KeyboardInterrupt:
+        retcode = 1
+    finally:
+        # remove the temporary file at the end because windows is hot garbage
+        Path(makefile).unlink()
 
     return retcode
 
