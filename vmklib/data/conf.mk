@@ -1,5 +1,23 @@
+#
+# Set up platform-specific variables.
+#
+ifeq ($(OS),Windows_NT)
+
+SEP  := \\
+NULL := NUL
+path = $(subst /,$(SEP),$(1))
+
+else
+
+SEP  := /
+NULL := /dev/null
+path = $(1)
+MKDIR = $(shell mkdir $(call path, $(1)))
+
+endif
+
 BUILD_DIR_NAME ?= build
-BUILD_DIR      ?= $($(PROJ)_DIR)/$(BUILD_DIR_NAME)
+BUILD_DIR      ?= $(call path,$($(PROJ)_DIR)/$(BUILD_DIR_NAME))
 $(BUILD_DIR):
 	@mkdir -p $@
 	@touch $@
@@ -24,7 +42,7 @@ get_current_makefile = $(call get_last_word,$(MAKEFILE_LIST))
 # 1: makefile path
 # 2: makefile name
 #
-makefile_to_dir = $(patsubst %/$(2),%,$(1))
+makefile_to_dir = $(patsubst %$(SEP)$(2),%,$(1))
 
 #
 # Allows any makefile to include other makefiles with relative paths only.
@@ -34,27 +52,27 @@ get_current_makefile_dir = $(call makefile_to_dir,$(call get_current_makefile),$
 
 # Package directories.
 MK_SRC_DIR  := $(call get_current_makefile_dir)
-MK_PY_DIR   := $(MK_SRC_DIR)/..
-MK_DATA_DIR := $(MK_SRC_DIR)/data
+MK_PY_DIR   := $(call path,$(MK_SRC_DIR)/..)
+MK_DATA_DIR := $(call path,$(MK_SRC_DIR)/data)
 
 # Set a root directory for the current git repository if we're in one,
 # otherwise use the project directory.
-GIT_ROOT    := $(shell git rev-parse --show-toplevel 2>/dev/null)
+GIT_ROOT    := $(shell git rev-parse --show-toplevel 2>$(NULL))
 ifeq ($(GIT_ROOT),)
 GIT_ROOT    := $($(PROJ)_DIR)
 endif
 
-include $(MK_SRC_DIR)/functions.mk
-include $(MK_SRC_DIR)/time.mk
-include $(MK_SRC_DIR)/venv.mk
+include $(call path,$(MK_SRC_DIR)/functions.mk)
+include $(call path,$(MK_SRC_DIR)/time.mk)
+include $(call path,$(MK_SRC_DIR)/venv.mk)
 
-include $(MK_SRC_DIR)/python.mk
-include $(MK_SRC_DIR)/python/build.mk
-include $(MK_SRC_DIR)/python/upload.mk
-include $(MK_SRC_DIR)/python/pypi.mk
-include $(MK_SRC_DIR)/python/docs.mk
+include $(call path,$(MK_SRC_DIR)/python.mk)
+include $(call path,$(MK_SRC_DIR)/python/build.mk)
+include $(call path,$(MK_SRC_DIR)/python/upload.mk)
+include $(call path,$(MK_SRC_DIR)/python/pypi.mk)
+include $(call path,$(MK_SRC_DIR)/python/docs.mk)
 
-include $(MK_SRC_DIR)/vmklib.mk
-include $(MK_SRC_DIR)/datazen.mk
-include $(MK_SRC_DIR)/grip.mk
-include $(MK_SRC_DIR)/yaml.mk
+include $(call path,$(MK_SRC_DIR)/vmklib.mk)
+include $(call path,$(MK_SRC_DIR)/datazen.mk)
+include $(call path,$(MK_SRC_DIR)/grip.mk)
+include $(call path,$(MK_SRC_DIR)/yaml.mk)
