@@ -5,19 +5,21 @@ ifeq ($(OS),Windows_NT)
 
 SEP  := \\
 NULL := NUL
-path = $(subst /,$(SEP),$(1))
+FIX_PATH = $(subst /,$(SEP),$(1))
+WHICH = where
 
 else
 
 SEP  := /
 NULL := /dev/null
-path = $(1)
-MKDIR = $(shell mkdir $(call path, $(1)))
+FIX_PATH = $(1)
+MKDIR = $(shell mkdir $(call FIX_PATH,$(1)))
+WHICH = which
 
 endif
 
 BUILD_DIR_NAME ?= build
-BUILD_DIR      ?= $(call path,$($(PROJ)_DIR)/$(BUILD_DIR_NAME))
+BUILD_DIR      ?= $(call FIX_PATH,$($(PROJ)_DIR)/$(BUILD_DIR_NAME))
 $(BUILD_DIR):
 	@mkdir -p $@
 	@touch $@
@@ -52,8 +54,10 @@ get_current_makefile_dir = $(call makefile_to_dir,$(call get_current_makefile),$
 
 # Package directories.
 MK_SRC_DIR  := $(call get_current_makefile_dir)
-MK_PY_DIR   := $(call path,$(MK_SRC_DIR)/..)
-MK_DATA_DIR := $(call path,$(MK_SRC_DIR)/data)
+MK_PY_DIR   := $(call FIX_PATH,$(MK_SRC_DIR)/..)
+MK_DATA_DIR := $(call FIX_PATH,$(MK_SRC_DIR)/data)
+
+$(call get_current_makefile)
 
 # Set a root directory for the current git repository if we're in one,
 # otherwise use the project directory.
@@ -62,17 +66,17 @@ ifeq ($(GIT_ROOT),)
 GIT_ROOT    := $($(PROJ)_DIR)
 endif
 
-include $(call path,$(MK_SRC_DIR)/functions.mk)
-include $(call path,$(MK_SRC_DIR)/time.mk)
-include $(call path,$(MK_SRC_DIR)/venv.mk)
+include $(call FIX_PATH,$(MK_SRC_DIR)/functions.mk)
+include $(call FIX_PATH,$(MK_SRC_DIR)/time.mk)
+include $(call FIX_PATH,$(MK_SRC_DIR)/venv.mk)
 
-include $(call path,$(MK_SRC_DIR)/python.mk)
-include $(call path,$(MK_SRC_DIR)/python/build.mk)
-include $(call path,$(MK_SRC_DIR)/python/upload.mk)
-include $(call path,$(MK_SRC_DIR)/python/pypi.mk)
-include $(call path,$(MK_SRC_DIR)/python/docs.mk)
+include $(call FIX_PATH,$(MK_SRC_DIR)/python.mk)
+include $(call FIX_PATH,$(MK_SRC_DIR)/python/build.mk)
+include $(call FIX_PATH,$(MK_SRC_DIR)/python/upload.mk)
+include $(call FIX_PATH,$(MK_SRC_DIR)/python/pypi.mk)
+include $(call FIX_PATH,$(MK_SRC_DIR)/python/docs.mk)
 
-include $(call path,$(MK_SRC_DIR)/vmklib.mk)
-include $(call path,$(MK_SRC_DIR)/datazen.mk)
-include $(call path,$(MK_SRC_DIR)/grip.mk)
-include $(call path,$(MK_SRC_DIR)/yaml.mk)
+include $(call FIX_PATH,$(MK_SRC_DIR)/vmklib.mk)
+include $(call FIX_PATH,$(MK_SRC_DIR)/datazen.mk)
+include $(call FIX_PATH,$(MK_SRC_DIR)/grip.mk)
+include $(call FIX_PATH,$(MK_SRC_DIR)/yaml.mk)

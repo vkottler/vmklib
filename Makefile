@@ -1,6 +1,8 @@
+include c:\users\vaugh\documents\git\vmklib\vmklib\data\conf.mk
+
 ###############################################################################
 MK_INFO := https://pypi.org/project/vmklib
-ifeq (,$(shell which mk))
+ifeq (,$(shell $(WHICH) mk 2>$(NULL)))
 $(warning "No 'mk' in $(PATH), install 'vmklib' with 'pip' ($(MK_INFO))")
 endif
 ifndef MK_AUTO
