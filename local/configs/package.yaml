@@ -3,7 +3,8 @@ name: vmklib
 version: "{{major}}.{{minor}}.{{patch}}"
 description: "Simplify project workflows by standardizing use of GNU Make."
 entry: {{entry}}
-requirements: []
+requirements:
+  - vcorelib
 dev_requirements:
   - setuptools-wrapper
 keywords:
