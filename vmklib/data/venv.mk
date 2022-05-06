@@ -35,6 +35,10 @@ $(call to_concrete, $(VENV_NAME)/req-%): $(REQUIREMENTS_DIR)/%.txt | $(BUILD_DIR
 	$(call time_wrap,$(PIP) install --upgrade -r $<)
 	$(call generic_concrete,$@)
 
+$(call to_concrete, $(VENV_NAME)/edit_venv): $(MK_DATA_DIR)/edit_venv.txt | $(BUILD_DIR) $(VENV_DIR)
+	$(call time_wrap,$(PIP) install --upgrade -r $<)
+	$(call generic_concrete,$@)
+
 $(VENV_CONC): $(REQ_CONC)
 	$(call generic_concrete,$@)
 

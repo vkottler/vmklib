@@ -40,7 +40,7 @@ $(PY_PREFIX)tags:
 	ctags -f $($(PROJ)_DIR)/tags -R \
 		$($(PROJ)_DIR)/$(PROJ) $($(PROJ)_DIR)/tests
 
-$(PY_PREFIX)edit: $(PY_PREFIX)tags | $(VENV_CONC)
+$(PY_PREFIX)edit: $(BUILD_DIR)/$(VENV_NAME)/edit_venv.txt $(PY_PREFIX)tags | $(VENV_CONC)
 	. $(VENV_ACTIVATE) && cd $($(PROJ)_DIR) && $(EDITOR)
 
 $(PY_PREFIX)format-check: | $(VENV_CONC)
