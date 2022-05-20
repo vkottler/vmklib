@@ -3,10 +3,10 @@ requires = ["setuptools-wrapper", "trove-classifiers"]
 
 [project]
 name = "vmklib"
-version = "1.1.0"
+version = "1.2.0"
 description = "Simplify project workflows by standardizing use of GNU Make."
 readme = "README.md"
-requires-python = ">=3.6"
+requires-python = ">=3.7"
 license = {file = "LICENSE"}
 keywords = [
   "workflow",
@@ -21,7 +21,6 @@ maintainers = [
 ]
 classifiers = [
   "Topic :: Software Development :: Build Tools",
-  "Programming Language :: Python :: 3.6",
   "Programming Language :: Python :: 3.7",
   "Programming Language :: Python :: 3.8",
   "Programming Language :: Python :: 3.9",
