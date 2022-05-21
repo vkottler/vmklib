@@ -10,9 +10,10 @@ from json import load
 import logging
 import os
 from pathlib import Path
+from platform import system
 import subprocess
 import tempfile
-from typing import Callable, Iterator
+from typing import Callable, Dict, Iterator
 
 # third-party
 import pkg_resources
@@ -115,7 +116,7 @@ def build_makefile(
 # - working directory (not necessarily the current one)
 # - task manager to register tasks to
 #
-TaskRegister = Callable[[TaskManager, str, Path], bool]
+TaskRegister = Callable[[TaskManager, str, Path, Dict[str, str]], bool]
 
 
 def initialize_task_manager(
@@ -123,7 +124,7 @@ def initialize_task_manager(
     proj: str,
     task_register: str,
     directory: Path,
-    **kwargs,
+    substitutions: Dict[str, str],
 ) -> None:
     """Load internal and external tasks to the task manager."""
 
@@ -133,7 +134,7 @@ def initialize_task_manager(
         "register",
         proj,
         directory,
-        **kwargs,
+        substitutions,
     ), "Couldn't register package tasks from '{get_resource(task_register)}'!"
 
     # register task-manager targets for the project
@@ -148,7 +149,7 @@ def initialize_task_manager(
             "register",
             proj,
             directory,
-            **kwargs,
+            substitutions,
         ), "Couldn't register project tasks from '{proj_tasks}'!"
 
 
@@ -177,13 +178,15 @@ def entry(args: argparse.Namespace) -> int:
         args.file = get_resource(os.path.join("data", "header.mk"))
 
     # load configuration data, if configuration data is found
-    data = get_data(args.config)
+    substitutions: Dict[str, str] = get_data(args.config)
 
     proj = project(args.dir, args.proj)
     task_register = os.path.join("tasks", "conf.py")
 
     manager = TaskManager()
-    initialize_task_manager(manager, proj, task_register, args.dir, **data)
+    initialize_task_manager(
+        manager, proj, task_register, args.dir, substitutions
+    )
 
     # build the list of targets to execute
     target_args = []
@@ -194,24 +197,39 @@ def entry(args: argparse.Namespace) -> int:
         target_args.append(target_str)
 
     # determine which tasks aren't resolved by the task manager
-    unresolved, executor = manager.prepare_execute(target_args)
+    unresolved, executor = manager.prepare_execute(
+        target_args, **substitutions
+    )
 
     # execute tasks handled by the task manager
     get_event_loop().run_until_complete(executor())
 
-    # handle make targets
-    invocation_args = ["make", "-C", str(args.dir), "-f"]
-    with build_makefile(args.file, args.dir, proj, data) as makefile:
-        invocation_args.append(makefile)
-        invocation_args += list(unresolved)
-        LOG.debug(invocation_args)
-        try:
-            result = subprocess.run(invocation_args, check=True)
-            retcode = result.returncode
-        except subprocess.CalledProcessError as exc:
-            retcode = exc.returncode
-        except KeyboardInterrupt:
-            retcode = 1
+    retcode = 1
+
+    # Handle Make targets if it makes sense to run make.
+    if unresolved and not args.disable_make and not system() == "Windows":
+        invocation_args = ["make", "-C", str(args.dir), "-f"]
+        with build_makefile(
+            args.file, args.dir, proj, substitutions
+        ) as makefile:
+            invocation_args.append(makefile)
+            invocation_args += list(unresolved)
+            LOG.debug(invocation_args)
+            try:
+                result = subprocess.run(invocation_args, check=True)
+                retcode = result.returncode
+            except subprocess.CalledProcessError as exc:
+                retcode = exc.returncode
+            except KeyboardInterrupt:
+                pass
+
+    # Set the return code to zero if all targets were resolved.
+    elif not unresolved:
+        retcode = 0
+    else:
+        print(
+            f"The following targets were not resovled: {', '.join(unresolved)}"
+        )
 
     return retcode
 
@@ -222,6 +240,12 @@ def add_app_args(parser: argparse.ArgumentParser) -> None:
     parser.add_argument("targets", nargs="*", help="targets to execute")
     parser.add_argument(
         "-p", "--prefix", default="", help="a prefix to apply to all targets"
+    )
+    parser.add_argument(
+        "-d",
+        "--disable-make",
+        action="store_true",
+        help="whether or not to allow GNU Make target resolution",
     )
     parser.add_argument(
         "-f",

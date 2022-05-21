@@ -10,12 +10,12 @@ from subprocess import check_output
 from sys import executable
 import time
 
+# internal
+from tests import build_cleaned_resource, get_args, get_resource
+
 # module under test
 from vmklib import PKG_NAME
 from vmklib.entry import main as mk_main
-
-# internal
-from . import get_args, get_resource
 
 
 def test_interrupt():
@@ -58,3 +58,12 @@ def test_entry_proj_slug():
     assert (
         mk_main([PKG_NAME, "-C", get_resource("test-scenario"), "test"]) == 0
     )
+
+
+def test_entry_python_tasks():
+    """Ensure that we can run Python-based tasks."""
+
+    with build_cleaned_resource("python-tasks") as test_dir:
+        assert mk_main([PKG_NAME, "-C", test_dir, "-d", "venv"]) == 0
+        assert mk_main([PKG_NAME, "-C", test_dir, "-d", "venv"]) == 0
+        assert mk_main([PKG_NAME, "-C", test_dir, "-d", "asdf"]) != 0

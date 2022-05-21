@@ -5,6 +5,7 @@ vmklib - Shared test utilities.
 # built-in
 from contextlib import contextmanager
 import os
+from shutil import rmtree
 import tempfile
 from typing import Iterator, List
 
@@ -32,3 +33,26 @@ def get_resource(resource_name: str) -> str:
 
     resource_path = os.path.join("data", resource_name)
     return pkg_resources.resource_filename(__name__, resource_path)
+
+
+@contextmanager
+def build_cleaned_resource(resource_name: str) -> Iterator[str]:
+    """
+    Get a path to a resourc and ensure that a 'build' directory relative to it
+    is cleaned up before and after providing it.
+    """
+
+    path = get_resource(resource_name)
+
+    # Try our best to clean up virtual environments.
+    to_clean = ["build"] + [f"venv3.{x}" for x in [6, 7, 8, 9, 10, 11, 12]]
+
+    for clean in to_clean:
+        clean_path = os.path.join(path, clean)
+        rmtree(clean_path, ignore_errors=True)
+
+    yield path
+
+    for clean in to_clean:
+        clean_path = os.path.join(path, clean)
+        rmtree(clean_path, ignore_errors=True)
