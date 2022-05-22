@@ -4,7 +4,9 @@ A task mixin for writing concrete outputs to a build directory.
 
 # built-in
 from os import linesep
+from pathlib import Path
 from time import asctime
+from typing import Dict
 
 # third-party
 from vcorelib.task import Inbox, Outbox, Task
@@ -12,6 +14,10 @@ from vcorelib.task import Inbox, Outbox, Task
 
 class ConcreteBuilderMixin(Task):
     """Create a concrete file output after a task completes."""
+
+    def concrete_path(self, substitutions: Dict[str, str] = None) -> Path:
+        """By default name the concrete after the compiled target name."""
+        return Path(f"{self.target.compile(substitutions)}.txt")
 
     def update_concrete(self, inbox: Inbox, **kwargs) -> None:
         """
@@ -25,7 +31,7 @@ class ConcreteBuilderMixin(Task):
         init_data = inbox["vmklib.init"]
         build = init_data["__dirs__"]["build"]
         substitutions = {**kwargs}
-        concrete = build.joinpath(f"{self.target.compile(substitutions)}.txt")
+        concrete = build.joinpath(self.concrete_path(substitutions))
 
         # Write data to the concrete file.
         concrete.parent.mkdir(parents=True, exist_ok=True)
