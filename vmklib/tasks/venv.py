@@ -10,7 +10,7 @@ from typing import Dict
 # third-party
 from vcorelib.dict import set_if_not
 from vcorelib.paths import get_file_name
-from vcorelib.task import Inbox, Outbox, Task
+from vcorelib.task import Inbox, Outbox, Phony
 from vcorelib.task.manager import TaskManager
 from vcorelib.task.subprocess.run import SubprocessLogMixin
 
@@ -64,7 +64,12 @@ class Venv(ConcreteBuilderMixin, SubprocessLogMixin):
         # Upgrade pip by default.
         if result and kwargs.get("upgrade_pip", True):
             proc = await self.subprocess_exec(
-                outbox["python"], "-m", "pip", "install", "--upgrade", "pip"
+                str(outbox["python"]),
+                "-m",
+                "pip",
+                "install",
+                "--upgrade",
+                "pip",
             )
             await proc.communicate()
             result = proc.returncode == 0
@@ -73,23 +78,33 @@ class Venv(ConcreteBuilderMixin, SubprocessLogMixin):
 
 
 class RequirementsInstaller(ConcreteBuilderMixin, SubprocessLogMixin):
-    """TODO."""
+    """A task for installing requirements files."""
 
     async def run(self, inbox: Inbox, outbox: Outbox, *args, **kwargs) -> bool:
         """Install a requirements file."""
 
-        # Run the command.
-        print(inbox["venv{python_version}"]["python"])
-        proc = await self.subprocess_exec(
-            inbox["venv{python_version}"]["python"],
-            "-m",
-            "pip",
-            "install",
-            "-r",
-            str(args[0]),
-        )
-        await proc.communicate()
-        return proc.returncode == 0
+        result = True
+
+        # Only take action if any of the requirements are newer than the
+        # concrete.
+        req_files = [*args]
+        self._continue = self.is_concrete_stale(inbox, req_files, {**kwargs})
+        if self._continue:
+            for req in req_files:
+                if result:
+                    # Run the command.
+                    proc = await self.subprocess_exec(
+                        str(inbox["venv{python_version}"]["python"]),
+                        "-m",
+                        "pip",
+                        "install",
+                        "-r",
+                        str(req),
+                    )
+                    await proc.communicate()
+                    result = proc.returncode == 0
+
+        return result
 
 
 def register(
@@ -108,11 +123,13 @@ def register(
 
     # Add a "phony" style target to just create the virtual environment. Here
     # We would also add dependencies like requirement-file installs.
-    manager.register(Task("venv"), ["venv{python_version}"])
+    manager.register(Phony("venv"), ["venv{python_version}"])
 
     requirements_files = [
+        # Project requirements.
         cwd.joinpath(project, "requirements.txt"),
         cwd.joinpath(project, "dev_requirements.txt"),
+        # Package's default requirements.
         get_resource(join("data", "edit_venv.txt")),
         get_resource(join("data", "fresh_venv.txt")),
     ]
