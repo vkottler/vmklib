@@ -3,19 +3,16 @@ A module for registering virtual environment tasks.
 """
 
 # built-in
-from os.path import join
 from pathlib import Path
 from typing import Dict
 
 # third-party
 from vcorelib.dict import set_if_not
-from vcorelib.paths import get_file_name
 from vcorelib.task import Inbox, Outbox, Phony
 from vcorelib.task.manager import TaskManager
 from vcorelib.task.subprocess.run import SubprocessLogMixin
 
 # internal
-from vmklib.resources import get_resource
 from vmklib.tasks.mixins.concrete import ConcreteBuilderMixin
 from vmklib.tasks.python import python_version as _python_version
 from vmklib.tasks.python import venv_bin, venv_dir
@@ -125,27 +122,22 @@ def register(
     # We would also add dependencies like requirement-file installs.
     manager.register(Phony("venv"), ["venv{python_version}"])
 
+    # Look for requirements files.
     requirements_files = [
-        # Project requirements.
+        cwd.joinpath("requirements.txt"),
+        cwd.joinpath("dev_requirements.txt"),
         cwd.joinpath(project, "requirements.txt"),
         cwd.joinpath(project, "dev_requirements.txt"),
-        # Package's default requirements.
-        get_resource(join("data", "edit_venv.txt")),
-        get_resource(join("data", "fresh_venv.txt")),
     ]
 
-    # Ensure we can load the package requirements files.
-    assert requirements_files[2].is_file()
-    assert requirements_files[3].is_file()
-
     # Register requirements' install tasks.
-    for req in requirements_files:
-        if req.is_file():
-            task_name = f"python-requirements-{get_file_name(req)}"
-            manager.register(
-                RequirementsInstaller(task_name, req),
-                ["vmklib.init", "venv{python_version}"],
-            )
-            manager.register_to("venv", [task_name])
+    manager.register(
+        RequirementsInstaller(
+            "python-project-requirements",
+            *list(filter(lambda x: x.is_file(), requirements_files)),
+        ),
+        ["vmklib.init", "venv{python_version}"],
+    )
+    manager.register_to("venv", ["python-project-requirements"])
 
     return True
