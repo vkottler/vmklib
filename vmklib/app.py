@@ -16,6 +16,7 @@ import tempfile
 from typing import Callable, Dict, Iterator
 
 # third-party
+from vcorelib.task import TaskFailed
 from vcorelib.task.manager import TaskManager
 
 # internal
@@ -176,12 +177,16 @@ def entry(args: argparse.Namespace) -> int:
     )
 
     # execute tasks handled by the task manager
-    get_event_loop().run_until_complete(executor())
+    try:
+        get_event_loop().run_until_complete(executor())
+    except TaskFailed as exc:
+        print(exc)
+        return 1
 
     retcode = 1
 
     # Handle Make targets if it makes sense to run make.
-    if unresolved and not args.disable_make and not system() == "Windows":
+    if unresolved and not args.disable_make:
         invocation_args = ["make", "-C", str(args.dir), "-f"]
         with build_makefile(
             args.file, args.dir, proj, substitutions
@@ -218,8 +223,12 @@ def add_app_args(parser: argparse.ArgumentParser) -> None:
     parser.add_argument(
         "-d",
         "--disable-make",
+        default=system() == "Windows",
         action="store_true",
-        help="whether or not to allow GNU Make target resolution",
+        help=(
+            "whether or not to allow GNU Make "
+            "target resolution (default: '%(default)s')"
+        ),
     )
     parser.add_argument(
         "-f",

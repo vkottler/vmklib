@@ -42,6 +42,7 @@ class Venv(ConcreteBuilderMixin, SubprocessLogMixin):
 
         # Set the path in the outbox so we can easily find it.
         _outbox["path"] = path
+        _outbox["bin"] = venv_bin(cwd, None, python_version)
         _outbox["python"] = python
         return True
 
@@ -52,15 +53,13 @@ class Venv(ConcreteBuilderMixin, SubprocessLogMixin):
 
         # Run the command.
         version = kwargs.get("python_version", _python_version())
-        proc = await self.subprocess_exec(
+        result = await self.exec(
             f"python{version}", "-m", "venv", str(outbox["path"])
         )
-        await proc.communicate()
-        result = proc.returncode == 0
 
         # Upgrade pip by default.
         if result and kwargs.get("upgrade_pip", True):
-            proc = await self.subprocess_exec(
+            result = await self.exec(
                 str(outbox["python"]),
                 "-m",
                 "pip",
@@ -68,8 +67,6 @@ class Venv(ConcreteBuilderMixin, SubprocessLogMixin):
                 "--upgrade",
                 "pip",
             )
-            await proc.communicate()
-            result = proc.returncode == 0
 
         return result
 
@@ -90,7 +87,7 @@ class RequirementsInstaller(ConcreteBuilderMixin, SubprocessLogMixin):
             for req in req_files:
                 if result:
                     # Run the command.
-                    proc = await self.subprocess_exec(
+                    result = await self.exec(
                         str(inbox["venv{python_version}"]["python"]),
                         "-m",
                         "pip",
@@ -98,8 +95,6 @@ class RequirementsInstaller(ConcreteBuilderMixin, SubprocessLogMixin):
                         "-r",
                         str(req),
                     )
-                    await proc.communicate()
-                    result = proc.returncode == 0
 
         return result
 

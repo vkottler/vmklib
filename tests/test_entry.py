@@ -66,4 +66,6 @@ def test_entry_python_tasks():
     with build_cleaned_resource("python-tasks") as test_dir:
         assert mk_main([PKG_NAME, "-C", test_dir, "-d", "venv"]) == 0
         assert mk_main([PKG_NAME, "-C", test_dir, "-d", "venv"]) == 0
+        assert mk_main([PKG_NAME, "-C", test_dir, "-d", "python-lint"]) == 0
         assert mk_main([PKG_NAME, "-C", test_dir, "-d", "asdf"]) != 0
+        assert mk_main([PKG_NAME, "-C", test_dir, "-d", "fail"]) != 0
