@@ -3,6 +3,7 @@ A module for registering Python linting tasks.
 """
 
 # built-in
+from os import environ
 from pathlib import Path
 from typing import Dict, List
 
@@ -34,14 +35,17 @@ class PythonLinter(SubprocessLogMixin):
 
         cwd: Path = args[0]
         project: str = args[1]
+        linter: str = kwargs["linter"]
+
+        # Get extra arguments from the environment.
+        extra_args = environ.get(
+            "PY_LINT_" + linter.upper() + "_EXTRA_ARGS", ""
+        ).split()
 
         return await self.exec(
-            str(
-                inbox["venv"]["venv{python_version}"]["bin"].joinpath(
-                    kwargs["linter"]
-                )
-            ),
+            str(inbox["venv"]["venv{python_version}"]["bin"].joinpath(linter)),
             *args[2:],
+            *extra_args,
             *PythonLinter.source_args(cwd, project, **kwargs),
         )
 
@@ -60,18 +64,32 @@ def register(
 
     line_length = ["--line-length", str(substitutions.get("line_length", 79))]
 
+    isort_args = line_length + [
+        "--profile",
+        substitutions.get("isort_profile", "black"),
+        "--fss",
+        "-m",
+        "3",
+    ]
+
     manager.register(
         PythonLinter(
             "python-format-check-isort",
             cwd,
             project,
             "--check-only",
-            *line_length,
-            "--profile",
-            substitutions.get("isort_profile", "black"),
-            "--fss",
-            "-m",
-            "3",
+            *isort_args,
+            linter="isort",
+        ),
+        ["venv"],
+    )
+
+    manager.register(
+        PythonLinter(
+            "python-format-isort",
+            cwd,
+            project,
+            *isort_args,
             linter="isort",
         ),
         ["venv"],
@@ -86,12 +104,32 @@ def register(
             *line_length,
             linter="black",
         ),
+        # Depend on 'isort' so that we don't format multiple files at the same
+        # time.
         ["venv"],
+    )
+
+    manager.register(
+        PythonLinter(
+            "python-format-black",
+            cwd,
+            project,
+            *line_length,
+            linter="black",
+        ),
+        # Depend on 'isort' so that we don't format multiple files at the same
+        # time.
+        ["venv", "python-format-isort"],
     )
 
     manager.register(
         Phony("python-format-check"),
         ["python-format-check-black", "python-format-check-isort"],
+    )
+    manager.register(
+        Phony("python-format"),
+        # 'black' depends on 'isort' already.
+        ["python-format-black"],
     )
     manager.register(
         Phony("python-lint"),

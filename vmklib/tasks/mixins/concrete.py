@@ -64,3 +64,21 @@ class ConcreteBuilderMixin(Task):
 
         _outbox["concrete"] = self.update_concrete(_inbox, **kwargs)
         return True
+
+
+class ConcreteOnceMixin(ConcreteBuilderMixin):
+    """A mixin for tasks that only need to run once."""
+
+    async def run_enter(
+        self,
+        _inbox: Inbox,
+        _outbox: Outbox,
+        *_args,
+        **_kwargs,
+    ) -> bool:
+        """Ensure that this task only runs once."""
+
+        if self.concrete_path(_inbox, {**_kwargs}).exists():
+            self._continue = False
+
+        return True

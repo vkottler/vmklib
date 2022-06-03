@@ -2,11 +2,11 @@
     =====================================
     generator=datazen
     version=2.0.0
-    hash=055e012d478b3dd680f497617673c263
+    hash=f09ede187ce6cf09ba4d4f2d2d62e76d
     =====================================
 -->
 
-# vmklib ([1.3.1](https://pypi.org/project/vmklib/))
+# vmklib ([1.4.1](https://pypi.org/project/vmklib/))
 
 [![python](https://img.shields.io/pypi/pyversions/vmklib.svg)](https://pypi.org/project/vmklib/)
 ![Build Status](https://github.com/vkottler/vmklib/workflows/Python%20Package/badge.svg)
@@ -62,6 +62,7 @@ optional arguments:
   -p PREFIX, --prefix PREFIX
                         a prefix to apply to all targets
   -d, --disable-make    whether or not to allow GNU Make target resolution
+                        (default: 'False')
   -f FILE, --file FILE  file to source user-provided recipes from (default:
                         'Makefile')
   -c CONFIG, --config CONFIG
