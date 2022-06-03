@@ -28,7 +28,10 @@ class Venv(ConcreteBuilderMixin, SubprocessLogMixin):
         *_args,
         **_kwargs,
     ) -> bool:
-        """A default enter method."""
+        """
+        Check if the virtual environment gets created and expose useful data
+        to the outbox.
+        """
 
         cwd: Path = _args[0]
         python_version = _kwargs.get("python_version", _python_version())
@@ -44,6 +47,7 @@ class Venv(ConcreteBuilderMixin, SubprocessLogMixin):
         _outbox["path"] = path
         _outbox["bin"] = venv_bin(cwd, None, python_version)
         _outbox["python"] = python
+        _outbox["pip"] = venv_bin(cwd, "pip", python_version)
         return True
 
     async def run(self, inbox: Inbox, outbox: Outbox, *args, **kwargs) -> bool:
@@ -128,10 +132,14 @@ def register(
     # Register requirements' install tasks.
     manager.register(
         RequirementsInstaller(
-            "python-project-requirements",
+            "python{python_version}-project-requirements",
             *list(filter(lambda x: x.is_file(), requirements_files)),
         ),
         ["vmklib.init", "venv{python_version}"],
+    )
+    manager.register(
+        Phony("python-project-requirements"),
+        ["python{python_version}-project-requirements"],
     )
     manager.register_to("venv", ["python-project-requirements"])
 

@@ -14,6 +14,8 @@ from vcorelib.task.manager import TaskManager
 # internal
 from vmklib.tasks.python import venv_bin, venv_dir
 from vmklib.tasks.python.lint import register as register_python_lint
+from vmklib.tasks.python.package import register as register_python_package
+from vmklib.tasks.python.yaml import register as register_python_yaml
 from vmklib.tasks.venv import register as register_venv
 
 
@@ -52,7 +54,12 @@ def register(
 
     # Load additional modules.
     result = True
-    for dep in [register_venv, register_python_lint]:
+    for dep in [
+        register_venv,
+        register_python_lint,
+        register_python_package,
+        register_python_yaml,
+    ]:
         if result:
             result = dep(manager, project, cwd, substitutions)
 
