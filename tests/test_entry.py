@@ -67,8 +67,6 @@ def test_entry_python_tasks():
         for _ in range(2):
             assert mk_main([PKG_NAME, "-C", test_dir, "-d", "venv"]) == 0
 
-        assert mk_main([PKG_NAME, "-C", test_dir, "-d", "python-lint"]) == 0
-
         for _ in range(2):
             assert (
                 mk_main(
@@ -77,12 +75,16 @@ def test_entry_python_tasks():
                 == 0
             )
 
-        assert (
-            mk_main(
-                [PKG_NAME, "-C", test_dir, "-d", "yaml-lint-manifest.yaml"]
-            )
-            == 0
-        )
+        targets = [
+            "python-lint",
+            "yaml-lint-manifest.yaml",
+            "python-build",
+            "python-build-once",
+            "python-test",
+            "python-test-add",
+        ]
+        for target in targets:
+            assert mk_main([PKG_NAME, "-C", test_dir, "-d", target]) == 0
 
         assert mk_main([PKG_NAME, "-C", test_dir, "-d", "asdf"]) != 0
         assert mk_main([PKG_NAME, "-C", test_dir, "-d", "fail"]) != 0

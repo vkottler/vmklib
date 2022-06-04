@@ -7,7 +7,7 @@ from pathlib import Path
 from typing import Dict
 
 # third-party
-# from vcorelib.task import Phony
+from vcorelib.task import Phony
 from vcorelib.task.manager import TaskManager
 
 
@@ -19,12 +19,9 @@ def register(
 ) -> bool:
     """Register project tasks to the manager."""
 
-    # Un-comment after vmklib 1.4.1.
-    # manager.register(
-    #     Phony("yaml"), ["yaml-lint-local", "yaml-lint-manifest.yaml"]
-    # )
-
-    del manager
+    manager.register(
+        Phony("yaml"), ["yaml-lint-local", "yaml-lint-manifest.yaml"]
+    )
     del project
     del cwd
     del substitutions

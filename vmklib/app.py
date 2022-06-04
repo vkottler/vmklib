@@ -105,7 +105,7 @@ def initialize_task_manager(
 
     # register task-manager targets from this package
     assert manager.script(
-        get_resource(task_register),
+        get_resource(os.path.join("lib_tasks", "conf.py")),
         "register",
         proj,
         directory,

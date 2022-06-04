@@ -3,11 +3,12 @@ A module for Python-package building tasks.
 """
 
 # built-in
+from os import environ
 from pathlib import Path
+from shutil import rmtree
 from typing import Dict
 
 # third-party
-from vcorelib.paths.context import in_dir
 from vcorelib.task import Inbox, Outbox
 from vcorelib.task.manager import TaskManager
 from vcorelib.task.subprocess.run import SubprocessLogMixin
@@ -26,21 +27,29 @@ class PythonBuild(ConcreteBuilderMixin, SubprocessLogMixin):
         *args,
         **kwargs,
     ) -> bool:
-        """TODO."""
+        """A task for building a Python package."""
 
         cwd: Path = args[0]
 
-        self.stack.enter_context(in_dir(cwd))
+        # Remove any existing build artifacts.
+        dist = cwd.joinpath("dist")
+        rmtree(dist, ignore_errors=True)
 
-        # Clean directories.
-        # * $($(PROJ)_DIR)/dist
-        # * $(BUILD_DIR)/bdist*
-        # * $(BUILD_DIR)/lib
+        init_data = inbox["vmklib.init"]
+        build = init_data["__dirs__"]["build"]
+        rmtree(build.joinpath("lib"), ignore_errors=True)
+        # We could also try to delete: $(BUILD_DIR)/bdist*
 
-        # Build package:
-        # 'python -m build' inside the project directory
-
-        return True
+        # Build package.
+        return await self.exec(
+            str(inbox["venv"]["venv{python_version}"]["python"]),
+            "-m",
+            "build",
+            "-o",
+            str(dist),
+            *environ.get("PY_BUILD_EXTRA_ARGS", "").split(),
+            str(cwd),
+        )
 
 
 def register(
@@ -52,7 +61,7 @@ def register(
     """Register package building tasks to the manager."""
 
     # Make sure 'wheel' is also installed so we can build a wheel.
-    reqs = ["venv", "python-install-wheel", "python-install-build"]
+    reqs = ["venv", "python-install-build"]
     manager.register(PythonBuild("python-build", cwd, once=False), reqs)
     manager.register(PythonBuild("python-build-once", cwd), reqs)
 
