@@ -13,7 +13,7 @@ from vcorelib.task.subprocess.run import SubprocessLogMixin
 
 
 class Yamllint(SubprocessLogMixin):
-    """A task for installing a single Python package."""
+    """A task for running a YAML linter on project source(s)."""
 
     async def run(self, inbox: Inbox, outbox: Outbox, *args, **kwargs) -> bool:
         """Create or update a project's virtual environment."""
