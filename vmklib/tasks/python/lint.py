@@ -16,6 +16,8 @@ from vcorelib.task.subprocess.run import SubprocessLogMixin
 class PythonLinter(SubprocessLogMixin):
     """A task for running a Python linter."""
 
+    default_requirements = {"venv"}
+
     @staticmethod
     def source_args(cwd: Path, project: str, **kwargs) -> List[str]:
         """Get Python sources within a package."""
@@ -47,7 +49,7 @@ class PythonLinter(SubprocessLogMixin):
             *args[2:],
             *extra_args,
             *PythonLinter.source_args(cwd, project, **kwargs),
-        )
+        ) or kwargs.get("ignore_errors", False)
 
 
 def register(
@@ -58,9 +60,7 @@ def register(
 ) -> bool:
     """Register Python linting tasks to the manager."""
 
-    manager.register(
-        PythonLinter("python-lint-{linter}", cwd, project), ["venv"]
-    )
+    manager.register(PythonLinter("python-lint-{linter}", cwd, project), [])
 
     line_length = ["--line-length", str(substitutions.get("line_length", 79))]
 
@@ -81,7 +81,7 @@ def register(
             *isort_args,
             linter="isort",
         ),
-        ["venv"],
+        [],
     )
 
     manager.register(
@@ -92,7 +92,7 @@ def register(
             *isort_args,
             linter="isort",
         ),
-        ["venv"],
+        [],
     )
 
     manager.register(
@@ -104,9 +104,7 @@ def register(
             *line_length,
             linter="black",
         ),
-        # Depend on 'isort' so that we don't format multiple files at the same
-        # time.
-        ["venv"],
+        [],
     )
 
     manager.register(
@@ -119,7 +117,7 @@ def register(
         ),
         # Depend on 'isort' so that we don't format multiple files at the same
         # time.
-        ["venv", "python-format-isort"],
+        ["python-format-isort"],
     )
 
     manager.register(
@@ -133,7 +131,11 @@ def register(
     )
     manager.register(
         Phony("python-lint"),
-        ["python-lint-flake8", "python-lint-pylint", "python-format-check"],
+        [
+            "python-lint-flake8",
+            "python-lint-pylint",
+            "python-format-check",
+        ],
     )
 
     return True
