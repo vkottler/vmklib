@@ -40,8 +40,7 @@ def register(
     del cwd
     del substitutions
     manager.register(
-        PythonPackage("python{python_version}-install-{package}"),
-        ["venv", "vmklib.init"],
+        PythonPackage("python{python_version}-install-{package}"), ["venv"]
     )
     manager.register(
         Phony("python-install-{package}"),

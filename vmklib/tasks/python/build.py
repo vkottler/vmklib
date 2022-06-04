@@ -7,25 +7,40 @@ from pathlib import Path
 from typing import Dict
 
 # third-party
+from vcorelib.paths.context import in_dir
+from vcorelib.task import Inbox, Outbox
 from vcorelib.task.manager import TaskManager
 from vcorelib.task.subprocess.run import SubprocessLogMixin
 
+# internal
+from vmklib.tasks.mixins.concrete import ConcreteBuilderMixin
 
-class PythonBuild(SubprocessLogMixin):
+
+class PythonBuild(ConcreteBuilderMixin, SubprocessLogMixin):
     """Build a Python package."""
 
-    # Clean build, remove:
-    # * $($(PROJ)_DIR)/dist
-    # * $(BUILD_DIR)/bdist*
-    # * $(BUILD_DIR)/lib
+    async def run(
+        self,
+        inbox: Inbox,
+        outbox: Outbox,
+        *args,
+        **kwargs,
+    ) -> bool:
+        """TODO."""
 
-    # Build package:
-    # 'python -m build' inside the project directory
+        cwd: Path = args[0]
 
-    # for changing directories, we need some kind of concurrency safety
-    # probably
+        self.stack.enter_context(in_dir(cwd))
 
-    # Allow a 'build-once' target variant
+        # Clean directories.
+        # * $($(PROJ)_DIR)/dist
+        # * $(BUILD_DIR)/bdist*
+        # * $(BUILD_DIR)/lib
+
+        # Build package:
+        # 'python -m build' inside the project directory
+
+        return True
 
 
 def register(
@@ -38,12 +53,9 @@ def register(
 
     # Make sure 'wheel' is also installed so we can build a wheel.
     reqs = ["venv", "python-install-wheel", "python-install-build"]
-
-    manager.register(PythonBuild("python-build"), reqs)
-
-    manager.register(PythonBuild("python-build-once", once=True), reqs)
+    manager.register(PythonBuild("python-build", cwd, once=False), reqs)
+    manager.register(PythonBuild("python-build-once", cwd), reqs)
 
     del project
-    del cwd
     del substitutions
     return True

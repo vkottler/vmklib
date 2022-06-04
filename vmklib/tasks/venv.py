@@ -115,7 +115,7 @@ def register(
     set_if_not(substitutions, "python_version", _python_version())
 
     # The target that actually creates the initial environment.
-    manager.register(Venv("venv{python_version}", cwd), ["vmklib.init"])
+    manager.register(Venv("venv{python_version}", cwd), [])
 
     # Add a "phony" style target to just create the virtual environment. Here
     # We would also add dependencies like requirement-file installs.

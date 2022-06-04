@@ -16,6 +16,8 @@ from vcorelib.task import Inbox, Outbox, Task
 class ConcreteBuilderMixin(Task):
     """Create a concrete file output after a task completes."""
 
+    default_requirements = {"vmklib.init"}
+
     def concrete_path(
         self,
         inbox: Inbox,
@@ -78,7 +80,8 @@ class ConcreteOnceMixin(ConcreteBuilderMixin):
     ) -> bool:
         """Ensure that this task only runs once."""
 
-        if self.concrete_path(_inbox, {**_kwargs}).exists():
-            self._continue = False
+        if _kwargs.get("once", True):
+            if self.concrete_path(_inbox, {**_kwargs}).exists():
+                self._continue = False
 
         return True
