@@ -26,6 +26,7 @@ class PythonPackage(ConcreteOnceMixin, SubprocessLogMixin):
         return await self.exec(
             str(inbox["venv"]["venv{python_version}"]["pip"]),
             "install",
+            *args,
             kwargs["package"],
         )
 
@@ -48,4 +49,5 @@ def register(
         Phony("python-install-{package}"),
         ["python{python_version}-install-{package}"],
     )
+    manager.register(PythonPackage("python-editable", "-e", package="."), [])
     return True
