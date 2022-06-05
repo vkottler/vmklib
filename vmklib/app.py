@@ -13,7 +13,7 @@ from pathlib import Path
 from platform import system
 import subprocess
 import tempfile
-from typing import Callable, Dict, Iterator
+from typing import Callable, Dict, Iterator, List, Optional, Tuple
 
 # third-party
 from vcorelib.task import TaskFailed
@@ -124,7 +124,9 @@ def initialize_task_manager(
         ), "Couldn't register project tasks from '{proj_tasks}'!"
 
 
-def get_data(path: Path) -> dict:
+def get_data(
+    path: Path, targets: List[str], prefix: Optional[str] = None
+) -> Tuple[dict, List[str]]:
     """Load configuration data if it can be found."""
 
     # load configuration data, if configuration data is found
@@ -136,7 +138,28 @@ def get_data(path: Path) -> dict:
                 data, dict
             ), f"Configuration from '{path}', is not an object!"
 
-    return data
+    target_args = []
+    for target in targets:
+        # If an argument has an equal sign, treat it as a substitution and
+        # environment variable to set.
+        if "=" in target:
+            key, val = target.split("=", maxsplit=1)
+            data[key] = val
+            os.environ[key] = val
+            continue
+
+        target_args.append(target)
+
+    # build the list of targets to execute
+    targets = target_args
+    target_args = []
+    for target in targets:
+        target_str = target
+        if prefix and "=" not in target_str:
+            target_str = f"{prefix}-{target_str}"
+        target_args.append(target_str)
+
+    return data, target_args
 
 
 def entry(args: argparse.Namespace) -> int:
@@ -149,7 +172,7 @@ def entry(args: argparse.Namespace) -> int:
         args.file = get_resource(os.path.join("data", "header.mk"))
 
     # load configuration data, if configuration data is found
-    substitutions: Dict[str, str] = get_data(args.config)
+    substitutions, targets = get_data(args.config, args.targets, args.prefix)
 
     proj = project(args.dir, args.proj)
     task_register = os.path.join("tasks", "conf.py")
@@ -159,18 +182,8 @@ def entry(args: argparse.Namespace) -> int:
         manager, proj, task_register, args.dir, substitutions
     )
 
-    # build the list of targets to execute
-    target_args = []
-    for target in args.targets:
-        target_str = target
-        if args.prefix and "=" not in target_str:
-            target_str = f"{args.prefix}-{target_str}"
-        target_args.append(target_str)
-
     # determine which tasks aren't resolved by the task manager
-    unresolved, executor = manager.prepare_execute(
-        target_args, **substitutions
-    )
+    unresolved, executor = manager.prepare_execute(targets, **substitutions)
 
     # execute tasks handled by the task manager
     try:
