@@ -113,12 +113,8 @@ def initialize_task_manager(
     ), "Couldn't register package tasks from '{get_resource(task_register)}'!"
 
     # register task-manager targets for the project
-    proj_tasks = None
-    try:
-        proj_tasks = get_resource(os.path.join(directory, task_register))
-    except AssertionError:
-        pass
-    if proj_tasks is not None and proj_tasks.is_file():
+    proj_tasks = directory.joinpath(task_register)
+    if proj_tasks.is_file():
         assert manager.script(
             proj_tasks,
             "register",
