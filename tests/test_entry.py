@@ -10,6 +10,9 @@ from subprocess import check_output
 from sys import executable
 import time
 
+# third-party
+from vcorelib.task.subprocess.run import is_windows
+
 # internal
 from tests import build_cleaned_resource, get_args, get_resource
 
@@ -33,15 +36,16 @@ def test_interrupt():
 def test_entry():
     """Test some basic command-line argument scenarios."""
 
-    with get_args() as base_args:
-        good_base_args = base_args + ["-f", get_resource("Makefile")]
-        assert mk_main(good_base_args + ["test"]) == 0
-        assert mk_main(good_base_args + ["--proj", "test", "test"]) == 0
-        assert mk_main(good_base_args + ["-p", "prefix", "test"]) == 0
-        assert mk_main(good_base_args + ["test_bad"]) != 0
-        assert mk_main(good_base_args + ["--weird-option", "yo"]) != 0
-        assert mk_main(base_args + ["-f", "nah"]) != 0
-        assert mk_main(base_args) == 0
+    if not is_windows():
+        with get_args() as base_args:
+            good_base_args = base_args + ["-f", get_resource("Makefile")]
+            assert mk_main(good_base_args + ["test"]) == 0
+            assert mk_main(good_base_args + ["--proj", "test", "test"]) == 0
+            assert mk_main(good_base_args + ["-p", "prefix", "test"]) == 0
+            assert mk_main(good_base_args + ["test_bad"]) != 0
+            assert mk_main(good_base_args + ["--weird-option", "yo"]) != 0
+            assert mk_main(base_args + ["-f", "nah"]) != 0
+            assert mk_main(base_args) == 0
 
 
 def test_package_entry():
@@ -55,9 +59,11 @@ def test_package_entry():
 def test_entry_proj_slug():
     """Ensure that the slug-replacement logic takes effect."""
 
-    assert (
-        mk_main([PKG_NAME, "-C", get_resource("test-scenario"), "test"]) == 0
-    )
+    if not is_windows():
+        assert (
+            mk_main([PKG_NAME, "-C", get_resource("test-scenario"), "test"])
+            == 0
+        )
 
 
 def test_entry_python_tasks():
@@ -76,7 +82,11 @@ def test_entry_python_tasks():
             )
 
         targets = [
-            "python-lint python-sa yaml-lint-manifest.yaml python-build-once",
+            (
+                "python-lint python-sa"
+                f"{' yaml-lint-manifest.yaml' if not is_windows() else ''} "
+                "python-build-once"
+            ),
             "python-build",
             "python-test",
             "python-test-add",
