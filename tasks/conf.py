@@ -9,6 +9,7 @@ from typing import Dict
 # third-party
 from vcorelib.task import Phony
 from vcorelib.task.manager import TaskManager
+from vcorelib.task.subprocess.run import is_windows
 
 
 def register(
@@ -19,8 +20,10 @@ def register(
 ) -> bool:
     """Register project tasks to the manager."""
 
+    # Don't run yamllint on Windows because it will fail on newlines.
     manager.register(
-        Phony("yaml"), ["yaml-lint-local", "yaml-lint-manifest.yaml"]
+        Phony("yaml"),
+        [] if is_windows() else ["yaml-lint-local", "yaml-lint-manifest.yaml"],
     )
     del project
     del cwd
