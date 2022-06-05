@@ -3,7 +3,6 @@ A module for Python unit testing tasks.
 """
 
 # built-in
-from os import environ
 from pathlib import Path
 from typing import Dict
 
@@ -11,6 +10,9 @@ from typing import Dict
 from vcorelib.task import Inbox, Outbox
 from vcorelib.task.manager import TaskManager
 from vcorelib.task.subprocess.run import SubprocessLogMixin
+
+# internal
+from vmklib.tasks.args import environ_fallback_split
 
 
 class PythonTester(SubprocessLogMixin):
@@ -40,7 +42,7 @@ class PythonTester(SubprocessLogMixin):
         return await self.exec(
             str(inbox["venv"]["venv{python_version}"]["bin"].joinpath(tester)),
             *test_args,
-            *environ.get("PY_TEST_EXTRA_ARGS", "").split(),
+            *environ_fallback_split("PY_TEST_EXTRA_ARGS", **kwargs),
             str(cwd.joinpath("tests")),
         )
 

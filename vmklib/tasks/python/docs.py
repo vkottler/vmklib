@@ -12,6 +12,9 @@ from vcorelib.task import Inbox, Outbox
 from vcorelib.task.manager import TaskManager
 from vcorelib.task.subprocess.run import SubprocessLogMixin
 
+# internal
+from vmklib.tasks.args import environ_fallback, environ_fallback_split
+
 
 class PydepsTask(SubprocessLogMixin):
     """A task for running pydeps."""
@@ -37,8 +40,10 @@ class PydepsTask(SubprocessLogMixin):
             "-T",
             "svg",
             "-o",
-            kwargs.get("PY_DEPS_OUT", str(images.joinpath("pydeps.svg"))),
-            *kwargs.get("PY_DEPS_EXTRA_ARGS", "").split(),
+            environ_fallback(
+                "PY_DEPS_OUT", str(images.joinpath("pydeps.svg")), **kwargs
+            ),
+            *environ_fallback_split("PY_DEPS_EXTRA_ARGS", **kwargs),
             project,
         )
 

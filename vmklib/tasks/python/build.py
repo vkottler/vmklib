@@ -3,7 +3,6 @@ A module for Python-package building tasks.
 """
 
 # built-in
-from os import environ
 from pathlib import Path
 from shutil import rmtree
 from typing import Dict
@@ -14,6 +13,7 @@ from vcorelib.task.manager import TaskManager
 from vcorelib.task.subprocess.run import SubprocessLogMixin
 
 # internal
+from vmklib.tasks.args import environ_fallback_split
 from vmklib.tasks.mixins.concrete import ConcreteBuilderMixin
 
 
@@ -47,7 +47,7 @@ class PythonBuild(ConcreteBuilderMixin, SubprocessLogMixin):
             "build",
             "-o",
             str(dist),
-            *environ.get("PY_BUILD_EXTRA_ARGS", "").split(),
+            *environ_fallback_split("PY_BUILD_EXTRA_ARGS", **kwargs),
             str(cwd),
         )
 

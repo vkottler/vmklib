@@ -3,7 +3,6 @@ A module for registering Python linting tasks.
 """
 
 # built-in
-from os import environ
 from pathlib import Path
 from typing import Dict, List
 
@@ -11,6 +10,9 @@ from typing import Dict, List
 from vcorelib.task import Inbox, Outbox, Phony
 from vcorelib.task.manager import TaskManager
 from vcorelib.task.subprocess.run import SubprocessLogMixin
+
+# internal
+from vmklib.tasks.args import environ_fallback_split
 
 
 class PythonLinter(SubprocessLogMixin):
@@ -39,15 +41,13 @@ class PythonLinter(SubprocessLogMixin):
         project: str = args[1]
         linter: str = kwargs["linter"]
 
-        # Get extra arguments from the environment.
-        extra_args = environ.get(
-            "PY_LINT_" + linter.upper() + "_EXTRA_ARGS", ""
-        ).split()
-
         return await self.exec(
             str(inbox["venv"]["venv{python_version}"]["bin"].joinpath(linter)),
             *args[2:],
-            *extra_args,
+            # Get extra arguments from the environment.
+            *environ_fallback_split(
+                "PY_LINT_" + linter.upper() + "_EXTRA_ARGS", **kwargs
+            ),
             *PythonLinter.source_args(cwd, project, **kwargs),
         ) or kwargs.get("ignore_errors", False)
 

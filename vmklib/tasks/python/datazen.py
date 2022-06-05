@@ -11,6 +11,9 @@ from vcorelib.task import Inbox, Outbox
 from vcorelib.task.manager import TaskManager
 from vcorelib.task.subprocess.run import SubprocessLogMixin
 
+# internal
+from vmklib.tasks.args import environ_fallback, environ_fallback_split
+
 
 class DatazenTask(SubprocessLogMixin):
     """A task for running datazen commands."""
@@ -22,7 +25,12 @@ class DatazenTask(SubprocessLogMixin):
 
         cwd: Path = args[0]
 
-        dz_args = ["-C", str(cwd)]
+        dz_args = [
+            "-C",
+            str(cwd),
+            "-m",
+            environ_fallback("DZ_MANIFEST", "manifest.yaml", **kwargs),
+        ]
 
         return await self.exec(
             str(inbox["venv"]["venv{python_version}"]["python"]),
@@ -30,6 +38,8 @@ class DatazenTask(SubprocessLogMixin):
             "datazen",
             *dz_args,
             *args[1:],
+            *environ_fallback_split("DZ_EXTRA_ARGS", **kwargs),
+            *environ_fallback_split("DZ_TARGETS", **kwargs),
         )
 
 
