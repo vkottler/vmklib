@@ -3,12 +3,14 @@ vmklib - Test the program's entry-point.
 """
 
 # built-in
+from contextlib import contextmanager
 from multiprocessing import Process
 import os
 import signal
 from subprocess import check_output
 from sys import executable
 import time
+from typing import Iterator, List, Set
 
 # third-party
 from vcorelib.task.subprocess.run import is_windows
@@ -66,10 +68,58 @@ def test_entry_proj_slug():
         )
 
 
+def target_test(
+    target: str,
+    test_dir: str,
+    should_pass: bool = True,
+    relevant: bool = True,
+) -> None:
+    """Test a single target string."""
+
+    result = mk_main([PKG_NAME, "-C", test_dir, "-d", *target.split()])
+    if relevant:
+        assert result == 0 if should_pass else result != 0
+
+
+@contextmanager
+def target_tests(
+    scenario: str,
+    passes: List[str],
+    fails: List[str],
+    irrelevant: Set[str] = None,
+) -> Iterator[str]:
+    """Test targets that should pass and fail for a given scenario."""
+
+    if irrelevant is None:
+        irrelevant = set()
+
+    with build_cleaned_resource(scenario) as test_dir:
+        yield test_dir
+        for target in passes:
+            target_test(target, test_dir, True, target not in irrelevant)
+        for target in fails:
+            target_test(target, test_dir, False, target not in irrelevant)
+
+
 def test_entry_python_tasks():
     """Ensure that we can run Python-based tasks."""
 
-    with build_cleaned_resource("python-tasks") as test_dir:
+    passes = [
+        (
+            "python-lint python-sa"
+            f"{' yaml-lint-manifest.yaml' if not is_windows() else ''} "
+            "python-build-once RANDOM_ENV_VAR=1"
+        ),
+        "python-build",
+        "python-test",
+        "python-test-add",
+        "dz-sync",
+    ]
+    fails = ["python-deps"]
+
+    with target_tests(
+        "python-tasks", passes, fails, {"python-deps"}
+    ) as test_dir:
         for _ in range(2):
             assert mk_main([PKG_NAME, "-C", test_dir, "-d", "venv"]) == 0
 
@@ -79,22 +129,6 @@ def test_entry_python_tasks():
                     [PKG_NAME, "-C", test_dir, "-d", "python-install-yamllint"]
                 )
                 == 0
-            )
-
-        targets = [
-            (
-                "python-lint python-sa"
-                f"{' yaml-lint-manifest.yaml' if not is_windows() else ''} "
-                "python-build-once"
-            ),
-            "python-build",
-            "python-test",
-            "python-test-add",
-            "dz-sync",
-        ]
-        for target in targets:
-            assert (
-                mk_main([PKG_NAME, "-C", test_dir, "-d", *target.split()]) == 0
             )
 
         assert mk_main([PKG_NAME, "-C", test_dir, "-d", "asdf"]) != 0
