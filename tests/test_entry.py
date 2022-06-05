@@ -90,6 +90,7 @@ def test_entry_python_tasks():
             "python-build",
             "python-test",
             "python-test-add",
+            "dz-sync",
         ]
         for target in targets:
             assert (
