@@ -11,7 +11,6 @@ from typing import Dict, Iterable
 # third-party
 from vcorelib.paths import Pathlike, modified_after
 from vcorelib.task import Inbox, Outbox, Task
-from vcorelib.task.subprocess.run import is_windows
 
 
 class ConcreteBuilderMixin(Task):
@@ -38,13 +37,8 @@ class ConcreteBuilderMixin(Task):
     ) -> bool:
         """Check if any candidate paths are modified after the concrete was."""
 
-        path = self.concrete_path(inbox, substitutions)
-
-        # 'modified_after' does not appear to work on Windows.
-        return (
-            modified_after(path, candidates)
-            if not is_windows()
-            else not path.exists()
+        return modified_after(
+            self.concrete_path(inbox, substitutions), candidates
         )
 
     def update_concrete(self, inbox: Inbox, **kwargs) -> Path:

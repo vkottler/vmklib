@@ -50,5 +50,5 @@ def venv_bin(cwd: Path, program: str = None, version: str = None) -> Path:
         "Scripts" if is_windows() else "bin"
     )
     if program is not None:
-        path = path.joinpath(program)
+        path = path.joinpath(f"{program}{'.exe' if is_windows() else ''}")
     return path
