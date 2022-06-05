@@ -18,6 +18,8 @@ from vmklib.tasks.mixins.concrete import ConcreteOnceMixin
 class PythonPackage(ConcreteOnceMixin, SubprocessLogMixin):
     """A task for installing a single Python package."""
 
+    default_requirements = {"venv", "vmklib.init"}
+
     async def run(self, inbox: Inbox, outbox: Outbox, *args, **kwargs) -> bool:
         """Create or update a project's virtual environment."""
 
@@ -40,7 +42,7 @@ def register(
     del cwd
     del substitutions
     manager.register(
-        PythonPackage("python{python_version}-install-{package}"), ["venv"]
+        PythonPackage("python{python_version}-install-{package}"), []
     )
     manager.register(
         Phony("python-install-{package}"),

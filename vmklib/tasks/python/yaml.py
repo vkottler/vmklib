@@ -15,17 +15,17 @@ from vcorelib.task.subprocess.run import SubprocessLogMixin
 class Yamllint(SubprocessLogMixin):
     """A task for running a YAML linter on project source(s)."""
 
+    default_requirements = {"venv", "python-install-yamllint"}
+
     async def run(self, inbox: Inbox, outbox: Outbox, *args, **kwargs) -> bool:
         """Create or update a project's virtual environment."""
 
         cwd: Path = args[0]
 
         return await self.exec(
-            str(
-                inbox["venv"]["venv{python_version}"]["bin"].joinpath(
-                    "yamllint"
-                )
-            ),
+            str(inbox["venv"]["venv{python_version}"]["python"]),
+            "-m",
+            "yamllint",
             str(cwd.joinpath(kwargs["location"])),
         )
 
@@ -38,11 +38,7 @@ def register(
 ) -> bool:
     """Register YAML linting tasks to the manager."""
 
-    manager.register(
-        Yamllint("yaml-lint-{location}", cwd),
-        ["venv", "python-install-yamllint"],
-    )
-
+    manager.register(Yamllint("yaml-lint-{location}", cwd), [])
     del project
     del substitutions
     return True
