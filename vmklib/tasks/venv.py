@@ -14,6 +14,7 @@ from vcorelib.task.subprocess.run import SubprocessLogMixin
 
 # internal
 from vmklib.tasks.mixins.concrete import ConcreteBuilderMixin
+from vmklib.tasks.python import python_entry
 from vmklib.tasks.python import python_version as _python_version
 from vmklib.tasks.python import venv_bin, venv_dir
 
@@ -56,9 +57,11 @@ class Venv(ConcreteBuilderMixin, SubprocessLogMixin):
         result = True
 
         # Run the command.
-        version = kwargs.get("python_version", _python_version())
         result = await self.exec(
-            f"python{version}", "-m", "venv", str(outbox["path"])
+            python_entry(kwargs.get("python_version", _python_version())),
+            "-m",
+            "venv",
+            str(outbox["path"]),
         )
 
         # Upgrade pip by default.

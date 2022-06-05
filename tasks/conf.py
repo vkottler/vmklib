@@ -19,9 +19,9 @@ def register(
 ) -> bool:
     """Register project tasks to the manager."""
 
-    # deps = ["yaml-lint-local", "yaml-lint-manifest.yaml"]
-    deps = ["venv"]
-    manager.register(Phony("yaml"), deps)
+    manager.register(
+        Phony("yaml"), ["yaml-lint-local", "yaml-lint-manifest.yaml"]
+    )
     del project
     del cwd
     del substitutions
