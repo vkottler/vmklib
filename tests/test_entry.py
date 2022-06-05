@@ -115,10 +115,10 @@ def test_entry_python_tasks():
         "python-test-add",
         "dz-sync",
     ]
-    fails = ["python-deps"]
+    fails = ["python-deps", "python-editable"]
 
     with target_tests(
-        "python-tasks", passes, fails, {"python-deps"}
+        "python-tasks", passes, fails, {"python-deps", "python-editable"}
     ) as test_dir:
         for _ in range(2):
             assert mk_main([PKG_NAME, "-C", test_dir, "-d", "venv"]) == 0
