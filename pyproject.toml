@@ -6,7 +6,7 @@ name = "vmklib"
 version = "1.5.0"
 description = "Simplify project workflows by standardizing use of GNU Make."
 readme = "README.md"
-requires-python = ">=3.8"
+requires-python = ">=3.7"
 license = {file = "LICENSE"}
 keywords = [
   "workflow",
@@ -21,6 +21,7 @@ maintainers = [
 ]
 classifiers = [
   "Topic :: Software Development :: Build Tools",
+  "Programming Language :: Python :: 3.7",
   "Programming Language :: Python :: 3.8",
   "Programming Language :: Python :: 3.9",
   "Programming Language :: Python :: 3.10",
