@@ -2,20 +2,41 @@
     =====================================
     generator=datazen
     version=2.0.0
-    hash=b163ba073771598c0a5836620f24d0f8
+    hash=316e6a5bc669b072054a58de2e9748d8
     =====================================
 -->
 
-# vmklib ([1.6.3](https://pypi.org/project/vmklib/))
+# vmklib ([1.6.4](https://pypi.org/project/vmklib/))
 
 [![python](https://img.shields.io/pypi/pyversions/vmklib.svg)](https://pypi.org/project/vmklib/)
 ![Build Status](https://github.com/vkottler/vmklib/workflows/Python%20Package/badge.svg)
 [![codecov](https://codecov.io/gh/vkottler/vmklib/branch/master/graphs/badge.svg?branch=master)](https://codecov.io/github/vkottler/vmklib)
+![PyPI - Status](https://img.shields.io/pypi/status/vmklib)
+![Dependents (via libraries.io)](https://img.shields.io/librariesio/dependents/pypi/vmklib)
 
 *Simplify project workflows by standardizing use of GNU Make.*
 
 See also: [generated documentation](https://vkottler.github.io/python/pydoc/vmklib.html)
 (created with [`pydoc`](https://docs.python.org/3/library/pydoc.html)).
+
+## Python Version Support
+
+This package is tested with the following Python minor versions:
+
+* [`python3.7`](https://docs.python.org/3.7/)
+* [`python3.8`](https://docs.python.org/3.8/)
+* [`python3.9`](https://docs.python.org/3.9/)
+* [`python3.10`](https://docs.python.org/3.10/)
+
+## Platform Support
+
+This package is tested on the following platforms:
+
+* `macos-latest`
+* `windows-latest`
+* `ubuntu-latest`
+
+# Introduction
 
 This tool integrates with existing `Makefile`'s with zero additional
 content or bootstrapping required.
