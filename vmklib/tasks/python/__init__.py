@@ -5,7 +5,8 @@ Utilities for working with Python.
 # built-in
 from os import environ
 from pathlib import Path
-from sys import base_prefix, executable, prefix, version_info
+from shutil import which
+from sys import executable, version_info
 
 # third-party
 from vcorelib.task.subprocess.run import is_windows
@@ -18,26 +19,25 @@ def python_version() -> str:
     )
 
 
-def in_venv() -> bool:
-    """A simple way to check if we're in a virtual environment."""
-    return prefix != base_prefix
-
-
 def python_entry(version: str) -> str:
     """Attempt to get a Python entry-point as a string."""
 
-    # If the provided version is compatible with the current executable,
-    # return that. If not, try to return something that might be found by
-    # the interpreter.
-    return (
-        str(executable)
-        if version.startswith(f"{version_info[0]}.{version_info[1]}")
-        # Don't allow this executable promotion if we're already in a virtual
-        # environment. Always allow this promotion on Windows because Windows
-        # may not have 'pythonX.Y.exe' executables available.
-        and (not in_venv() or is_windows())
-        else f"python{version}{'.exe' if is_windows() else ''}"
-    )
+    result = None
+
+    options = [f"python{version}{'.exe' if is_windows() else ''}"]
+
+    # Use the current executable as a candidate if it's the right version.
+    if version.startswith(f"{version_info[0]}.{version_info[1]}"):
+        result = str(executable)
+        options.append(result)
+
+    for option in options:
+        if which(option) is not None:
+            result = option
+            break
+
+    assert result is not None, f"Couldn't find 'python{version}'!"
+    return result
 
 
 def venv_name(version: str = None) -> str:
