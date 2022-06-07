@@ -5,7 +5,7 @@ Utilities for working with Python.
 # built-in
 from os import environ
 from pathlib import Path
-from sys import executable, version_info
+from sys import base_prefix, executable, prefix, version_info
 
 # third-party
 from vcorelib.task.subprocess.run import is_windows
@@ -18,6 +18,11 @@ def python_version() -> str:
     )
 
 
+def in_venv() -> bool:
+    """A simple way to check if we're in a virtual environment."""
+    return prefix != base_prefix
+
+
 def python_entry(version: str) -> str:
     """Attempt to get a Python entry-point as a string."""
 
@@ -27,7 +32,11 @@ def python_entry(version: str) -> str:
     return (
         str(executable)
         if version.startswith(f"{version_info[0]}.{version_info[1]}")
-        else "python{version}{'.exe' if is_windows() else ''}"
+        # Don't allow this executable promotion if we're already in a virtual
+        # environment. Always allow this promotion on Windows because Windows
+        # may not have 'pythonX.Y.exe' executables available.
+        and (not in_venv() or is_windows())
+        else f"python{version}{'.exe' if is_windows() else ''}"
     )
 
 

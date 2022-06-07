@@ -75,12 +75,11 @@ class Venv(ConcreteBuilderMixin, SubprocessLogMixin):
                 "pip",
             )
 
-        # Install 'wheel' by default.
+        # Install 'wheel' by default. Use the 'pip' script directly to sanity
+        # check that the actual virtual environment has pip.
         if result:
             result = await self.exec(
-                str(outbox["python"]),
-                "-m",
-                "pip",
+                str(outbox["pip"]),
                 "install",
                 "--upgrade",
                 "wheel",
