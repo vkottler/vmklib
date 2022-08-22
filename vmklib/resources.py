@@ -25,7 +25,7 @@ def get_resource(resource_name: str) -> Path:
     ]
     found = find_file(
         Path(resource_name).name,
-        locations,
+        search_paths=locations,
     )
 
     # ensure that the resource can actually be found
