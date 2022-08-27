@@ -1,7 +1,7 @@
 # =====================================
 # generator=datazen
-# version=2.1.0
-# hash=746ad1a3b02d3eb3d42c7f6c6f96de63
+# version=3.0.9
+# hash=e3b25ef71e1382c4879938c082dd3893
 # =====================================
 """
 vmklib - Package's default entry-point.

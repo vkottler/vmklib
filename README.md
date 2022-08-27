@@ -1,8 +1,8 @@
 <!--
     =====================================
     generator=datazen
-    version=2.1.0
-    hash=a52b3c843f1d87ff40718ad82bc06d23
+    version=3.0.9
+    hash=2d35f679f7fc0095d4e6bec79933f018
     =====================================
 -->
 
@@ -64,7 +64,7 @@ else with simple package updates.
 # Command-line Options
 
 ```
-$ ./venv3.7/bin/mk -h
+$ ./venv3.8/bin/mk -h
 
 usage: mk [-h] [--version] [-v] [-C DIR] [-p PREFIX] [-d] [-f FILE]
           [-c CONFIG] [-P PROJ]
