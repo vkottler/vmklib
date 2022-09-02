@@ -1,12 +1,12 @@
 <!--
     =====================================
     generator=datazen
-    version=3.0.9
-    hash=2d35f679f7fc0095d4e6bec79933f018
+    version=3.0.10
+    hash=475a3ed7e4f934473b682df241af1a5e
     =====================================
 -->
 
-# vmklib ([1.6.7](https://pypi.org/project/vmklib/))
+# vmklib ([1.6.8](https://pypi.org/project/vmklib/))
 
 [![python](https://img.shields.io/pypi/pyversions/vmklib.svg)](https://pypi.org/project/vmklib/)
 ![Build Status](https://github.com/vkottler/vmklib/workflows/Python%20Package/badge.svg)
@@ -64,7 +64,7 @@ else with simple package updates.
 # Command-line Options
 
 ```
-$ ./venv3.8/bin/mk -h
+$ ./venv3.7/bin/mk -h
 
 usage: mk [-h] [--version] [-v] [-C DIR] [-p PREFIX] [-d] [-f FILE]
           [-c CONFIG] [-P PROJ]

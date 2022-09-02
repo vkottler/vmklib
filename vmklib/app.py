@@ -4,7 +4,7 @@ vmklib - This package's command-line entry-point application.
 
 # built-in
 import argparse
-from asyncio import get_event_loop
+from asyncio import set_event_loop
 from contextlib import contextmanager
 from json import load
 import logging
@@ -14,6 +14,8 @@ from platform import system
 import subprocess
 import tempfile
 from typing import Callable, Dict, Iterator, List, Optional, Tuple
+
+from vcorelib.asyncio import run_handle_interrupt
 
 # third-party
 from vcorelib.task import TaskFailed
@@ -178,6 +180,7 @@ def entry(args: argparse.Namespace) -> int:
     task_register = os.path.join("tasks", "conf.py")
 
     manager = TaskManager()
+    set_event_loop(manager.eloop)
     initialize_task_manager(
         manager, proj, task_register, args.dir, substitutions
     )
@@ -187,7 +190,7 @@ def entry(args: argparse.Namespace) -> int:
 
     # execute tasks handled by the task manager
     try:
-        get_event_loop().run_until_complete(executor())
+        run_handle_interrupt(executor(), manager.eloop)
     except TaskFailed as exc:
         print(exc)
         return 1
