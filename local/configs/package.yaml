@@ -4,7 +4,7 @@ version: "{{major}}.{{minor}}.{{patch}}"
 description: "Simplify project workflows by standardizing use of GNU Make."
 entry: {{entry}}
 requirements:
-  - vcorelib
+  - vcorelib>=0.11.3
 dev_requirements:
   - setuptools-wrapper
 keywords:
