@@ -15,8 +15,6 @@ import subprocess
 import tempfile
 from typing import Callable, Dict, Iterator, List, Optional, Tuple
 
-from vcorelib.asyncio import run_handle_interrupt
-
 # third-party
 from vcorelib.task import TaskFailed
 from vcorelib.task.manager import TaskManager
@@ -185,17 +183,15 @@ def entry(args: argparse.Namespace) -> int:
         manager, proj, task_register, args.dir, substitutions
     )
 
-    # determine which tasks aren't resolved by the task manager
-    unresolved, executor = manager.prepare_execute(targets, **substitutions)
+    retcode = 1
 
     # execute tasks handled by the task manager
     try:
-        run_handle_interrupt(executor(), manager.eloop)
+        unresolved = manager.execute(targets, **substitutions)
     except TaskFailed as exc:
         print(exc)
-        return 1
-
-    retcode = 1
+        manager.eloop.close()
+        return retcode
 
     # Handle Make targets if it makes sense to run make.
     if unresolved and not args.disable_make:
