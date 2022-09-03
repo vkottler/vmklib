@@ -9,25 +9,33 @@ params:
 includes:
   - config/includes/python.yaml
   - config/includes/license.yaml
+  - config/includes/funding.yaml
 
-configs:
-  - local/configs
+# configs:
+#   - local/configs
 
-variables:
-  - local/variables
+# variables:
+#   - local/variables
 
 templates:
   - local/templates
-  - config/templates
 
-schemas:
-  - local/schemas
+# schemas:
+#   - local/schemas
 
-schema_types:
-  - local/schema_types
+# schema_types:
+#   - local/schema_types
 
 compiles:
   - name: local
+    configs:
+      - local/configs
+    variables:
+      - local/variables
+    schemas:
+      - local/schemas
+    schema_types:
+      - local/schema_types
 
 renders:
   - name: README.md
@@ -43,16 +51,11 @@ renders:
     dependencies:
       - compiles-local
 
-  - name: FUNDING.yml
-    output_dir: ".github"
-    dependencies:
-      - compiles-local
-
 groups:
   - name: all
     dependencies:
       - groups-python
       - groups-license
+      - groups-funding
       - renders-README.md
       - renders-header.mk
-      - renders-FUNDING.yml
