@@ -6,10 +6,11 @@ A task mixin for writing concrete outputs to a build directory.
 from os import linesep
 from pathlib import Path
 from time import asctime
-from typing import Dict, Iterable
+from typing import Iterable
 
 # third-party
 from vcorelib.paths import Pathlike, modified_after
+from vcorelib.target import Substitutions
 from vcorelib.task import Inbox, Outbox, Task
 
 
@@ -21,19 +22,19 @@ class ConcreteBuilderMixin(Task):
     def concrete_path(
         self,
         inbox: Inbox,
-        substitutions: Dict[str, str] = None,
+        substitutions: Substitutions = None,
     ) -> Path:
         """By default name the concrete after the compiled target name."""
 
         init_data = inbox["vmklib.init"]
-        build = init_data["__dirs__"]["build"]
+        build: Path = init_data["__dirs__"]["build"]
         return build.joinpath(f"{self.target.compile(substitutions)}.txt")
 
     def is_concrete_stale(
         self,
         inbox: Inbox,
         candidates: Iterable[Pathlike],
-        substitutions: Dict[str, str] = None,
+        substitutions: Substitutions = None,
     ) -> bool:
         """Check if any candidate paths are modified after the concrete was."""
 
