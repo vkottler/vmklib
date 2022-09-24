@@ -13,9 +13,10 @@ from pathlib import Path
 from platform import system
 import subprocess
 import tempfile
-from typing import Callable, Dict, Iterator, List, Optional, Tuple
+from typing import Callable, Dict, Iterator, List, Optional, Tuple, cast
 
 # third-party
+from vcorelib.io.types import JsonObject
 from vcorelib.task import TaskFailed
 from vcorelib.task.manager import TaskManager
 
@@ -48,7 +49,7 @@ def build_makefile(
     user_file: Path,
     directory: Path,
     proj: str,
-    data: dict,
+    data: JsonObject,
 ) -> Iterator[str]:
     """Build a temporary makefile and return the path."""
 
@@ -56,9 +57,9 @@ def build_makefile(
     with tempfile.NamedTemporaryFile(mode="w") as makefile:
         # build the necessary file data
         data["PROJ"] = proj
-        data["$(PROJ)_DIR"] = directory
+        data["$(PROJ)_DIR"] = cast(str, directory)
         data["MK_AUTO"] = 1
-        data["$(PROJ)_MK_DIR"] = os.path.join(data["$(PROJ)_DIR"], "mk")
+        data["$(PROJ)_MK_DIR"] = os.path.join(str(data["$(PROJ)_DIR"]), "mk")
 
         # get the path to this package's data to include our "conf.mk"
         include_strs = [
@@ -99,7 +100,7 @@ def initialize_task_manager(
     proj: str,
     task_register: str,
     directory: Path,
-    substitutions: Dict[str, str],
+    substitutions: JsonObject,
 ) -> None:
     """Load internal and external tasks to the task manager."""
 
@@ -126,7 +127,7 @@ def initialize_task_manager(
 
 def get_data(
     path: Path, targets: List[str], prefix: Optional[str] = None
-) -> Tuple[dict, List[str]]:
+) -> Tuple[JsonObject, List[str]]:
     """Load configuration data if it can be found."""
 
     # load configuration data, if configuration data is found
