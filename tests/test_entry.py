@@ -31,6 +31,7 @@ def test_interrupt():
         proc = Process(target=mk_main, args=[good_base_args])
         proc.start()
         time.sleep(0.5)
+        assert isinstance(proc.pid, int)
         os.kill(proc.pid, signal.SIGINT)
         proc.join()
 
