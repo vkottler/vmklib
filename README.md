@@ -2,7 +2,7 @@
     =====================================
     generator=datazen
     version=3.1.0
-    hash=e26031bd8840cccdf0fe134551439c35
+    hash=0012335198de536dc3ed37bf4c047b5c
     =====================================
 -->
 
@@ -64,11 +64,11 @@ else with simple package updates.
 # Command-line Options
 
 ```
-$ ./venv3.8/bin/mk -h
+$ ./venv3.9/bin/mk -h
 
 usage: mk [-h] [--version] [-v] [-C DIR] [-p PREFIX] [-d] [-f FILE]
           [-c CONFIG] [-P PROJ]
-          [targets [targets ...]]
+          [targets ...]
 
 Simplify project workflows by standardizing use of GNU Make.
 

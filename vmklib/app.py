@@ -6,7 +6,6 @@ vmklib - This package's command-line entry-point application.
 import argparse
 from asyncio import set_event_loop
 from contextlib import contextmanager
-from json import load
 import logging
 import os
 from pathlib import Path
@@ -16,7 +15,9 @@ import tempfile
 from typing import Callable, Dict, Iterator, List, Optional, Tuple, cast
 
 # third-party
-from vcorelib.io.types import JsonObject
+from vcorelib.dict import GenericStrDict
+from vcorelib.io import ARBITER
+from vcorelib.target import Substitutions
 from vcorelib.task import TaskFailed
 from vcorelib.task.manager import TaskManager
 
@@ -49,7 +50,7 @@ def build_makefile(
     user_file: Path,
     directory: Path,
     proj: str,
-    data: JsonObject,
+    data: GenericStrDict,
 ) -> Iterator[str]:
     """Build a temporary makefile and return the path."""
 
@@ -100,7 +101,7 @@ def initialize_task_manager(
     proj: str,
     task_register: str,
     directory: Path,
-    substitutions: JsonObject,
+    substitutions: Substitutions,
 ) -> None:
     """Load internal and external tasks to the task manager."""
 
@@ -127,17 +128,13 @@ def initialize_task_manager(
 
 def get_data(
     path: Path, targets: List[str], prefix: Optional[str] = None
-) -> Tuple[JsonObject, List[str]]:
+) -> Tuple[Substitutions, List[str]]:
     """Load configuration data if it can be found."""
 
     # load configuration data, if configuration data is found
     data = {}
     if path.is_file():
-        with path.open(encoding="utf-8") as config_fd:
-            data = load(config_fd)
-            assert isinstance(
-                data, dict
-            ), f"Configuration from '{path}', is not an object!"
+        data = ARBITER.decode(path, require_success=True).data
 
     target_args = []
     for target in targets:
@@ -160,7 +157,7 @@ def get_data(
             target_str = f"{prefix}-{target_str}"
         target_args.append(target_str)
 
-    return data, target_args
+    return cast(Substitutions, data), target_args
 
 
 def entry(args: argparse.Namespace) -> int:
