@@ -5,7 +5,7 @@ vmklib - This package's command-line entry-point application.
 # built-in
 import argparse
 from asyncio import set_event_loop
-from contextlib import contextmanager
+from contextlib import contextmanager, suppress
 import logging
 import os
 from pathlib import Path
@@ -201,12 +201,11 @@ def entry(args: argparse.Namespace) -> int:
             invocation_args += list(unresolved)
             LOG.debug(invocation_args)
             try:
-                result = subprocess.run(invocation_args, check=True)
-                retcode = result.returncode
+                with suppress(KeyboardInterrupt):
+                    result = subprocess.run(invocation_args, check=True)
+                    retcode = result.returncode
             except subprocess.CalledProcessError as exc:
                 retcode = exc.returncode
-            except KeyboardInterrupt:
-                pass
 
     # Set the return code to zero if all targets were resolved.
     elif not unresolved:
