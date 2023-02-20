@@ -1,7 +1,7 @@
 # =====================================
 # generator=datazen
 # version=3.1.0
-# hash=77b9e306da92ce3f4430917cb16113df
+# hash=334b3aaa0057809fb4013ea7760483a9
 # =====================================
 
 """
@@ -76,7 +76,7 @@ def main(argv: List[str] = None) -> int:
         result = entry(args)
     except SystemExit as exc:
         result = 1
-        if exc.code is not None:
+        if exc.code is not None and isinstance(exc.code, int):
             result = exc.code
 
     # return to starting dir
