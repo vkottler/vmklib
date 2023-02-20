@@ -15,6 +15,7 @@ from vcorelib.task.subprocess.run import SubprocessLogMixin
 # internal
 from vmklib.tasks.args import environ_fallback_split
 from vmklib.tasks.mixins.concrete import ConcreteBuilderMixin
+from vmklib.tasks.python import PREFIX
 
 
 class PythonBuild(ConcreteBuilderMixin, SubprocessLogMixin):
@@ -61,9 +62,9 @@ def register(
     """Register package building tasks to the manager."""
 
     # Make sure 'wheel' is also installed so we can build a wheel.
-    reqs = ["venv", "python-install-build"]
-    manager.register(PythonBuild("python-build", cwd, once=False), reqs)
-    manager.register(PythonBuild("python-build-once", cwd), reqs)
+    reqs = ["venv", PREFIX + "install-build"]
+    manager.register(PythonBuild(PREFIX + "build", cwd, once=False), reqs)
+    manager.register(PythonBuild(PREFIX + "build-once", cwd), reqs)
 
     del project
     del substitutions

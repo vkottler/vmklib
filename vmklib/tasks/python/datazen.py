@@ -13,12 +13,13 @@ from vcorelib.task.subprocess.run import SubprocessLogMixin
 
 # internal
 from vmklib.tasks.args import environ_fallback, environ_fallback_split
+from vmklib.tasks.python import PREFIX
 
 
 class DatazenTask(SubprocessLogMixin):
     """A task for running datazen commands."""
 
-    default_requirements = {"venv", "python-install-datazen"}
+    default_requirements = {"venv", PREFIX + "install-datazen"}
 
     async def run(self, inbox: Inbox, outbox: Outbox, *args, **kwargs) -> bool:
         """Create or update a project's virtual environment."""

@@ -11,6 +11,8 @@ from sys import executable, version_info
 # third-party
 from vcorelib.task.subprocess.run import is_windows
 
+PREFIX = "python-"
+
 
 def python_version() -> str:
     """Get the version of Python to use."""

@@ -13,6 +13,7 @@ from vcorelib.task.subprocess.run import SubprocessLogMixin
 
 # internal
 from vmklib.tasks.args import environ_fallback_split
+from vmklib.tasks.python import PREFIX
 
 
 class PythonLinter(SubprocessLogMixin):
@@ -60,7 +61,9 @@ def register(
 ) -> bool:
     """Register Python linting tasks to the manager."""
 
-    manager.register(PythonLinter("python-lint-{linter}", cwd, project), [])
+    prefix = PREFIX
+
+    manager.register(PythonLinter(prefix + "lint-{linter}", cwd, project), [])
 
     line_length = ["--line-length", str(substitutions.get("line_length", 79))]
 
@@ -74,7 +77,7 @@ def register(
 
     manager.register(
         PythonLinter(
-            "python-format-check-isort",
+            prefix + "format-check-isort",
             cwd,
             project,
             "--check-only",
@@ -86,7 +89,7 @@ def register(
 
     manager.register(
         PythonLinter(
-            "python-format-isort",
+            prefix + "format-isort",
             cwd,
             project,
             *isort_args,
@@ -97,7 +100,7 @@ def register(
 
     manager.register(
         PythonLinter(
-            "python-format-check-black",
+            prefix + "format-check-black",
             cwd,
             project,
             "--check",
@@ -109,7 +112,7 @@ def register(
 
     manager.register(
         PythonLinter(
-            "python-format-black",
+            prefix + "format-black",
             cwd,
             project,
             *line_length,
@@ -117,24 +120,24 @@ def register(
         ),
         # Depend on 'isort' so that we don't format multiple files at the same
         # time.
-        ["python-format-isort"],
+        [prefix + "format-isort"],
     )
 
     manager.register(
-        Phony("python-format-check"),
-        ["python-format-check-black", "python-format-check-isort"],
+        Phony(prefix + "format-check"),
+        [prefix + "format-check-black", prefix + "format-check-isort"],
     )
     manager.register(
-        Phony("python-format"),
+        Phony(prefix + "format"),
         # 'black' depends on 'isort' already.
-        ["python-format-black"],
+        [prefix + "format-black"],
     )
     manager.register(
-        Phony("python-lint"),
+        Phony(prefix + "lint"),
         [
-            "python-lint-flake8",
-            "python-lint-pylint",
-            "python-format-check",
+            prefix + "lint-flake8",
+            prefix + "lint-pylint",
+            prefix + "format-check",
         ],
     )
 
