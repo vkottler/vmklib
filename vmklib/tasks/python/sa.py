@@ -11,6 +11,7 @@ from vcorelib.task import Phony
 from vcorelib.task.manager import TaskManager
 
 # internal
+from vmklib.tasks.python import PREFIX
 from vmklib.tasks.python.lint import PythonLinter
 
 
@@ -22,12 +23,12 @@ def register(
 ) -> bool:
     """Register static-analysis tasks to the manager."""
 
-    manager.register(Phony("python-sa"), ["python-lint-mypy"])
+    manager.register(Phony(PREFIX + "sa"), [PREFIX + "lint-mypy"])
 
     # Register a target so that mypy can run without causing an error.
     manager.register(
         PythonLinter(
-            "python-sa-types-init",
+            PREFIX + "sa-types-init",
             cwd,
             project,
             ignore_errors=True,
@@ -37,7 +38,7 @@ def register(
     )
     manager.register(
         PythonLinter(
-            "python-sa-types",
+            PREFIX + "sa-types",
             cwd,
             project,
             "--install-types",
@@ -45,7 +46,7 @@ def register(
             python_lint_source_args=False,
             linter="mypy",
         ),
-        ["python-sa-types-init"],
+        [PREFIX + "sa-types-init"],
     )
 
     del substitutions

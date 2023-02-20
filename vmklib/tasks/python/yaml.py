@@ -11,11 +11,14 @@ from vcorelib.task import Inbox, Outbox
 from vcorelib.task.manager import TaskManager
 from vcorelib.task.subprocess.run import SubprocessLogMixin
 
+# internal
+from vmklib.tasks.python import PREFIX
+
 
 class Yamllint(SubprocessLogMixin):
     """A task for running a YAML linter on project source(s)."""
 
-    default_requirements = {"venv", "python-install-yamllint"}
+    default_requirements = {"venv", PREFIX + "install-yamllint"}
 
     async def run(self, inbox: Inbox, outbox: Outbox, *args, **kwargs) -> bool:
         """Create or update a project's virtual environment."""

@@ -12,6 +12,7 @@ from vcorelib.task.dict.melder import DictMerger
 from vcorelib.task.manager import TaskManager
 
 # internal
+from vmklib.tasks.node import register as register_node
 from vmklib.tasks.python import venv_bin, venv_dir
 from vmklib.tasks.python.build import register as register_python_build
 from vmklib.tasks.python.datazen import register as register_datazen
@@ -69,6 +70,7 @@ def register(
         register_python_test,
         register_datazen,
         register_python_docs,
+        register_node,
     ]:
         if result:
             result = dep(manager, project, cwd, substitutions)

@@ -14,7 +14,7 @@ from vcorelib.task.subprocess.run import SubprocessLogMixin
 
 # internal
 from vmklib.tasks.mixins.concrete import ConcreteBuilderMixin
-from vmklib.tasks.python import python_entry
+from vmklib.tasks.python import PREFIX, python_entry
 from vmklib.tasks.python import python_version as _python_version
 from vmklib.tasks.python import venv_bin, venv_dir
 
@@ -151,9 +151,9 @@ def register(
         ["vmklib.init", "venv{python_version}"],
     )
     manager.register(
-        Phony("python-project-requirements"),
+        Phony(PREFIX + "project-requirements"),
         ["python{python_version}-project-requirements"],
     )
-    manager.register_to("venv", ["python-project-requirements"])
+    manager.register_to("venv", [PREFIX + "project-requirements"])
 
     return True

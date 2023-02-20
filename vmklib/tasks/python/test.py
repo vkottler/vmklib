@@ -13,6 +13,7 @@ from vcorelib.task.subprocess.run import SubprocessLogMixin
 
 # internal
 from vmklib.tasks.args import environ_fallback_split
+from vmklib.tasks.python import PREFIX
 
 
 class PythonTester(SubprocessLogMixin):
@@ -55,7 +56,7 @@ def register(
 ) -> bool:
     """Register unit testing tasks to the manager."""
 
-    manager.register(PythonTester("python-test", cwd, project), [])
-    manager.register(PythonTester("python-test-{pattern}", cwd, project), [])
+    manager.register(PythonTester(PREFIX + "test", cwd, project), [])
+    manager.register(PythonTester(PREFIX + "test-{pattern}", cwd, project), [])
     del substitutions
     return True

@@ -14,12 +14,13 @@ from vcorelib.task.subprocess.run import SubprocessLogMixin
 
 # internal
 from vmklib.tasks.args import environ_fallback, environ_fallback_split
+from vmklib.tasks.python import PREFIX
 
 
 class PydepsTask(SubprocessLogMixin):
     """A task for running pydeps."""
 
-    default_requirements = {"venv", "python-install-pydeps"}
+    default_requirements = {"venv", PREFIX + "install-pydeps"}
 
     async def run(self, inbox: Inbox, outbox: Outbox, *args, **kwargs) -> bool:
         """Create or update a project's virtual environment."""
@@ -56,6 +57,6 @@ def register(
 ) -> bool:
     """Register documentation tasks to the manager."""
 
-    manager.register(PydepsTask("python-deps", cwd, project), [])
+    manager.register(PydepsTask(PREFIX + "deps", cwd, project), [])
     del substitutions
     return True

@@ -11,8 +11,10 @@ from vcorelib.task import Inbox, Outbox, Phony
 from vcorelib.task.manager import TaskManager
 from vcorelib.task.subprocess.run import SubprocessLogMixin
 
-# internal
 from vmklib.tasks.mixins.concrete import ConcreteOnceMixin
+
+# internal
+from vmklib.tasks.python import PREFIX
 
 
 class PythonPackage(ConcreteOnceMixin, SubprocessLogMixin):
@@ -46,8 +48,8 @@ def register(
         PythonPackage("python{python_version}-install-{package}"), []
     )
     manager.register(
-        Phony("python-install-{package}"),
+        Phony(PREFIX + "install-{package}"),
         ["python{python_version}-install-{package}"],
     )
-    manager.register(PythonPackage("python-editable", "-e", package="."), [])
+    manager.register(PythonPackage(PREFIX + "editable", "-e", package="."), [])
     return True
