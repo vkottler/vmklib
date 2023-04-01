@@ -377,7 +377,7 @@
 <!-- vcorelib_target -->
 <g id="node8" class="node">
 <title>vcorelib_target</title><style>.edge>path:hover{stroke-width:8}</style>
-<ellipse fill="#2fdbdb" stroke="black" cx="825.06" cy="-734.89" rx="37.79" ry="22.76"/>
+<ellipse fill="#18dddd" stroke="black" cx="825.06" cy="-734.89" rx="37.79" ry="22.76"/>
 <text text-anchor="middle" x="825.06" y="-737.89" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">vcorelib.</text>
 <text text-anchor="middle" x="825.06" y="-725.89" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">target</text>
 </g>
@@ -385,20 +385,20 @@
 <g id="edge30" class="edge">
 <title>vcorelib_target&#45;&gt;vcorelib_task</title><style>.edge>path:hover{stroke-width:8}</style>
 <path fill="none" stroke="black" d="M794.81,-721.06C765.24,-708.52 720.09,-689.38 687.89,-675.73"/>
-<polygon fill="#2fdbdb" stroke="black" points="688.91,-672.36 678.34,-671.68 686.18,-678.8 688.91,-672.36"/>
+<polygon fill="#18dddd" stroke="black" points="688.91,-672.36 678.34,-671.68 686.18,-678.8 688.91,-672.36"/>
 </g>
 <!-- vcorelib_target&#45;&gt;vcorelib_task_manager -->
 <g id="edge31" class="edge">
 <title>vcorelib_target&#45;&gt;vcorelib_task_manager</title><style>.edge>path:hover{stroke-width:8}</style>
 <path fill="none" stroke="black" d="M827.92,-712.29C829.23,-697.19 829.62,-676.69 825.06,-659.26"/>
 <path fill="none" stroke="black" d="M825.06,-657.26C822.71,-648.25 785.18,-616.93 755.65,-593.4"/>
-<polygon fill="#2fdbdb" stroke="black" points="757.59,-590.47 747.58,-587 753.24,-595.95 757.59,-590.47"/>
+<polygon fill="#18dddd" stroke="black" points="757.59,-590.47 747.58,-587 753.24,-595.95 757.59,-590.47"/>
 </g>
 <!-- vcorelib_target&#45;&gt;vmklib_app -->
 <g id="edge32" class="edge">
 <title>vcorelib_target&#45;&gt;vmklib_app</title><style>.edge>path:hover{stroke-width:8}</style>
 <path fill="none" stroke="black" d="M825.06,-657.26C799.6,-559.83 822.51,-512.71 749.06,-443.81 590.62,-295.18 474.74,-403.96 279.06,-309.59 269.41,-304.93 259.64,-298.57 251.12,-292.35"/>
-<polygon fill="#2fdbdb" stroke="black" points="253.15,-289.49 243.06,-286.24 248.92,-295.07 253.15,-289.49"/>
+<polygon fill="#18dddd" stroke="black" points="253.15,-289.49 243.06,-286.24 248.92,-295.07 253.15,-289.49"/>
 </g>
 <!-- vcorelib_target&#45;&gt;vmklib_tasks_mixins_concrete -->
 <g id="edge33" class="edge">
