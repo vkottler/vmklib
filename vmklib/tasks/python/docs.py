@@ -33,19 +33,29 @@ class PydepsTask(SubprocessLogMixin):
         images = Path("im")
         images.mkdir(parents=True, exist_ok=True)
 
-        return await self.exec(
-            str(inbox["venv"]["venv{python_version}"]["python"]),
-            "-m",
-            "pydeps",
-            "--no-show",
-            "-T",
-            "svg",
-            "-o",
+        output = Path(
             environ_fallback(
                 "PY_DEPS_OUT", str(images.joinpath("pydeps.svg")), **kwargs
-            ),
-            *environ_fallback_split("PY_DEPS_EXTRA_ARGS", **kwargs),
-            project,
+            )
+        )
+
+        return (
+            await self.exec(
+                str(inbox["venv"]["venv{python_version}"]["python"]),
+                "-m",
+                "pydeps",
+                "--no-show",
+                "-T",
+                "svg",
+                "-o",
+                str(output),
+                *environ_fallback_split("PY_DEPS_EXTRA_ARGS", **kwargs),
+                project,
+            )
+            # Only generate the output if it's missing (this is time-consuming
+            # to run).
+            if not output.is_file()
+            else True
         )
 
 
