@@ -44,12 +44,29 @@ def register(
     del project
     del cwd
     del substitutions
+
+    # A target that installs a package.
     manager.register(
         PythonPackage("python{python_version}-install-{package}"), []
     )
+
+    # A target that attempts to upgrade a package.
+    manager.register(
+        PythonPackage(
+            "python{python_version}-upgrade-{package}", "--upgrade", once=False
+        ),
+        [],
+    )
+
+    # Less verbose phony front-ends to package installation and upgrading.
     manager.register(
         Phony(PREFIX + "install-{package}"),
         ["python{python_version}-install-{package}"],
     )
+    manager.register(
+        Phony(PREFIX + "upgrade-{package}"),
+        ["python{python_version}-upgrade-{package}"],
+    )
+
     manager.register(PythonPackage(PREFIX + "editable", "-e", package="."), [])
     return True

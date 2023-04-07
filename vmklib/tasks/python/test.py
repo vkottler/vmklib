@@ -56,7 +56,15 @@ def register(
 ) -> bool:
     """Register unit testing tasks to the manager."""
 
-    manager.register(PythonTester(PREFIX + "test", cwd, project), [])
-    manager.register(PythonTester(PREFIX + "test-{pattern}", cwd, project), [])
+    # Packages to install for running unit tests.
+    deps = [f"{PREFIX}install-{x}" for x in ["pytest", "pytest-cov"]]
+
+    manager.register(
+        PythonTester(PREFIX + "test", cwd, project),
+        deps,
+    )
+    manager.register(
+        PythonTester(PREFIX + "test-{pattern}", cwd, project), deps
+    )
     del substitutions
     return True

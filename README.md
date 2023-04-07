@@ -1,12 +1,12 @@
 <!--
     =====================================
     generator=datazen
-    version=3.1.0
-    hash=74d5f21bda760f1e56d029ff9ed2ac93
+    version=3.1.2
+    hash=6fdb7522a28ac67fae20b5b157dcf716
     =====================================
 -->
 
-# vmklib ([1.7.1](https://pypi.org/project/vmklib/))
+# vmklib ([1.8.0](https://pypi.org/project/vmklib/))
 
 [![python](https://img.shields.io/pypi/pyversions/vmklib.svg)](https://pypi.org/project/vmklib/)
 ![Build Status](https://github.com/vkottler/vmklib/workflows/Python%20Package/badge.svg)
@@ -27,6 +27,7 @@ This package is tested with the following Python minor versions:
 * [`python3.8`](https://docs.python.org/3.8/)
 * [`python3.9`](https://docs.python.org/3.9/)
 * [`python3.10`](https://docs.python.org/3.10/)
+* [`python3.11`](https://docs.python.org/3.11/)
 
 ## Platform Support
 
