@@ -34,7 +34,7 @@ def register(
             ignore_errors=True,
             linter="mypy",
         ),
-        [],
+        [PREFIX + "install-mypy"],
     )
     manager.register(
         PythonLinter(

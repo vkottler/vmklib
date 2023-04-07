@@ -40,7 +40,7 @@ class PythonLinter(SubprocessLogMixin):
 
         cwd: Path = args[0]
         project: str = args[1]
-        linter: str = kwargs["linter"]
+        linter: str = kwargs.get("package", kwargs.get("linter", "UNKNOWN"))
 
         return await self.exec(
             str(inbox["venv"]["venv{python_version}"]["bin"].joinpath(linter)),
@@ -69,13 +69,13 @@ def register(
             Phony(prefix + f"lint-{kind}"),
             [
                 f"{prefix}{kind}-{x}"
-                for x in ["pylint", "flake8", "black", "isort", "ruff", "mypy"]
+                for x in ["pylint", "flake8", "black", "ruff", "mypy", "isort"]
             ],
         )
 
     manager.register(
-        PythonLinter(prefix + "lint-{linter}", cwd, project),
-        [prefix + "lint-install"],
+        PythonLinter(prefix + "lint-{package}", cwd, project),
+        [prefix + "install-{package}"],
     )
 
     line_length = ["--line-length", str(substitutions.get("line_length", 79))]
@@ -97,7 +97,7 @@ def register(
             *isort_args,
             linter="isort",
         ),
-        [],
+        [f"{prefix}install-isort"],
     )
 
     manager.register(
@@ -108,7 +108,7 @@ def register(
             *isort_args,
             linter="isort",
         ),
-        [],
+        [f"{prefix}install-isort"],
     )
 
     manager.register(
@@ -120,7 +120,7 @@ def register(
             *line_length,
             linter="black",
         ),
-        [],
+        [f"{prefix}install-black"],
     )
 
     manager.register(
@@ -133,7 +133,7 @@ def register(
         ),
         # Depend on 'isort' so that we don't format multiple files at the same
         # time.
-        [prefix + "format-isort"],
+        [f"{prefix}install-black", prefix + "format-isort"],
     )
 
     manager.register(

@@ -11,9 +11,8 @@ from vcorelib.task import Inbox, Outbox, Phony
 from vcorelib.task.manager import TaskManager
 from vcorelib.task.subprocess.run import SubprocessLogMixin
 
-from vmklib.tasks.mixins.concrete import ConcreteOnceMixin
-
 # internal
+from vmklib.tasks.mixins.concrete import ConcreteOnceMixin
 from vmklib.tasks.python import PREFIX
 
 
