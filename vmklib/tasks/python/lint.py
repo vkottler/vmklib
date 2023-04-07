@@ -63,7 +63,20 @@ def register(
 
     prefix = PREFIX
 
-    manager.register(PythonLinter(prefix + "lint-{linter}", cwd, project), [])
+    # A target ensuring that linter packages are installed.
+    for kind in ["install", "upgrade"]:
+        manager.register(
+            Phony(prefix + f"lint-{kind}"),
+            [
+                f"{prefix}{kind}-{x}"
+                for x in ["pylint", "flake8", "black", "isort", "ruff", "mypy"]
+            ],
+        )
+
+    manager.register(
+        PythonLinter(prefix + "lint-{linter}", cwd, project),
+        [prefix + "lint-install"],
+    )
 
     line_length = ["--line-length", str(substitutions.get("line_length", 79))]
 
@@ -137,6 +150,7 @@ def register(
         [
             prefix + "lint-flake8",
             prefix + "lint-pylint",
+            prefix + "lint-ruff",
             prefix + "format-check",
         ],
     )

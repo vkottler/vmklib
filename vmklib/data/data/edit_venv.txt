@@ -1,7 +1,2 @@
 pynvim
 python-lsp-server
-flake8
-pylint
-mypy
-black
-isort

@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta:__legacy__"
 
 [project]
 name = "vmklib"
-version = "1.7.1"
+version = "1.8.0"
 description = "Simplify project workflows by standardizing use of GNU Make."
 readme = "README.md"
 requires-python = ">=3.7"
@@ -26,6 +26,7 @@ classifiers = [
   "Programming Language :: Python :: 3.8",
   "Programming Language :: Python :: 3.9",
   "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
   "Operating System :: Microsoft :: Windows",
   "Operating System :: MacOS",
   "Operating System :: POSIX :: Linux",
@@ -44,8 +45,8 @@ test = [
   "mypy",
   "black",
   "isort",
-  "setuptools-wrapper",
-  "pytest-asyncio"
+  "pytest-asyncio",
+  "setuptools-wrapper"
 ]
 
 [project.scripts]
