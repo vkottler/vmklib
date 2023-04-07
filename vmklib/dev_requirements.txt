@@ -1,9 +1,2 @@
-pylint
-flake8
-pytest
-pytest-cov
-mypy
-black
-isort
 pytest-asyncio
 setuptools-wrapper
