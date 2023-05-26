@@ -25,12 +25,32 @@ compiles:
     schema_types:
       - local/schema_types
 
+# We need alternate versions of the 'help' scaffolding.
+commands:
+  - name: install-local-custom
+    command: mk
+    arguments:
+      - python-editable
+      - "PYTHON_VERSION={{python_version}}"
+    dependencies:
+      - groups-python-no-cli
+      - renders-__main__.py
+      - renders-entry.py
+
+  - name: help_custom
+    command: "./venv{{python_version}}/bin/{{entry}}"
+    force: true
+    arguments:
+      - "-h"
+    dependencies:
+      - commands-install-local-custom
+
 renders:
   - name: README.md
     output_dir: "."
     dependencies:
       - compiles-local
-      - commands-help
+      - commands-help_custom
       - renders-python_readme_header.md
       - renders-python_readme_dep_graph.md
 
@@ -42,7 +62,6 @@ renders:
 groups:
   - name: all
     dependencies:
-      - groups-python
       - groups-license
       - groups-funding
       - renders-README.md

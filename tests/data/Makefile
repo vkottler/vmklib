@@ -1,4 +1,4 @@
-.PHONY: test prefix-test
+.PHONY: all test prefix-test
 
 test:
 	+@echo "hello!"
@@ -8,3 +8,5 @@ prefix-test:
 
 sleep:
 	$@ 5
+
+all: test

@@ -48,14 +48,18 @@ def test_entry():
             assert mk_main(good_base_args + ["test_bad"]) != 0
             assert mk_main(good_base_args + ["--weird-option", "yo"]) != 0
             assert mk_main(base_args + ["-f", "nah"]) != 0
-            assert mk_main(base_args) == 0
+
+            assert mk_main(good_base_args) == 0
+
+            # Shouldn't be able to resolve the default target.
+            assert mk_main(base_args) != 0
 
 
 def test_package_entry():
     """Test the command-line entry through the 'python -m' invocation."""
 
     with get_args() as base_args:
-        args = [executable, "-m"] + base_args
+        args = [executable, "-m"] + base_args + ["--default", ""]
         check_output(args)
 
 
