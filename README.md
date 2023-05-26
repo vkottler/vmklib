@@ -2,11 +2,11 @@
     =====================================
     generator=datazen
     version=3.1.2
-    hash=86cb90c0ad730eedd704cb4110084afd
+    hash=260b3eb9b8e7e42878fb12193e72a3cd
     =====================================
 -->
 
-# vmklib ([1.8.1](https://pypi.org/project/vmklib/))
+# vmklib ([1.8.2](https://pypi.org/project/vmklib/))
 
 [![python](https://img.shields.io/pypi/pyversions/vmklib.svg)](https://pypi.org/project/vmklib/)
 ![Build Status](https://github.com/vkottler/vmklib/workflows/Python%20Package/badge.svg)
@@ -65,18 +65,18 @@ else with simple package updates.
 # Command-line Options
 
 ```
-$ ./venv3.8/bin/mk -h
+$ ./venv3.11/bin/mk -h
 
-usage: mk [-h] [--version] [-v] [-C DIR] [-p PREFIX] [-d] [-f FILE]
-          [-c CONFIG] [-P PROJ]
-          [targets [targets ...]]
+usage: mk [-h] [--version] [-v] [-C DIR] [-p PREFIX] [-d] [-D DEFAULT]
+          [-f FILE] [-c CONFIG] [-P PROJ]
+          [targets ...]
 
 Simplify project workflows by standardizing use of GNU Make.
 
 positional arguments:
   targets               targets to execute
 
-optional arguments:
+options:
   -h, --help            show this help message and exit
   --version             show program's version number and exit
   -v, --verbose         set to increase logging verbosity
@@ -85,6 +85,9 @@ optional arguments:
                         a prefix to apply to all targets
   -d, --disable-make    whether or not to allow GNU Make target resolution
                         (default: 'False')
+  -D DEFAULT, --default DEFAULT
+                        default target to make if none is specified (default:
+                        'all')
   -f FILE, --file FILE  file to source user-provided recipes from (default:
                         'Makefile')
   -c CONFIG, --config CONFIG

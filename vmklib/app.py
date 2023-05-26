@@ -169,6 +169,10 @@ def entry(args: argparse.Namespace) -> int:
             return 1
         args.file = get_resource(os.path.join("data", "header.mk"))
 
+    # Add the default target early if nothing was specified.
+    if not args.targets and args.default:
+        args.targets.append(args.default)
+
     # load configuration data, if configuration data is found
     substitutions, targets = get_data(args.config, args.targets, args.prefix)
 
@@ -233,6 +237,15 @@ def add_app_args(parser: argparse.ArgumentParser) -> None:
         help=(
             "whether or not to allow GNU Make "
             "target resolution (default: '%(default)s')"
+        ),
+    )
+    parser.add_argument(
+        "-D",
+        "--default",
+        default="all",
+        help=(
+            "default target to make if none is "
+            "specified (default: '%(default)s')"
         ),
     )
     parser.add_argument(
