@@ -6,18 +6,19 @@ A task mixin for writing concrete outputs to a build directory.
 from os import linesep
 from pathlib import Path
 from time import asctime
-from typing import Iterable, cast
+from typing import Iterable
 
 # third-party
 from vcorelib.paths import Pathlike, modified_after
 from vcorelib.target import Substitutions
-from vcorelib.task import Inbox, Outbox, Task
+from vcorelib.task import Inbox, Outbox
+
+# internal
+from vmklib.tasks import VmklibBase
 
 
-class ConcreteBuilderMixin(Task):
+class ConcreteBuilderMixin(VmklibBase):
     """Create a concrete file output after a task completes."""
-
-    default_requirements = {"vmklib.init"}
 
     def concrete_path(
         self,
@@ -26,8 +27,7 @@ class ConcreteBuilderMixin(Task):
     ) -> Path:
         """By default name the concrete after the compiled target name."""
 
-        init_data = inbox["vmklib.init"]
-        return cast(Path, init_data["__dirs__"]["build"]).joinpath(
+        return self.build_dir(inbox).joinpath(
             f"{self.target.compile(substitutions)}.txt"
         )
 
