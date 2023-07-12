@@ -2,12 +2,13 @@
 A module implementing a 'clean' task.
 """
 
-# internal
+# built-in
 from shutil import rmtree
 
 # third-party
 from vcorelib.task import Inbox, Outbox
 
+# internal
 from vmklib.tasks import VmklibBase
 
 
@@ -20,7 +21,7 @@ class Clean(VmklibBase):
         keep = kwargs.get("keep")
 
         for arg in args:
-            if arg.exists() and keep is None or keep not in arg.name:
+            if arg.exists() and (keep is None or keep not in arg.name):
                 self.logger.info("Removing '%s'.", arg)
             rmtree(arg, ignore_errors=True)
 
