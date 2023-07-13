@@ -49,14 +49,15 @@ class GithubRelease(CurlMixin):
         )
         return loads(result.stdout)  # type: ignore
 
-    async def run(
+    async def release(
         self,
-        inbox: Inbox,
-        outbox: Outbox,
-        *args,
-        **kwargs,
+        cwd: Path,
+        owner: str,
+        repo: str,
+        version: str,
+        dist: str = "dist",
     ) -> bool:  # pragma: nocover
-        """Generate ninja configuration files."""
+        """Create a release."""
 
         # Check for API key in environment.
         if "GITHUB_API_TOKEN" not in os.environ:
@@ -68,12 +69,7 @@ class GithubRelease(CurlMixin):
         # Set token header.
         ensure_api_token(os.environ["GITHUB_API_TOKEN"])
 
-        cwd: Path = args[0]
-
         # Ensure GitHub parameters are set.
-        owner = kwargs["owner"]
-        repo = kwargs["repo"]
-        version = kwargs["version"]
         if not owner or not repo or not version:
             return False
 
@@ -94,10 +90,27 @@ class GithubRelease(CurlMixin):
 
         # Use 'Upload a release asset' API to upload all files in the 'dist'
         # directory to the new release.
-        for item in cwd.joinpath(kwargs.get("dist", "dist")).iterdir():
+        for item in cwd.joinpath(dist).iterdir():
             result = await self.upload_release_asset(
                 owner, repo, release_id, item
             )
             self.log.info("Uploaded '%s'.", result["browser_download_url"])
 
         return True
+
+    async def run(
+        self,
+        inbox: Inbox,
+        outbox: Outbox,
+        *args,
+        **kwargs,
+    ) -> bool:  # pragma: nocover
+        """Generate ninja configuration files."""
+
+        return await self.release(
+            args[0],
+            kwargs["owner"],
+            kwargs["repo"],
+            kwargs["version"],
+            dist=kwargs.get("dist", "dist"),
+        )

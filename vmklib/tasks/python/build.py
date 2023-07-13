@@ -14,11 +14,11 @@ from vcorelib.task.subprocess.run import SubprocessLogMixin
 
 # internal
 from vmklib.tasks.args import environ_fallback_split
-from vmklib.tasks.mixins.concrete import ConcreteBuilderMixin
+from vmklib.tasks.mixins.concrete import ConcreteOnceMixin
 from vmklib.tasks.python import PREFIX
 
 
-class PythonBuild(ConcreteBuilderMixin, SubprocessLogMixin):
+class PythonBuild(ConcreteOnceMixin, SubprocessLogMixin):
     """Build a Python package."""
 
     async def run(

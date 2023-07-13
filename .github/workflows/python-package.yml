@@ -65,7 +65,7 @@ jobs:
 
       - run: |
           mk python-release owner=vkottler \
-                            repo=vmklib version=1.10.0
+                            repo=vmklib version=1.10.1
         if: |
           matrix.python-version == '3.11'
           && matrix.system == 'ubuntu-latest'
