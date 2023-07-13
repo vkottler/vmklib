@@ -19,6 +19,7 @@ from vmklib.tasks.python.datazen import register as register_datazen
 from vmklib.tasks.python.docs import register as register_python_docs
 from vmklib.tasks.python.lint import register as register_python_lint
 from vmklib.tasks.python.package import register as register_python_package
+from vmklib.tasks.python.release import register as register_python_release
 from vmklib.tasks.python.sa import register as register_python_sa
 from vmklib.tasks.python.test import register as register_python_test
 from vmklib.tasks.python.yaml import register as register_python_yaml
@@ -70,6 +71,7 @@ def register(
         register_python_test,
         register_datazen,
         register_python_docs,
+        register_python_release,
         register_node,
     ]:
         if result:

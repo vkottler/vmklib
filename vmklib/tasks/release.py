@@ -6,7 +6,7 @@ A module implementing a release task for Python projects.
 from json import loads
 import os
 from pathlib import Path
-from typing import Any
+from typing import Any, Dict
 
 # third-party
 from vcorelib.task import Inbox, Outbox
@@ -15,17 +15,15 @@ from vcorelib.task import Inbox, Outbox
 from vmklib.tasks.github import COMMON_ARGS, ensure_api_token, repo_url
 from vmklib.tasks.mixins import CurlMixin, curl_headers
 
-ApiResult = dict[str, Any]
+ApiResult = Dict[str, Any]
 
 
-class PythonUploadRelease(CurlMixin):
-    """TODO."""
-
-    default_requirements = {"vmklib.init", "python-build-once"}
+class GithubRelease(CurlMixin):
+    """A task for creating a GitHub release for a given package."""
 
     async def create_release(
-        self, owner: str, repo: str, data: dict[str, Any]
-    ) -> ApiResult:
+        self, owner: str, repo: str, data: Dict[str, Any]
+    ) -> ApiResult:  # pragma: nocover
         """Attempt to create a release."""
 
         result = await self.curl(
@@ -35,7 +33,7 @@ class PythonUploadRelease(CurlMixin):
 
     async def upload_release_asset(
         self, owner: str, repo: str, release_id: int, path: Path
-    ) -> ApiResult:
+    ) -> ApiResult:  # pragma: nocover
         """Attempt to upload a release asset."""
 
         result = await self.curl(
@@ -51,7 +49,13 @@ class PythonUploadRelease(CurlMixin):
         )
         return loads(result.stdout)  # type: ignore
 
-    async def run(self, inbox: Inbox, outbox: Outbox, *args, **kwargs) -> bool:
+    async def run(
+        self,
+        inbox: Inbox,
+        outbox: Outbox,
+        *args,
+        **kwargs,
+    ) -> bool:  # pragma: nocover
         """Generate ninja configuration files."""
 
         # Check for API key in environment.
@@ -67,9 +71,11 @@ class PythonUploadRelease(CurlMixin):
         cwd: Path = args[0]
 
         # Ensure GitHub parameters are set.
-        owner = ""
-        repo = ""
-        version = ""
+        owner = kwargs["owner"]
+        repo = kwargs["repo"]
+        version = kwargs["version"]
+        if not owner or not repo or not version:
+            return False
 
         # Attempt to create a new release.
         result = await self.create_release(
@@ -88,7 +94,7 @@ class PythonUploadRelease(CurlMixin):
 
         # Use 'Upload a release asset' API to upload all files in the 'dist'
         # directory to the new release.
-        for item in cwd.joinpath("dist").iterdir():
+        for item in cwd.joinpath(kwargs.get("dist", "dist")).iterdir():
             result = await self.upload_release_asset(
                 owner, repo, release_id, item
             )
