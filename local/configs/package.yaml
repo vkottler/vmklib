@@ -5,7 +5,7 @@ description: "Simplify project workflows by standardizing use of GNU Make."
 entry: {{entry}}
 
 requirements:
-  - vcorelib>=2.3.1
+  - vcorelib>=2.4.0
 
 dev_requirements:
   - pytest-asyncio
