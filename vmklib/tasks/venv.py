@@ -64,6 +64,11 @@ class Venv(ConcreteBuilderMixin, SubprocessLogMixin):
             str(outbox["path"]),
         )
 
+        # Create a convenient symbolic link.
+        symlink = outbox["path"].with_name("venv")
+        if result and not symlink.exists():
+            symlink.symlink_to(outbox["path"].name)
+
         # Upgrade pip by default.
         if result and kwargs.get("upgrade_pip", True):
             result = await self.exec(
