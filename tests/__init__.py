@@ -45,7 +45,9 @@ def build_cleaned_resource(resource_name: str) -> Iterator[str]:
     path = get_resource(resource_name)
 
     # Try our best to clean up virtual environments.
-    to_clean = ["build"] + [f"venv3.{x}" for x in [6, 7, 8, 9, 10, 11, 12]]
+    to_clean = ["build", "venv"] + [
+        f"venv3.{x}" for x in [6, 7, 8, 9, 10, 11, 12]
+    ]
 
     for clean in to_clean:
         clean_path = os.path.join(path, clean)
