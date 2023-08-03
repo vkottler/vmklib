@@ -7,6 +7,7 @@ from pathlib import Path
 from typing import Dict, List
 
 # third-party
+from vcorelib.platform import is_windows
 from vcorelib.task import Inbox, Outbox, Phony
 from vcorelib.task.manager import TaskManager
 from vcorelib.task.subprocess.run import SubprocessLogMixin
@@ -30,9 +31,15 @@ class PythonLinter(SubprocessLogMixin):
             sources = [
                 cwd.joinpath("tests"),
                 cwd.joinpath(project),
-                cwd.joinpath("tasks"),
                 cwd.joinpath("setup.py"),
             ]
+
+            # This breaks on Windows because of symbolic linking. It's okay
+            # to lose the linting coverage for the not-unit-tested workflow
+            # code.
+            if not is_windows():
+                sources.append(cwd.joinpath("tasks"))
+
         return list(str(x) for x in filter(lambda x: x.exists(), sources))
 
     async def run(self, inbox: Inbox, outbox: Outbox, *args, **kwargs) -> bool:
