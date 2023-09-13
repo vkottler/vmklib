@@ -1,7 +1,7 @@
 # =====================================
 # generator=datazen
 # version=3.1.2
-# hash=334b3aaa0057809fb4013ea7760483a9
+# hash=745689313e0947f30ccf35892bb72cd4
 # =====================================
 
 """
@@ -10,11 +10,13 @@ This package's command-line entry-point (boilerplate).
 
 # built-in
 import argparse
-import logging
 import os
 from pathlib import Path
 import sys
 from typing import List
+
+# third-party
+from vcorelib.logging import init_logging, logging_args
 
 # internal
 from vmklib import DESCRIPTION, VERSION
@@ -38,12 +40,7 @@ def main(argv: List[str] = None) -> int:
         action="version",
         version=f"%(prog)s {VERSION}",
     )
-    parser.add_argument(
-        "-v",
-        "--verbose",
-        action="store_true",
-        help="set to increase logging verbosity",
-    )
+    logging_args(parser)
     parser.add_argument(
         "-C",
         "--dir",
@@ -63,10 +60,8 @@ def main(argv: List[str] = None) -> int:
         args.dir = args.dir.resolve()
 
         # initialize logging
-        log_level = logging.DEBUG if args.verbose else logging.INFO
-        logging.basicConfig(
-            level=log_level,
-            format="%(name)-36s - %(levelname)-6s - %(message)s",
+        init_logging(
+            args, default_format="%(name)-36s - %(levelname)-6s - %(message)s"
         )
 
         # change to the specified directory

@@ -7,5 +7,7 @@ isort
 yamllint
 yambs
 vmklib
+sphinx
+sphinx-book-theme
 pytest-asyncio
 setuptools-wrapper
