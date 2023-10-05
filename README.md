@@ -1,12 +1,12 @@
 <!--
     =====================================
     generator=datazen
-    version=3.1.2
-    hash=da4d4c6d28f923c7af8cddbc7ef94455
+    version=3.1.3
+    hash=598c034e692603540425830661a95aa1
     =====================================
 -->
 
-# vmklib ([1.10.6](https://pypi.org/project/vmklib/))
+# vmklib ([2.0.0](https://pypi.org/project/vmklib/))
 
 [![python](https://img.shields.io/pypi/pyversions/vmklib.svg)](https://pypi.org/project/vmklib/)
 ![Build Status](https://github.com/vkottler/vmklib/workflows/Python%20Package/badge.svg)
@@ -70,8 +70,8 @@ else with simple package updates.
 ```
 $ ./venv3.11/bin/mk -h
 
-usage: mk [-h] [--version] [-v] [-C DIR] [-p PREFIX] [-d] [-D DEFAULT]
-          [-f FILE] [-c CONFIG] [-P PROJ]
+usage: mk [-h] [--version] [-v] [-q] [--curses] [--no-uvloop] [-C DIR]
+          [-p PREFIX] [-d] [-D DEFAULT] [-f FILE] [-c CONFIG] [-P PROJ]
           [targets ...]
 
 Simplify project workflows by standardizing use of GNU Make.
@@ -83,6 +83,9 @@ options:
   -h, --help            show this help message and exit
   --version             show program's version number and exit
   -v, --verbose         set to increase logging verbosity
+  -q, --quiet           set to reduce output
+  --curses              whether or not to use curses.wrapper when starting
+  --no-uvloop           whether or not to disable uvloop as event loop driver
   -C DIR, --dir DIR     execute from a specific directory
   -p PREFIX, --prefix PREFIX
                         a prefix to apply to all targets
