@@ -17,13 +17,13 @@ from typing import Callable, Dict, Iterator, List, Optional, Tuple, cast
 # third-party
 from vcorelib.dict import GenericStrDict
 from vcorelib.io import ARBITER
+from vcorelib.paths import find_file
 from vcorelib.target import Substitutions
 from vcorelib.task import TaskFailed
 from vcorelib.task.manager import TaskManager
 
 # internal
 from vmklib import PKG_NAME
-from vmklib.resources import get_resource
 
 LOG = logging.getLogger(__name__)
 DEFAULT_FILE = Path("Makefile")
@@ -65,7 +65,7 @@ def build_makefile(
         # get the path to this package's data to include our "conf.mk"
         include_strs = [
             "-include $($(PROJ)_MK_DIR)/init.mk",
-            f"include {get_resource('conf.mk')}",
+            f"include {find_file('conf.mk', package=PKG_NAME)}",
             "-include $($(PROJ)_MK_DIR)/conf.mk",
         ]
 
@@ -106,12 +106,10 @@ def initialize_task_manager(
     """Load internal and external tasks to the task manager."""
 
     # register task-manager targets from this package
+    conf = find_file("lib_tasks", "conf.py", package=PKG_NAME)
+    assert conf is not None
     assert manager.script(
-        get_resource(os.path.join("lib_tasks", "conf.py")),
-        "register",
-        proj,
-        directory,
-        substitutions,
+        conf, "register", proj, directory, substitutions
     ), "Couldn't register package tasks from '{get_resource(task_register)}'!"
 
     # register task-manager targets for the project
@@ -167,7 +165,7 @@ def entry(args: argparse.Namespace) -> int:
         if args.file.name != str(DEFAULT_FILE):
             LOG.error("'%s' not found", args.file)
             return 1
-        args.file = get_resource(os.path.join("data", "header.mk"))
+        args.file = find_file("data", "header.mk", package=PKG_NAME)
 
     # Add the default target early if nothing was specified.
     if not args.targets and args.default:
