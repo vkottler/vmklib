@@ -3,7 +3,7 @@ vmklib - Test the program's entry-point.
 """
 
 # built-in
-from contextlib import contextmanager
+from contextlib import ExitStack, contextmanager
 from multiprocessing import Process
 import os
 import signal
@@ -98,8 +98,11 @@ def target_tests(
     if irrelevant is None:
         irrelevant = set()
 
-    with build_cleaned_resource(scenario) as test_dir:
+    with ExitStack() as stack:
+        test_dir = stack.enter_context(build_cleaned_resource(scenario))
+
         yield test_dir
+
         for target in passes:
             target_test(target, test_dir, True, target not in irrelevant)
         for target in fails:
