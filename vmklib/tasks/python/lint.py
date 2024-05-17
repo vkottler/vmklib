@@ -21,6 +21,7 @@ class PythonLinter(SubprocessLogMixin):
     """A task for running a Python linter."""
 
     default_requirements = {"venv"}
+    linter_args: dict[str, list[str]] = {"ruff": ["check"]}
 
     @staticmethod
     def source_args(cwd: Path, project: str, **kwargs) -> List[str]:
@@ -51,6 +52,7 @@ class PythonLinter(SubprocessLogMixin):
 
         return await self.exec(
             str(inbox["venv"]["venv{python_version}"]["bin"].joinpath(linter)),
+            *self.linter_args.get(linter, []),
             *args[2:],
             # Get extra arguments from the environment.
             *environ_fallback_split(
