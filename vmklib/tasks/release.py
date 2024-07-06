@@ -82,21 +82,29 @@ class GithubRelease(CurlMixin):
                 "generate_release_notes": True,
             },
         )
+
+        self.log.info("Create-release result: '%s'.", result)
+
         if "message" in result and result["message"] == "Validation Failed":
             self.log.warning("Release at current version already exists.")
             return True
 
-        release_id = result["id"]
+        success = False
 
-        # Use 'Upload a release asset' API to upload all files in the 'dist'
-        # directory to the new release.
-        for item in cwd.joinpath(dist).iterdir():
-            result = await self.upload_release_asset(
-                owner, repo, release_id, item
-            )
-            self.log.info("Uploaded '%s'.", result["browser_download_url"])
+        if "id" in result:
+            release_id = result["id"]
 
-        return True
+            # Use 'Upload a release asset' API to upload all files in the
+            # 'dist' directory to the new release.
+            for item in cwd.joinpath(dist).iterdir():
+                result = await self.upload_release_asset(
+                    owner, repo, release_id, item
+                )
+                self.log.info("Uploaded '%s'.", result["browser_download_url"])
+
+            success = True
+
+        return success
 
     async def run(
         self,
