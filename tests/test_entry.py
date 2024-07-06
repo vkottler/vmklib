@@ -3,7 +3,7 @@ vmklib - Test the program's entry-point.
 """
 
 # built-in
-from contextlib import ExitStack, contextmanager
+from contextlib import ExitStack, contextmanager, suppress
 from multiprocessing import Process
 import os
 import signal
@@ -32,7 +32,8 @@ def test_interrupt():
         proc.start()
         time.sleep(0.5)
         assert isinstance(proc.pid, int)
-        os.kill(proc.pid, signal.SIGINT)
+        with suppress(PermissionError):
+            os.kill(proc.pid, signal.SIGINT)
         proc.join()
 
 
