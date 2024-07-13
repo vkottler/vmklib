@@ -1,1 +1,2 @@
 vcorelib>=2.4.0
+experimental-lowqa

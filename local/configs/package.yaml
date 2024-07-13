@@ -7,6 +7,10 @@ entry: {{entry}}
 requirements:
   - vcorelib>=2.4.0
 
+  # Adding this dependency simplifies project-specific workflow integrations
+  # that leverage interfaces from this package.
+  - experimental-lowqa
+
 dev_requirements:
   - pytest-asyncio
   - setuptools-wrapper
