@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta:__legacy__"
 
 [project]
 name = "vmklib"
-version = "2.0.3"
+version = "2.0.4"
 description = "Simplify project workflows by standardizing use of GNU Make."
 readme = "README.md"
 requires-python = ">=3.10"
