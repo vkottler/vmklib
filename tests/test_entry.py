@@ -113,6 +113,8 @@ def target_tests(
 def test_entry_python_tasks():
     """Ensure that we can run Python-based tasks."""
 
+    scenario = "python-tasks"
+
     passes = [
         (
             "python-lint python-sa"
@@ -124,11 +126,9 @@ def test_entry_python_tasks():
         "python-test-add",
         "dz-sync",
     ]
-    fails = ["python-deps", "python-editable"]
+    fails = ["python-deps", "python-editable", f"python-install-{scenario}"]
 
-    with target_tests(
-        "python-tasks", passes, fails, {"python-deps", "python-editable"}
-    ) as test_dir:
+    with target_tests(scenario, passes, fails, set(fails)) as test_dir:
         for _ in range(2):
             assert mk_main([PKG_NAME, "-C", test_dir, "-d", "venv"]) == 0
 

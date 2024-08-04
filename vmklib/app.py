@@ -24,6 +24,7 @@ from vcorelib.task.manager import TaskManager
 
 # internal
 from vmklib import PKG_NAME
+from vmklib.util import to_slug
 
 LOG = logging.getLogger(__name__)
 DEFAULT_FILE = Path("Makefile")
@@ -36,7 +37,7 @@ def project(path: Path, name: str = None) -> str:
     """
     path = path.resolve()
     if name is None:
-        parent_slug = path.name.replace("-", "_")
+        parent_slug = to_slug(path.name)
         if path.joinpath(parent_slug).is_dir():
             name = parent_slug
         else:
