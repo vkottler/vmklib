@@ -1,7 +1,7 @@
 # =====================================
 # generator=datazen
 # version=3.1.4
-# hash=43286ed57052c2548361d2dcdd062187
+# hash=d9c5aeff539a1d3629104db47fe763ca
 # =====================================
 
 """
@@ -19,7 +19,7 @@ from vmklib import DESCRIPTION, PKG_NAME, VERSION
 
 author_info = {
     "name": "Vaughn Kottler",
-    "email": "vaughnkottler@gmail.com",
+    "email": "vaughn@libre-embedded.com",
     "username": "vkottler",
 }
 pkg_info = {
@@ -28,9 +28,8 @@ pkg_info = {
     "version": VERSION,
     "description": DESCRIPTION,
     "versions": [
-        "3.10",
-        "3.11",
         "3.12",
+        "3.13",
     ],
 }
 setup(

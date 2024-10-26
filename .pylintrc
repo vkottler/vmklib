@@ -1,5 +1,6 @@
 [DESIGN]
 max-args=6
+max-positional-arguments=6
 
 [MESSAGES CONTROL]
 disable=duplicate-code
