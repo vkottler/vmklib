@@ -5,7 +5,7 @@ description: "Simplify project workflows by standardizing use of GNU Make."
 entry: {{entry}}
 
 requirements:
-  - vcorelib>=2.4.0
+  - vcorelib>=3.4.3
 
   # Adding this dependency simplifies project-specific workflow integrations
   # that leverage interfaces from this package.

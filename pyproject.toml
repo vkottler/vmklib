@@ -4,10 +4,10 @@ build-backend = "setuptools.build_meta:__legacy__"
 
 [project]
 name = "vmklib"
-version = "2.0.4"
+version = "2.0.5"
 description = "Simplify project workflows by standardizing use of GNU Make."
 readme = "README.md"
-requires-python = ">=3.10"
+requires-python = ">=3.12"
 license = {file = "LICENSE"}
 keywords = [
   "workflow",
@@ -15,16 +15,15 @@ keywords = [
   "make"
 ]
 authors = [
-  {name = "Vaughn Kottler", email = "vaughnkottler@gmail.com"}
+  {name = "Vaughn Kottler", email = "vaughn@libre-embedded.com"}
 ]
 maintainers = [
-  {name = "Vaughn Kottler", email = "vaughnkottler@gmail.com"}
+  {name = "Vaughn Kottler", email = "vaughn@libre-embedded.com"}
 ]
 classifiers = [
   "Topic :: Software Development :: Build Tools",
-  "Programming Language :: Python :: 3.10",
-  "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
   "Operating System :: Microsoft :: Windows",
   "Operating System :: MacOS",
   "Operating System :: POSIX :: Linux",
@@ -44,7 +43,7 @@ test = [
   "isort",
   "yamllint",
   "yambs",
-  "vmklib",
+  "vmklib>=2.0.3",
   "sphinx",
   "sphinx-book-theme",
   "pytest-asyncio",

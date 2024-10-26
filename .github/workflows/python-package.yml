@@ -19,9 +19,8 @@ jobs:
     strategy:
       matrix:
         python-version:
-          - "3.10"
-          - "3.11"
           - "3.12"
+          - "3.13"
         system:
           - ubuntu-latest
           - macos-latest
@@ -74,7 +73,7 @@ jobs:
 
       - run: |
           mk python-release owner=vkottler \
-                            repo=vmklib version=2.0.4
+                            repo=vmklib version=2.0.5
         if: |
           matrix.python-version == '3.12'
           && matrix.system == 'ubuntu-latest'
